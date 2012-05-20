@@ -8,19 +8,23 @@
 	<link rel="stylesheet" type="text/css" href="fullcalendar/fullcalendar.css">
 	<link rel="stylesheet" type="text/css" href="fullcalendar/fullcalendar.print.css" media="print">
 	<script type="text/javascript">
+		var myEventSources = [
+			{
+				label: 'Meals',
+				url: '/commonmeals/api.php',
+				color: '#006600',
+				className: 'commonmeals'
+			},
+			{
+				label: 'SLO Swing',
+				url: 'https://www.google.com/calendar/feeds/gflsystems.com_kav7dpb8rmcqf6eevbibibfpes%40group.calendar.google.com/public/basic',
+				color: '#550055',
+				currentTimezone: 'America/Los_Angeles'
+			}
+		];
+
 		$(function(){
 			$("#calendar").fullCalendar({
-				eventSources: [
-					{
-						url: '/commonmeals/api.php',
-						color: '#006600',
-						className: 'commonmeals'
-					},
-					{
-						url: 'https://www.google.com/calendar/feeds/gflsystems.com_kav7dpb8rmcqf6eevbibibfpes%40group.calendar.google.com/public/basic',
-						color: '#550055'
-					}
-				],
 				events: [
 					{
 						title: "Event 1",
@@ -64,12 +68,31 @@
 					return eventBox;
 				}*/
 			});
+
+			$(myEventSources).each(function(index) {
+				$("#calendar").fullCalendar('addEventSource', this);
+				var cbox = $('<input type="checkbox" checked="checked" id="source' + index + '">');
+				var theSource = this;
+				cbox.change(function() {
+					if ($(this).is(':checked'))
+						$("#calendar").fullCalendar('addEventSource', theSource);
+					else
+						$("#calendar").fullCalendar('removeEventSource', theSource);
+				});
+				var label = $('<label for="source' + index + '">' + this.label + '</label>');
+				$("#sources").append($('<span/>').append(cbox).append(label));
+			});
+			$("#refresh_link").click(function() {
+				$('#calendar').fullCalendar('refetchEvents');
+				return false;
+			});
 		});
 	</script>
 </head>
 
 <body>
-	<div id="loading">Loading...</div>
+	<div id="loading" style="position:absolute; top:1em; left:30%">Loading...</div>
+	<div id="sources"><a href="#" id="refresh_link">refresh</a></div>
 	<div id="calendar">
 
 	</div>
