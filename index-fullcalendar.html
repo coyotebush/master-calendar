@@ -34,8 +34,14 @@
 						color: "red"
 					}
 				],
+				header: {
+					left: 'today prev,next title',
+					center: '',
+					right: 'month,agendaWeek'
+				},
 				allDayDefault: false,
-				timeFormat: 'H:mm',
+				defaultEventMinutes: 60,
+				timeFormat: 'H:mm ',
 				loading: function(state) {
 					$("#loading").toggle(state);
 				},
