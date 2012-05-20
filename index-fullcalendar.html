@@ -10,7 +10,11 @@
 		$(function(){
 			$("#calendar").fullCalendar({
 				eventSources: [
-					'/commonmeals/api.php'
+					{
+						url: '/commonmeals/api.php',
+						color: '#006600',
+						className: 'commonmeals'
+					}
 				],
 				events: [
 					{
