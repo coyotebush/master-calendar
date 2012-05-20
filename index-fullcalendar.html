@@ -29,6 +29,11 @@
 				timeFormat: 'H:mm',
 				loading: function(state) {
 					$("#loading").toggle(state);
+				},
+				eventRender: function(event, element) {
+					if (event.menu) {
+						$('<div><pre>' + event.menu + '</pre></div>').appendTo($(element).children().first());
+					}
 				}
 				/*eventRender: function(event, element) {
 			 		var eventBox = $('<div/>');
