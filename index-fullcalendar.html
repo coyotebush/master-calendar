@@ -49,6 +49,12 @@
 				loading: function(state) {
 					$("#loading").toggle(state);
 				},
+				eventClick: function(event) {
+					if (event.url) {
+						window.open(event.url);
+						return false;
+					}
+				},
 				eventRender: function(event, element) {
 					if (event.menu) {
 						$('<div><pre>' + event.menu + '</pre></div>').appendTo($(element).children().first());
