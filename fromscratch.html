@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript">
+	/* <![CDATA[ */
+		var providers = [ { "name": "Meals", "link": "/commonmeals/api.php"} ];
+
+		var year, month;
+
+		function load_month(y, m) {
+			while (m < 1) { m += 12; y--; }
+			while (m > 12) { m -= 12; y++; }
+			year = y;
+			month = m;
+			alert (year + "/" + month);
+		}
+
+		function load_now() {
+			var now = new Date();
+			load_month(now.getFullYear(), now.getMonth());
+		}
+
+		function get_events(year, month, provider_id) {
+
+		}
+
+
+		$(function() {
+			$("#month-prev").click(function() { load_month(year, month - 1) });
+			$("#month-cur").click(function() { load_now(); });
+			$("#month-next").click(function() { load_month(year, month + 1) });
+			load_now();
+		});
+
+	/* ]]> */
+	</script>
+
+</head>
+
+<body>
+	<div id="nav">
+		<a href="#" id="month-prev">&lt;</a>
+		<a href="#" id="month-cur">now</a>
+		<a href="#" id="month-next">&gt;</a>
+	</div>
+	<div id="calendar">
+	</div>
+</body>
