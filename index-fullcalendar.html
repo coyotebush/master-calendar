@@ -9,6 +9,9 @@
 	<script type="text/javascript">
 		$(function(){
 			$("#calendar").fullCalendar({
+				eventSources: [
+					'/commonmeals/api.php'
+				],
 				events: [
 					{
 						title: "Event 1",
@@ -23,7 +26,11 @@
 					}
 				],
 				allDayDefault: false,
-				eventRender: function(event, element) {
+				timeFormat: 'H:mm',
+				loading: function(state) {
+					$("#loading").toggle(state);
+				}
+				/*eventRender: function(event, element) {
 			 		var eventBox = $('<div/>');
 					var eventTimes = event.start.getHours() + ':' + event.start.getMinutes();
 					if (event.end)
@@ -35,13 +42,14 @@
 					eventDesc.appendTo(eventBox);
 					//$("<p>Test" + event.color + "</p>").appendTo(element);
 					return eventBox;
-				}
+				}*/
 			});
 		});
 	</script>
 </head>
 
 <body>
+	<div id="loading">Loading...</div>
 	<div id="calendar">
 
 	</div>
