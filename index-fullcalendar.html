@@ -80,7 +80,10 @@
 						$("#calendar").fullCalendar('removeEventSource', theSource);
 				});
 				var label = $('<label for="source' + index + '">' + this.label + '</label>');
-				$("#sources").append($('<span/>').append(cbox).append(label));
+
+				var toggler = $('<span/>').css('background-color', this.color).css('color', '#ffffff');
+				toggler.append(cbox).append(label);
+				$("#sources").append(toggler);
 			});
 			$("#refresh_link").click(function() {
 				$('#calendar').fullCalendar('refetchEvents');
@@ -91,8 +94,11 @@
 </head>
 
 <body>
-	<div id="loading" style="position:absolute; top:1em; left:30%">Loading...</div>
-	<div id="sources"><a href="#" id="refresh_link">refresh</a></div>
+	<div>
+		<span><a href="#" id="refresh_link">refresh</a></span>
+		<span id="sources"></span>
+		<span id="loading">Loading...</span>
+	</div>
 	<div id="calendar">
 
 	</div>
