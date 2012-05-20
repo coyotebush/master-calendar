@@ -59,6 +59,9 @@
 					if (event.menu) {
 						$('<div><pre>' + event.menu + '</pre></div>').appendTo($(element).children().first());
 					}
+				},
+				dayClick: function(date, allDay, jsEvent, view) {
+					$("#create_menu").show('fast').css('top', jsEvent.pageY).css('left', jsEvent.pageX);
 				}
 				/*eventRender: function(event, element) {
 			 		var eventBox = $('<div/>');
@@ -75,6 +78,10 @@
 				}*/
 			});
 
+			$('#create_menu_close').click(function() {
+				$(this).parent().hide();
+				return false;
+			});
 			$(myEventSources).each(function(index) {
 				$("#calendar").fullCalendar('addEventSource', this);
 				var cbox = $('<input type="checkbox" checked="checked" id="source' + index + '">');
@@ -107,6 +114,14 @@
 	</div>
 	<div id="calendar">
 
+	</div>
+	<div id="create_menu" style="display:none;position:absolute;background:white;z-index:10">
+		Create a new:
+		<ul>
+			<li>Thing 1</li>
+			<li>Thing 2</li>
+		</ul>
+		<a href="#" id="create_menu_close">close</a>
 	</div>
 </body>
 </html>
