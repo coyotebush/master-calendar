@@ -2,11 +2,13 @@
 
 <html>
 <head>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="fullcalendar/fullcalendar.js"></script>
 	<script type='text/javascript' src='fullcalendar/gcal.js'></script>
 	<link rel="stylesheet" type="text/css" href="fullcalendar/fullcalendar.css">
 	<link rel="stylesheet" type="text/css" href="fullcalendar/fullcalendar.print.css" media="print">
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/cupertino/jquery-ui.css">
 	<script type="text/javascript">
 		var myEventSources = [
 			{
@@ -43,6 +45,7 @@
 					center: '',
 					right: 'month,agendaWeek'
 				},
+				theme: true,
 				allDayDefault: false,
 				defaultEventMinutes: 60,
 				timeFormat: 'H:mm ',
@@ -96,9 +99,10 @@
 
 				var toggler = $('<span/>').css('background-color', this.color).css('color', '#ffffff');
 				toggler.append(cbox).append(label);
+				cbox.button();
 				$("#sources").append(toggler);
 			});
-			$("#refresh_link").click(function() {
+			$("#refresh_link").button().click(function() {
 				$('#calendar').fullCalendar('refetchEvents');
 				return false;
 			});
@@ -108,7 +112,7 @@
 
 <body>
 	<div>
-		<span><a href="#" id="refresh_link">refresh</a></span>
+		<span><button id="refresh_link">refresh</button></span>
 		<span id="sources"></span>
 		<span id="loading">Loading...</span>
 	</div>
