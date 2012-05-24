@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="fullcalendar/fullcalendar.js"></script>
+	<script type='text/javascript' src='fullcalendar/gcal.js'></script>
+	<link rel="stylesheet" type="text/css" href="fullcalendar/fullcalendar.css">
+	<link rel="stylesheet" type="text/css" href="fullcalendar/fullcalendar.print.css" media="print">
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/cupertino/jquery-ui.css">
+	<script type="text/javascript" src="calendar-sources.js"></script>
+	<script type="text/javascript" src="calendar.js"></script>
+</head>
+
+<body>
+	<div>
+		<span><button id="refresh_link">refresh</button></span>
+		<span id="sources"></span>
+		<span id="loading">Loading...</span>
+	</div>
+	<div id="calendar">
+
+	</div>
+	<div id="create_menu" style="display:none;position:absolute;background:white;z-index:10">
+		Create a new:
+		<ul>
+			<li>Thing 1</li>
+			<li>Thing 2</li>
+		</ul>
+		<a href="#" id="create_menu_close">close</a>
+	</div>
+</body>
+</html>
+
