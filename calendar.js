@@ -35,21 +35,26 @@ $(function(){
 		return false;
 	});
 	$(myEventSources).each(function(index) {
-		$("#calendar").fullCalendar('addEventSource', this);
-		var cbox = $('<input type="checkbox" checked="checked" id="source' + index + '">');
 		var theSource = this;
-		cbox.change(function() {
-			if ($(this).is(':checked'))
-				$("#calendar").fullCalendar('addEventSource', theSource);
-			else
-				$("#calendar").fullCalendar('removeEventSource', theSource);
-		});
-		var label = $('<label for="source' + index + '">' + this.label + '</label>');
+		cal.fullCalendar('addEventSource', this);
 
-		var toggler = $('<span/>').css('background-color', this.color).css('color', '#ffffff');
-		toggler.append(cbox).append(label);
-		cbox.button();
-		$("#sources").append(toggler);
+		$("#sources").append(
+			$('<span/>')
+				.css('background-color', theSource.color)
+				.css('color', '#ffffff')
+				.append(
+					$('<input type="checkbox" checked="checked" id="source' + index + '">')
+						.change(function() {
+							cal.fullCalendar($(this).is(':checked')
+								? 'addEventSource'
+								: 'removeEventSource',
+								theSource);
+						})
+				)
+				.append(
+					$('<label for="source' + index + '">' + theSource.label + '</label>')
+				)
+		);
 	});
 	$("#refresh_link").button().click(function() {
 		$('#calendar').fullCalendar('refetchEvents');
