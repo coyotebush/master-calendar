@@ -1,18 +1,7 @@
 $(function(){
-	$("#calendar").fullCalendar({
-		events: [
-			{
-				title: "Event 1",
-				start: "2012-05-15 18:00:00",
-				end: "2012-05-15 18:45:00",
-			},
-			{
-				title: "Jazz Night Concert",
-				start: "2012-05-19 20:00:00",
-				end: "2012-05-15 22:00:00",
-				color: "red"
-			}
-		],
+	var cal = $("#calendar");
+
+	cal.fullCalendar({
 		header: {
 			left: 'today prev,next title',
 			center: '',
@@ -39,19 +28,6 @@ $(function(){
 		dayClick: function(date, allDay, jsEvent, view) {
 			$("#create_menu").show('fast').css('top', jsEvent.pageY).css('left', jsEvent.pageX);
 		}
-		/*eventRender: function(event, element) {
-			var eventBox = $('<div/>');
-			var eventTimes = event.start.getHours() + ':' + event.start.getMinutes();
-			if (event.end)
-				eventTimes += '&ndash;' + event.end.getHours() + ':' + event.end.getMinutes()
-			$('<div>' + eventTimes + '</div>').appendTo(eventBox);
-			var eventDesc = $('<div>' + event.title + '</div>');
-			if (event.color !== undefined)
-				$('<span> (' + event.color + ')</span>').appendTo(eventDesc);
-			eventDesc.appendTo(eventBox);
-			//$("<p>Test" + event.color + "</p>").appendTo(element);
-			return eventBox;
-		}*/
 	});
 
 	$('#create_menu_close').click(function() {
