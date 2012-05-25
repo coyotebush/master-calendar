@@ -38,26 +38,25 @@ $(function(){
 		return false;
 	});
 	$(myEventSources).each(function(index) {
-		var theSource = this;
 		cal.fullCalendar('addEventSource', this);
 
 		$("#sources").append(
 			$('<span/>')
-				.css('background-color', theSource.color)
+				.css('background-color', this.color)
 				.css('color', '#ffffff')
 				.append(
 					$('<input type="checkbox" checked="checked" id="source' + index + '">')
-						.change(function() {
-							cal.fullCalendar($(this).is(':checked')
-								? 'addEventSource'
-								: 'removeEventSource',
-								theSource);
-						})
+						.data('source', this)
 				)
 				.append(
-					$('<label for="source' + index + '">' + theSource.label + '</label>')
+					$('<label for="source' + index + '">' + this.label + '</label>')
 				)
 		);
+	});
+	$('#sources').on('change', 'input:checkbox', function() {
+		cal.fullCalendar($(this).is(':checked')
+			? 'addEventSource' : 'removeEventSource',
+			$(this.data('source')));
 	});
 	$("#refresh_link").button().click(function() {
 		$('#calendar').fullCalendar('refetchEvents');
