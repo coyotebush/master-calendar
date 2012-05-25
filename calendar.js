@@ -11,6 +11,7 @@ $(function(){
 		allDayDefault: false,
 		defaultEventMinutes: 60,
 		timeFormat: 'H:mm ',
+		defaultView: $.bbq.getState('view') || 'month',
 		loading: function(state) {
 			$("#loading").toggle(state);
 		},
