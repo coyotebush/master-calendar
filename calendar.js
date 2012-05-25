@@ -27,6 +27,9 @@ $(function(){
 		},
 		dayClick: function(date, allDay, jsEvent, view) {
 			$("#create_menu").show('fast').css('top', jsEvent.pageY).css('left', jsEvent.pageX);
+		},
+		viewDisplay: function(view) {
+			$.bbq.pushState({view: view.name, date: view.start.getTime()});
 		}
 	});
 
