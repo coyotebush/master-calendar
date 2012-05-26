@@ -5,16 +5,15 @@ $(function(){
 
 	var startHash = location.hash.slice(1).split('/');
 	var startView = startHash[0] || defaultView.view;
-	var startDate = new Date(+startHash[1] || Date.now());
+	var startDate = new Date(3600000 * startHash[1] || Date.now());
 
 	// Hash format: [view[/date]]
 	var setHash = function(viewObj) {
 		var hash = '#';
 		if (Date.now() < viewObj.start || Date.now() > viewObj.end)
-			hash += viewObj.name + '/' + viewObj.start.getTime();
+			hash += viewObj.name + '/' + viewObj.start.getTime()/3600000;
 		else if (viewObj.name != defaultView)
 			hash += viewObj.name;
-		console.log(hash);
 		location.replace(hash);
 	};
 
