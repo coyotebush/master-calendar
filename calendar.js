@@ -1,5 +1,9 @@
 $(function(){
 	var cal = $("#calendar");
+	var defaultView = { view: 'month', date: Date.now() };
+
+	var startViewType = $.bbq.getState('view') || defaultView.view;
+	var startViewDate = new Date(+$.bbq.getState('date') || Date.now());
 
 	cal.fullCalendar({
 		header: {
@@ -11,7 +15,11 @@ $(function(){
 		allDayDefault: false,
 		defaultEventMinutes: 60,
 		timeFormat: 'H:mm ',
-		defaultView: $.bbq.getState('view') || 'month',
+		defaultView: startViewType,
+		year: startViewDate.getFullYear(),
+		month: startViewDate.getMonth(),
+		date: startViewDate.getDate(),
+
 		loading: function(state) {
 			$("#loading").toggle(state);
 		},
