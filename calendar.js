@@ -72,10 +72,9 @@ $(function(){
 	$(window).on('hashchange', function() {
 		console.log('--- hashchange');
 		var oldView = cal.data('savedView');
-		var date = $.bbq.getState('date');
+		var date = +$.bbq.getState('date');
 
 		console.log(date);
-		console.log(oldView);
 		if (oldView)
 			console.log(oldView.start.getTime());
 
@@ -84,7 +83,7 @@ $(function(){
 				// this state differs from that saved in the viewDisplay
 				// handler, so we're not being triggered from there.
 				console.log('set');
-				cal.fullCalendar('gotoDate', new Date(date + 15 * 24 * 60 * 60 * 1000));
+				cal.fullCalendar('gotoDate', new Date(date));
 			}
 			else
 				console.log('nada');
