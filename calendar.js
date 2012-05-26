@@ -8,6 +8,8 @@ $(function(){
 			right: 'month,agendaWeek'
 		},
 		theme: true,
+		selectable: true,
+		unselectCancel: '#create_menu',
 		allDayDefault: false,
 		defaultEventMinutes: 60,
 		timeFormat: 'H:mm ',
@@ -25,14 +27,16 @@ $(function(){
 				$('<div><pre>' + event.menu + '</pre></div>').appendTo($(element).children().first());
 			}
 		},
-		dayClick: function(date, allDay, jsEvent, view) {
+		select: function(startDate, endDate, allDay, jsEvent, view) {
 			$("#create_menu").show('fast').css('top', jsEvent.pageY).css('left', jsEvent.pageX);
+		},
+		unselect: function() {
+			$('#create_menu').hide('fast');
 		}
 	});
 
 	$('#create_menu_close').click(function() {
-		$(this).parent().hide();
-		return false;
+		cal.fullCalendar('unselect');
 	});
 	$(myEventSources).each(function(index) {
 		var theSource = this;
