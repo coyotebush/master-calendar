@@ -1,9 +1,9 @@
 $(function(){
 	var cal = $("#calendar");
-	var defaultView = { view: 'month', date: Date.now() };
 
-	var startViewType = $.bbq.getState('view') || defaultView.view;
-	var startViewDate = new Date(+$.bbq.getState('date') || Date.now());
+	var defaultView = 'month';
+	var startView = $.bbq.getState('view') || defaultView.view;
+	var startDate = new Date(+$.bbq.getState('date') || Date.now());
 
 	cal.fullCalendar({
 		header: {
@@ -15,10 +15,10 @@ $(function(){
 		allDayDefault: false,
 		defaultEventMinutes: 60,
 		timeFormat: 'H:mm ',
-		defaultView: startViewType,
-		year: startViewDate.getFullYear(),
-		month: startViewDate.getMonth(),
-		date: startViewDate.getDate(),
+		defaultView: startView,
+		year: startDate.getFullYear(),
+		month: startDate.getMonth(),
+		date: startDate.getDate(),
 
 		loading: function(state) {
 			$("#loading").toggle(state);
@@ -37,11 +37,11 @@ $(function(){
 		dayClick: function(date, allDay, jsEvent, view) {
 			$("#create_menu").show('fast').css('top', jsEvent.pageY).css('left', jsEvent.pageX);
 		},
-		viewDisplay: function(view) {
+		viewDisplay: function(viewObj) {
 			if (cal.data('loaded')) {
-				console.log('viewDisplay: ' + view.start.getTime());
-				cal.data('savedView', view);
-				$.bbq.pushState({view: view.name, date: view.start.getTime()});
+				console.log('viewDisplay: ' + viewObj.start.getTime());
+				cal.data('savedView', viewObj);
+				$.bbq.pushState({view: viewObj.name, date: viewObj.start.getTime()});
 			}
 			else
 				cal.data('loaded', 1);
@@ -79,18 +79,23 @@ $(function(){
 	});
 	$(window).on('hashchange', function() {
 		console.log('--- hashchange');
-		var oldView = cal.data('savedView');
+		var oldViewObj = cal.data('savedView');
 		var date = +$.bbq.getState('date');
+		var view = $.bbq.getState('view');
 
 		console.log(date);
-		if (oldView)
-			console.log(oldView.start.getTime());
+		if (oldViewObj)
+			console.log(oldViewObj.start.getTime());
+		console.log(view);
 
-		if (date) {
-			if (!(oldView && date == oldView.start.getTime())) {
+		if (date && view) {
+			if (!(oldViewObj
+					&& date == oldViewObj.start.getTime()
+					&& view == oldViewObj.name)) {
 				// this state differs from that saved in the viewDisplay
 				// handler, so we're not being triggered from there.
 				console.log('set');
+				cal.fullCalendar('changeView', view);
 				cal.fullCalendar('gotoDate', new Date(date));
 			}
 			else
@@ -100,6 +105,7 @@ $(function(){
 			// the hash was probably cleared, almost certainly due to a
 			// browser action rather than calendar navigation controls
 			console.log('reset');
+			cal.fullCalendar('changeView', defaultView);
 			cal.fullCalendar('today');
 		}
 		//cal.data('savedView', date);
