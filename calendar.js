@@ -76,7 +76,7 @@ $(function(){
 	$('#sources').on('change', 'input:checkbox', function() {
 		cal.fullCalendar($(this).is(':checked')
 			? 'addEventSource' : 'removeEventSource',
-			$(this.data('source')));
+			$(this).data('source'));
 	});
 	$("#refresh_link").button().click(function() {
 		$('#calendar').fullCalendar('refetchEvents');
