@@ -2,8 +2,21 @@ $(function(){
 	var cal = $("#calendar");
 
 	var defaultView = 'month';
-	var startView = $.bbq.getState('view') || defaultView.view;
-	var startDate = new Date(+$.bbq.getState('date') || Date.now());
+
+	var startHash = location.hash.slice(1).split('/');
+	var startView = startHash[0] || defaultView.view;
+	var startDate = new Date(+startHash[1] || Date.now());
+
+	// Hash format: [view[/date]]
+	var setHash = function(viewObj) {
+		var hash = '#';
+		if (Date.now() < viewObj.start || Date.now() > viewObj.end)
+			hash += viewObj.name + '/' + viewObj.start.getTime();
+		else if (viewObj.name != defaultView)
+			hash += viewObj.name;
+		console.log(hash);
+		location.replace(hash);
+	};
 
 	cal.fullCalendar({
 		header: {
@@ -37,15 +50,7 @@ $(function(){
 		dayClick: function(date, allDay, jsEvent, view) {
 			$("#create_menu").show('fast').css('top', jsEvent.pageY).css('left', jsEvent.pageX);
 		},
-		viewDisplay: function(viewObj) {
-			if (cal.data('loaded')) {
-				console.log('viewDisplay: ' + viewObj.start.getTime());
-				cal.data('savedView', viewObj);
-				$.bbq.pushState({view: viewObj.name, date: viewObj.start.getTime()});
-			}
-			else
-				cal.data('loaded', 1);
-		}
+		viewDisplay: setHash
 	});
 
 	$('#create_menu_close').click(function() {
@@ -77,38 +82,5 @@ $(function(){
 		$('#calendar').fullCalendar('refetchEvents');
 		return false;
 	});
-	$(window).on('hashchange', function() {
-		console.log('--- hashchange');
-		var oldViewObj = cal.data('savedView');
-		var date = +$.bbq.getState('date');
-		var view = $.bbq.getState('view');
-
-		console.log(date);
-		if (oldViewObj)
-			console.log(oldViewObj.start.getTime());
-		console.log(view);
-
-		if (date && view) {
-			if (!(oldViewObj
-					&& date == oldViewObj.start.getTime()
-					&& view == oldViewObj.name)) {
-				// this state differs from that saved in the viewDisplay
-				// handler, so we're not being triggered from there.
-				console.log('set');
-				cal.fullCalendar('changeView', view);
-				cal.fullCalendar('gotoDate', new Date(date));
-			}
-			else
-				console.log('nada');
-		}
-		else {
-			// the hash was probably cleared, almost certainly due to a
-			// browser action rather than calendar navigation controls
-			console.log('reset');
-			cal.fullCalendar('changeView', defaultView);
-			cal.fullCalendar('today');
-		}
-		//cal.data('savedView', date);
-	});//.trigger('hashchange');
 });
 
