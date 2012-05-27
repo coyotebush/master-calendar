@@ -64,7 +64,7 @@ $(function(){
 		cal.fullCalendar('addEventSource', this);
 
 		$("#sources").append(
-			$('<span/>')
+			$('<div/>')
 				.css('background-color', this.color)
 				.css('color', '#ffffff')
 				.append(
@@ -85,5 +85,12 @@ $(function(){
 		$('#calendar').fullCalendar('refetchEvents');
 		return false;
 	});
+	$(window).resize(function() {
+		if (cal.fullCalendar('getView').name.indexOf('agenda') != -1) {
+			console.log('resizing calendar');
+			cal.fullCalendar('option', 'height',
+				cal.prop('clientHeight'));
+		}
+	}).resize();
 });
 

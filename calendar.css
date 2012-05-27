@@ -1,0 +1,22 @@
+#create_menu {
+	display:none;
+	position:absolute;
+	background:white;
+	z-index:20;
+}
+
+#options {
+	position:absolute;
+	left:0;
+	top:0;
+	width:10em;
+}
+
+#calendar {
+	position:absolute;
+	top:0;
+	bottom:0;
+	left:10em;
+	right:0;
+}
+
