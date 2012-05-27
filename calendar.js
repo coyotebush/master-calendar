@@ -17,6 +17,16 @@ $(function(){
 		location.replace(hash);
 	};
 
+	var resizeCalendar = function() {
+		if (cal.fullCalendar('getView').name.indexOf('agenda') != -1) {
+			cal.fullCalendar('option', 'height',
+				cal.prop('clientHeight'));
+		} else {
+			cal.fullCalendar('option', 'height', 0);
+			cal.fullCalendar('option', 'aspectRatio', 1.35);
+		}
+	};
+
 	cal.fullCalendar({
 		header: {
 			left: 'today prev,next title',
@@ -56,7 +66,7 @@ $(function(){
 		},
 		viewDisplay: function(viewObj) {
 			setHash(viewObj);
-			$(window).resize();
+			resizeCalendar();
 		}
 	});
 
@@ -88,14 +98,7 @@ $(function(){
 		$('#calendar').fullCalendar('refetchEvents');
 		return false;
 	});
-	$(window).resize(function() {
-		if (cal.fullCalendar('getView').name.indexOf('agenda') != -1) {
-			cal.fullCalendar('option', 'height',
-				cal.prop('clientHeight'));
-		} else {
-			cal.fullCalendar('option', 'height', 0);
-			cal.fullCalendar('option', 'aspectRatio', 1.35);
-		}
-	}).resize();
+	$(window).resize(resizeCalendar);
+	resizeCalendar();
 });
 
