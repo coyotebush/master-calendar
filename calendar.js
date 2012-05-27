@@ -1,5 +1,5 @@
 $(function(){
-	var cal = $("#calendar");
+	var cal = $('#calendar');
 
 	var defaultView = 'month';
 
@@ -45,7 +45,7 @@ $(function(){
 		date: startDate.getDate(),
 
 		loading: function(state) {
-			$("#loading").toggle(state);
+			$('#loading').toggle(state);
 		},
 		eventClick: function(event) {
 			if (event.url) {
@@ -59,7 +59,7 @@ $(function(){
 			}
 		},
 		select: function(startDate, endDate, allDay, jsEvent, view) {
-			$("#create_menu").show('fast').css('top', jsEvent.pageY).css('left', jsEvent.pageX);
+			$('#create_menu').show('fast').css('top', jsEvent.pageY).css('left', jsEvent.pageX);
 		},
 		unselect: function() {
 			$('#create_menu').hide('fast');
@@ -71,7 +71,7 @@ $(function(){
 	});
 
 	$(myEventSources).each(function(index) {
-		$("#sources").append(
+		$('#sources').append(
 			$('<div/>')
 				.css('background-color', this.color)
 				.css('color', '#ffffff')
@@ -94,7 +94,7 @@ $(function(){
 	$('#create_menu_close').click(function() {
 		cal.fullCalendar('unselect');
 	});
-	$("#refresh").button().click(function() {
+	$('#refresh').button().click(function() {
 		cal.fullCalendar('refetchEvents');
 	});
 	$(window).resize(resizeCalendar);
