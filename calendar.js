@@ -1,6 +1,22 @@
 $(function(){
 	var cal = $("#calendar");
 
+	var defaultView = 'month';
+
+	var startHash = location.hash.slice(1).split('/');
+	var startView = startHash[0] || defaultView.view;
+	var startDate = new Date(3600000 * startHash[1] || Date.now());
+
+	// Hash format: [view[/date]]
+	var setHash = function(viewObj) {
+		var hash = '#';
+		if (Date.now() < viewObj.start || Date.now() > viewObj.end)
+			hash += viewObj.name + '/' + viewObj.start.getTime()/3600000;
+		else if (viewObj.name != defaultView)
+			hash += viewObj.name;
+		location.replace(hash);
+	};
+
 	cal.fullCalendar({
 		header: {
 			left: 'today prev,next title',
@@ -13,6 +29,11 @@ $(function(){
 		allDayDefault: false,
 		defaultEventMinutes: 60,
 		timeFormat: 'H:mm ',
+		defaultView: startView,
+		year: startDate.getFullYear(),
+		month: startDate.getMonth(),
+		date: startDate.getDate(),
+
 		loading: function(state) {
 			$("#loading").toggle(state);
 		},
@@ -32,33 +53,33 @@ $(function(){
 		},
 		unselect: function() {
 			$('#create_menu').hide('fast');
-		}
+		},
+		viewDisplay: setHash
 	});
 
 	$('#create_menu_close').click(function() {
 		cal.fullCalendar('unselect');
 	});
 	$(myEventSources).each(function(index) {
-		var theSource = this;
 		cal.fullCalendar('addEventSource', this);
 
 		$("#sources").append(
 			$('<span/>')
-				.css('background-color', theSource.color)
+				.css('background-color', this.color)
 				.css('color', '#ffffff')
 				.append(
 					$('<input type="checkbox" checked="checked" id="source' + index + '">')
-						.change(function() {
-							cal.fullCalendar($(this).is(':checked')
-								? 'addEventSource'
-								: 'removeEventSource',
-								theSource);
-						})
+						.data('source', this)
 				)
 				.append(
-					$('<label for="source' + index + '">' + theSource.label + '</label>')
+					$('<label for="source' + index + '">' + this.label + '</label>')
 				)
 		);
+	});
+	$('#sources').on('change', 'input:checkbox', function() {
+		cal.fullCalendar($(this).is(':checked')
+			? 'addEventSource' : 'removeEventSource',
+			$(this).data('source'));
 	});
 	$("#refresh_link").button().click(function() {
 		$('#calendar').fullCalendar('refetchEvents');
