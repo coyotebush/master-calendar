@@ -70,9 +70,6 @@ $(function(){
 		}
 	});
 
-	$('#create_menu_close').click(function() {
-		cal.fullCalendar('unselect');
-	});
 	$(myEventSources).each(function(index) {
 		$("#sources").append(
 			$('<div/>')
@@ -94,9 +91,11 @@ $(function(){
 				)
 		);
 	});
-	$("#refresh_link").button().click(function() {
-		$('#calendar').fullCalendar('refetchEvents');
-		return false;
+	$('#create_menu_close').click(function() {
+		cal.fullCalendar('unselect');
+	});
+	$("#refresh").button().click(function() {
+		cal.fullCalendar('refetchEvents');
 	});
 	$(window).resize(resizeCalendar);
 	resizeCalendar();
