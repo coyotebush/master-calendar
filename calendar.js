@@ -54,7 +54,10 @@ $(function(){
 		unselect: function() {
 			$('#create_menu').hide('fast');
 		},
-		viewDisplay: setHash
+		viewDisplay: function(viewObj) {
+			setHash(viewObj);
+			$(window).resize();
+		}
 	});
 
 	$('#create_menu_close').click(function() {
@@ -87,9 +90,11 @@ $(function(){
 	});
 	$(window).resize(function() {
 		if (cal.fullCalendar('getView').name.indexOf('agenda') != -1) {
-			console.log('resizing calendar');
 			cal.fullCalendar('option', 'height',
 				cal.prop('clientHeight'));
+		} else {
+			cal.fullCalendar('option', 'height', 0);
+			cal.fullCalendar('option', 'aspectRatio', 1.35);
 		}
 	}).resize();
 });
