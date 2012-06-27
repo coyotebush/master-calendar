@@ -37,7 +37,7 @@ $(function(){
 		selectable: true,
 		unselectCancel: '#create_menu',
 		allDayDefault: false,
-		defaultEventMinutes: 60,
+		defaultEventMinutes: 120,
 		timeFormat: 'H:mm ',
 		defaultView: startView,
 		year: startDate.getFullYear(),
