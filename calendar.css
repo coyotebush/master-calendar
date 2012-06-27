@@ -22,3 +22,7 @@
 	margin:10px;
 }
 
+pre {
+	white-space: pre-wrap;
+}
+
