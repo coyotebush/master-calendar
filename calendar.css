@@ -10,16 +10,21 @@
 	position:absolute;
 	left:0;
 	top:0;
-	width:10em;
+	width:130px;
+	padding:10px 0 10px 10px;
+}
+
+#sources {
+	padding:10px 0;
 }
 
 #calendar {
 	position:absolute;
 	top:0;
 	bottom:0;
-	left:10em;
+	left:140px;
 	right:0;
-	margin:10px;
+	padding:10px;
 }
 
 pre {
