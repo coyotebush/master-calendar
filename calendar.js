@@ -72,7 +72,7 @@ $(function(){
 
 	$(myEventSources).each(function(index) {
 		$('#sources').append(
-			$('<div/>')
+			$('<div class="ui-widget"/>')
 				.css('background-color', this.color)
 				.css('color', '#ffffff')
 				.append(

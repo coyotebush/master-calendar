@@ -18,6 +18,11 @@
 	padding:10px 0;
 }
 
+#sources div {
+	padding:2px 0;
+	margin:2px 0;
+}
+
 #calendar {
 	position:absolute;
 	top:0;
