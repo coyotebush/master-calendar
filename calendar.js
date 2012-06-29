@@ -71,6 +71,12 @@ $(function(){
 	});
 
 	$(myEventSources).each(function(index) {
+		if (this.api)
+			if (typeof this.api.events == 'object')
+				$.extend(this, this.api.events);
+			else
+				this.url = this.api.events;
+
 		$('#sources').append(
 			$('<li class="ui-widget"/>')
 				.css('background-color', this.color)

@@ -1,8 +1,15 @@
 var myEventSources = [
 {
 	name: 'Meals',
-	url: '/commonmeals/api.php?events',
-	infoUrl: '/commonmeals/api.php?info',
+	api: {
+		events: '/commonmeals/api.php?events',
+		menu:   '/commonmeals/api.php?info',
+		create: {
+			url: '/commonmeals/api.php?new',
+			startParam: 'time',
+			endParam: 'ignore'
+		}
+	},
 	color: '#006600',
 },
 {
