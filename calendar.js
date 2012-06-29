@@ -5,13 +5,14 @@ $(function(){
 
 	var startHash = location.hash.slice(1).split('/');
 	var startView = startHash[0] || defaultView.view;
-	var startDate = new Date(3600000 * startHash[1] || Date.now());
+	var startDate = startHash[1] && $.fullCalendar.parseISO8601(startHash[1], true)
+		|| new Date();
 
 	// Hash format: [view[/date]]
 	var setHash = function(viewObj) {
 		var hash = '#';
 		if (Date.now() < viewObj.start || Date.now() > viewObj.end)
-			hash += viewObj.name + '/' + viewObj.start.getTime()/3600000;
+			hash += viewObj.name + '/' + $.fullCalendar.formatDate(viewObj.start, 'yyyy-MM-dd');
 		else if (viewObj.name != defaultView)
 			hash += viewObj.name;
 		location.replace(hash);
