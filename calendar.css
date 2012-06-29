@@ -15,10 +15,11 @@
 }
 
 #sources {
-	padding:10px 0;
+	margin:10px 0;
+	padding:0;
 }
 
-#sources div {
+#sources li {
 	padding:2px 0;
 	margin:2px 0;
 }
