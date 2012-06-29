@@ -87,7 +87,7 @@ $(function(){
 						.change()
 				)
 				.append(
-					$('<label for="source' + index + '">' + this.label + '</label>')
+					$('<label for="source' + index + '">' + this.name + '</label>')
 				)
 		);
 	});
