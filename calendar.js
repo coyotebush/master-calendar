@@ -35,7 +35,7 @@ $(function(){
 		},
 		theme: true,
 		selectable: true,
-		unselectCancel: '#create_menu',
+		unselectCancel: '#create-popup',
 		allDayDefault: false,
 		defaultEventMinutes: 120,
 		timeFormat: 'H:mm ',
@@ -59,10 +59,19 @@ $(function(){
 			}
 		},
 		select: function(startDate, endDate, allDay, jsEvent, view) {
-			$('#create_menu').show('fast').css('top', jsEvent.pageY).css('left', jsEvent.pageX);
+			$('#create-menu a').attr('href', function() {
+				var api = $(this).data('api');
+				var url = api.url || api;
+				url += url.indexOf('?') > -1 ? '&' : '?';
+				url +=     (api.startParam || 'start') + '=' + startDate.getTime();
+				url += '&' + (api.endParam || 'end'  ) + '=' + endDate.getTime();
+				console.debug(url);
+				return url;
+			});
+			$('#create-popup').show().css('top', jsEvent.pageY).css('left', jsEvent.pageX);
 		},
 		unselect: function() {
-			$('#create_menu').hide('fast');
+			$('#create-popup').hide();
 		},
 		viewDisplay: function(viewObj) {
 			setHash(viewObj);
@@ -71,11 +80,20 @@ $(function(){
 	});
 
 	$(myEventSources).each(function(index) {
-		if (this.api)
+		if (this.api) {
 			if (typeof this.api.events == 'object')
 				$.extend(this, this.api.events);
 			else
 				this.url = this.api.events;
+
+			if (this.api.create)
+				$('#create-menu').append(
+					$('<li/>').append(
+						$('<a>' + this.name + '</a>')
+							.data('api', this.api.create)
+					)
+				);
+		}
 
 		$('#sources').append(
 			$('<li class="ui-widget"/>')
@@ -97,7 +115,7 @@ $(function(){
 				)
 		);
 	});
-	$('#create_menu_close').click(function() {
+	$('#create-popup-close').click(function() {
 		cal.fullCalendar('unselect');
 	});
 	$('#refresh').button().click(function() {
