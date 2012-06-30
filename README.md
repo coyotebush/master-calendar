@@ -6,12 +6,12 @@ and [FullCalendar](http://arshaw.com/fullcalendar/).
 Current features:
 
 - user togglable list of event sources
+- support creation of events in the sources
 - week/day agenda views that fit to window height
 - view saved in URL hash for reload/back
 
 Future goals:
 
-- support creation of events in the sources
 - allow sources to customize event display
 - allow sources to provide general menu options
 - good mobile device support
