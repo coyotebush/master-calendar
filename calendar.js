@@ -70,7 +70,12 @@ $(function(){
 				url += $.param(params);
 				return url;
 			});
-			$('#create-popup').show().css('top', jsEvent.pageY - 5).css('left', jsEvent.pageX - 5);
+			$('#create-popup').show()
+				.position({
+					of: jsEvent,
+					my: 'left top',
+					offset: '-5'
+				});
 		},
 		unselect: function() {
 			$('#create-popup').hide();
