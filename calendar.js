@@ -56,7 +56,7 @@ $(function(){
 		},
 		eventRender: function(event, element) {
 			if (event.body) {
-				$.jqml(event.body).appendTo($(element).children().first().append('<div/>'));
+				$.jqml(event.body).appendTo($('<div/>').appendTo($(element).children().first()));
 			}
 		},
 		select: function(startDate, endDate, allDay, jsEvent, view) {
