@@ -113,19 +113,19 @@ $(function(){
 				.css('background-color', this.color)
 				.css('color', '#ffffff')
 				.append(
-					$('<input type="checkbox" checked="checked" id="source' + index + '">')
-						.data('source', this)
-						.change(function() {
-							cal.fullCalendar($(this).is(':checked')
-								? 'addEventSource' : 'removeEventSource',
-								$(this).data('source'));
-						})
-						.prop('checked', this.defaultEnable !== false)
-						.change()
-				)
-				.append(
 					$('<label for="source' + index + '">' + this.name + '</label>')
-				)
+						.prepend(
+							$('<input type="checkbox" checked="checked" id="source' + index + '">')
+								.data('source', this)
+								.change(function() {
+									cal.fullCalendar($(this).is(':checked')
+										? 'addEventSource' : 'removeEventSource',
+										$(this).data('source'));
+								})
+								.prop('checked', this.defaultEnable !== false)
+								.change()
+						)
+					)
 		);
 	});
 	$('#create-popup-close').button({ text: false, icons: { primary: 'ui-icon-closethick' } })
