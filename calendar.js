@@ -63,10 +63,11 @@ $(function(){
 			$('#create-menu a').attr('href', function() {
 				var api = $(this).data('api');
 				var url = api.url || api;
+				var params = {};
+				params[api.startParam || 'start'] = startDate.getTime();
+				params[api.endParam   || 'end'  ] = endDate.getTime();
 				url += url.indexOf('?') > -1 ? '&' : '?';
-				url +=     (api.startParam || 'start') + '=' + startDate.getTime();
-				url += '&' + (api.endParam || 'end'  ) + '=' + endDate.getTime();
-				console.debug(url);
+				url += $.param(params);
 				return url;
 			});
 			$('#create-popup').show().css('top', jsEvent.pageY).css('left', jsEvent.pageX);
