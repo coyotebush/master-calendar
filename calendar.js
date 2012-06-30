@@ -93,6 +93,12 @@ $(function(){
 					$('<li/>').append(
 						$('<a>' + this.name + '</a>')
 							.data('api', this.api.create)
+							.click(function() {
+								if (this.href) {
+									window.open(this.href);
+									return false;
+								}
+							})
 					)
 				);
 		}
