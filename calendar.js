@@ -133,6 +133,10 @@ $(function(){
 	$('#refresh').button().click(function() {
 		cal.fullCalendar('refetchEvents');
 	});
+	$(document).keydown(function(e) {
+		if (e.which == 27)
+			cal.fullCalendar('unselect');
+	});
 	$(window).resize(resizeCalendar);
 	resizeCalendar();
 });
