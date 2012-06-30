@@ -30,9 +30,10 @@ body {
 }
 
 #sources label {
+	display: block;
 	margin: 2px 0;
 	padding: 2px 0;
-	display: block;
+	white-space: nowrap;
 }
 
 #create-popup {
