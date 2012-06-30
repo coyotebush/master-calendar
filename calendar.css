@@ -34,9 +34,25 @@ body {
 #create-popup {
 	display: none;
 	position: absolute;
+	width: 180px;
+	padding: 10px;
 	z-index: 20;
 	background: white;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+	box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+#create-popup h3 {
+	margin: 0;
+	text-align: left;
+	font-size: 1em;
+	color: #444;
+}
+
+#create-popup-close {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	font-size: 0.7em;
 }
 
 pre {
