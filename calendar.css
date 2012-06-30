@@ -24,6 +24,7 @@
 #sources li {
 	margin: 2px 0;
 	padding: 2px 0;
+	border-radius: 3px;
 }
 
 #create-popup {
