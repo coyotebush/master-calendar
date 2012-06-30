@@ -1,37 +1,37 @@
-#create-popup {
-	display:none;
-	position:absolute;
-	z-index:20;
-	background:white;
-	box-shadow:0 2px 4px rgba(0,0,0,0.2);
+#calendar {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 140px;
+	right: 0;
+	height: auto;
+	margin: 10px;
 }
 
 #options {
-	position:absolute;
-	left:0;
-	top:0;
-	width:130px;
-	padding:10px 0 10px 10px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 130px;
+	padding: 10px 0 10px 10px;
 }
 
 #sources {
-	margin:10px 0;
-	padding:0;
+	margin: 10px 0;
+	padding: 0;
 }
 
 #sources li {
-	padding:2px 0;
-	margin:2px 0;
+	margin: 2px 0;
+	padding: 2px 0;
 }
 
-#calendar {
-	position:absolute;
-	top:0;
-	bottom:0;
-	left:140px;
-	right:0;
-	height:auto;
-	margin:10px;
+#create-popup {
+	display: none;
+	position: absolute;
+	z-index: 20;
+	background: white;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 pre {
