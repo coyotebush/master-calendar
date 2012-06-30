@@ -1,7 +1,7 @@
 MasterCalendar
 ===
-A web application that displays data from several sources, built using jQuery
-and the [FullCalendar](http://arshaw.com/fullcalendar/) plugin.
+A web application that displays data from several sources, built with jQuery
+and [FullCalendar](http://arshaw.com/fullcalendar/).
 
 Current features:
 
