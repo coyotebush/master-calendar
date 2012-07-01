@@ -75,8 +75,9 @@ $(function(){
 					var api = $(this).data('api');
 					var url = api.url || api;
 					var params = {};
-					params[api.startParam || 'start'] = startDate.getTime();
-					params[api.endParam   || 'end'  ] = endDate.getTime();
+					params[api.startParam  || 'start' ] = startDate.getTime();
+					params[api.endParam    || 'end'   ] = endDate.getTime();
+					params[api.allDayParam || 'allday'] = allDay;
 					url += url.indexOf('?') > -1 ? '&' : '?';
 					url += $.param(params);
 					return url;
