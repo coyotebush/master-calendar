@@ -58,6 +58,9 @@ $(function(){
 			if (event.body) {
 				$.jqml(event.body).appendTo($('<div/>').appendTo($(element).children().first()));
 			}
+			if (event.participation) {
+				$(element).find('.fc-event-time').addClass('highlight-text');
+			}
 		},
 		select: function(startDate, endDate, allDay, jsEvent, view) {
 			$('#create-menu a').attr('href', function() {
