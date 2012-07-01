@@ -1,53 +1,17 @@
 $(function(){
 	var cal = $('#calendar');
 
-	var defaultView = 'month';
-
-	var startHash = location.hash.slice(1).split('/');
-	var startView = startHash[0] || defaultView;
-	var startDate =
-		startHash[1] && $.fullCalendar.parseISO8601(startHash[1], true)
-		|| new Date();
-
-	// Hash format: [view[/date]]
-	var setHash = function(viewObj) {
-		var hash = '#';
-		if (Date.now() < viewObj.start || Date.now() > viewObj.end) {
-			hash += viewObj.name + '/' +
-				$.fullCalendar.formatDate(viewObj.start, 'yyyy-MM-dd');
-		}
-		else if (viewObj.name != defaultView) {
-			hash += viewObj.name;
-		}
-		location.replace(hash);
-	};
-
-	var resizeCalendar = function() {
-		if (cal.fullCalendar('getView').name.indexOf('agenda') != -1) {
-			cal.fullCalendar('option', 'height',
-				cal.prop('clientHeight'));
-		} else {
-			cal.fullCalendar('option', 'height', 0);
-			cal.fullCalendar('option', 'aspectRatio', 1.35);
-		}
-	};
-
-	cal.fullCalendar({
+	// Initial options {{{
+	var calOptions = {
 		header: {
 			left: 'today prev,next title',
 			center: '',
 			right: 'month,agendaWeek'
 		},
 		theme: true,
-		selectable: true,
-		unselectCancel: '#create-popup',
 		allDayDefault: false,
 		defaultEventMinutes: 120,
 		timeFormat: 'H:mm ',
-		defaultView: startView,
-		year: startDate.getFullYear(),
-		month: startDate.getMonth(),
-		date: startDate.getDate(),
 
 		loading: function(state) {
 			$('#loading').toggle(state);
@@ -68,7 +32,59 @@ $(function(){
 				$(element).find('.fc-event-time')
 					.addClass('highlight-text');
 			}
-		},
+		}
+	};
+
+	$('#refresh')
+		.button()
+		.click(function() {
+			cal.fullCalendar('refetchEvents');
+		});
+	// }}}
+
+	// URL hash (format: [view[/date]]) {{{
+	var defaultView = 'month'
+	var startHash = location.hash.slice(1).split('/');
+	var startView = startHash[0] || defaultView;
+	var startDate =
+		startHash[1] && $.fullCalendar.parseISO8601(startHash[1], true)
+		|| new Date();
+
+	var setHash = function(viewObj) {
+		var hash = '#';
+		if (Date.now() < viewObj.start || Date.now() > viewObj.end) {
+			hash += viewObj.name + '/' +
+				$.fullCalendar.formatDate(viewObj.start, 'yyyy-MM-dd');
+		}
+		else if (viewObj.name != defaultView) {
+			hash += viewObj.name;
+		}
+		location.replace(hash);
+	};
+
+	$.extend(calOptions, {
+		defaultView: startView,
+		year: startDate.getFullYear(),
+		month: startDate.getMonth(),
+		date: startDate.getDate()
+	});
+	// }}}
+
+	// Event creation popup menu {{{
+	$('#create-popup-close')
+		.button({ text: false, icons: { primary: 'ui-icon-closethick' } })
+		.click(function() {
+			cal.fullCalendar('unselect');
+		});
+	$(document).keydown(function(e) {
+		if (e.which == 27) {
+			cal.fullCalendar('unselect');
+		}
+	});
+
+	$.extend(calOptions, {
+		selectable: true,
+		unselectCancel: '#create-popup',
 		select: function(startDate, endDate, allDay, jsEvent, view) {
 			$('#create-menu a')
 				.attr('href', function() {
@@ -92,13 +108,31 @@ $(function(){
 		},
 		unselect: function() {
 			$('#create-popup').hide();
-		},
+		}
+	});
+	// }}}
+
+	// Fit agenda views to window height {{{
+	var resizeCalendar = function() {
+		if (cal.fullCalendar('getView').name.indexOf('agenda') != -1) {
+			cal.fullCalendar('option', 'height',
+				cal.prop('clientHeight'));
+		} else {
+			cal.fullCalendar('option', 'height', 0);
+			cal.fullCalendar('option', 'aspectRatio', 1.35);
+		}
+	};
+	$(window).resize(resizeCalendar);
+
+	$.extend(calOptions, {
 		viewDisplay: function(viewObj) {
 			setHash(viewObj);
 			resizeCalendar();
 		}
 	});
+	// }}}
 
+	// Event sources {{{
 	$(myEventSources).each(function(index) {
 		if (this.api) {
 			if (this.api.events) {
@@ -135,29 +169,14 @@ $(function(){
 								$(this).is(':checked') ? 'addEventSource' : 'removeEventSource',
 								$(this).data('source'));
 						})
-						.prop('checked', this.defaultEnable !== false)
-						.change())));
+						.prop('checked', this.defaultEnable !== false))));
 	});
+	// }}}
 
-	$('#create-popup-close')
-		.button({ text: false, icons: { primary: 'ui-icon-closethick' } })
-		.click(function() {
-			cal.fullCalendar('unselect');
-		});
-	$(document).keydown(function(e) {
-		if (e.which == 27) {
-			cal.fullCalendar('unselect');
-		}
-	});
-	$('#refresh')
-		.button()
-		.click(function() {
-			cal.fullCalendar('refetchEvents');
-		});
-
-	$(window).resize(resizeCalendar);
+	cal.fullCalendar(calOptions);
+	$('#sources :checkbox').change();
 	resizeCalendar();
 });
 
-/* vim: set sw=2 ts=2 noet */
+/* vim: set sw=2 ts=2 noet fdm=marker fmr={{{,}}} */
 
