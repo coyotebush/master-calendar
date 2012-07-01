@@ -126,7 +126,6 @@ $(function(){
 		$('#sources')
 			.append($('<li class="ui-widget"/>')
 				.css('background-color', this.color)
-				.css('color', '#ffffff')
 				.append($('<label for="source' + index + '">' + this.name + '</label>')
 					.prepend($('<input type="checkbox" id="source' + index + '">')
 						.data('source', this)
