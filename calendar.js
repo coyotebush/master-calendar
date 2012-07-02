@@ -25,7 +25,7 @@ $(function(){
 		eventRender: function(event, element) {
 			if (event.body) {
 				$(element).children().first()
-					.append($('<div/>')
+					.append($('<div class="event-body"/>')
 						.append($.jqml(event.body)));
 			}
 			if (event.participation) {

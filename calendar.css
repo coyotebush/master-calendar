@@ -75,6 +75,10 @@ body {
 	color: #00F !important;
 }
 
+.event-body {
+	font-size: 85%;
+}
+
 pre {
 	white-space: pre-wrap;
 }
