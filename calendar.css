@@ -20,6 +20,17 @@ body {
 	padding: 10px 0 10px 10px;
 }
 
+#refresh {
+	font-size: 100%;
+}
+
+#refresh .ui-button-text {
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-right: 0.6em;
+	line-height: 1.9em;
+}
+
 #sources {
 	margin: 10px 0;
 	padding: 0;

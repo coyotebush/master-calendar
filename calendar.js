@@ -36,7 +36,7 @@ $(function(){
 	};
 
 	$('#refresh')
-		.button()
+		.button({ icons: { primary: 'ui-icon-refresh' } })
 		.click(function() {
 			cal.fullCalendar('refetchEvents');
 		});
