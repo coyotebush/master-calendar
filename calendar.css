@@ -81,9 +81,9 @@ body {
 	list-style: none;
 }
 
-#create-menu a {
+#create-menu a, #create-menu a:visited {
 	text-decoration: none;
-	color: #00F !important;
+	color: #039;
 }
 
 .event-body {
