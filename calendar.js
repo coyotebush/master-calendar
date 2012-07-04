@@ -2,6 +2,7 @@ $(function(){
 	var cal = $('#calendar');
 
 	// Initial options {{{
+	var startFunctions = [];
 	var calOptions = {
 		header: {
 			left: 'today prev,next title',
@@ -34,40 +35,41 @@ $(function(){
 			}
 		}
 	};
-
-	$('#refresh')
-		.button({ icons: { primary: 'ui-icon-refresh' } })
-		.click(function() {
-			cal.fullCalendar('refetchEvents');
-		});
 	// }}}
 
 	// URL hash (format: [view[/date]]) {{{
-	var defaultView = 'month'
-	var startHash = location.hash.slice(1).split('/');
-	var startView = startHash[0] || defaultView;
-	var startDate =
-		startHash[1] && $.fullCalendar.parseISO8601(startHash[1], true)
-		|| new Date();
+	(function () {
+		var defaultView = 'month'
+		var startHash = location.hash.slice(1).split('/');
+		var startView = startHash[0] || defaultView;
+		var startDate =
+			startHash[1] && $.fullCalendar.parseISO8601(startHash[1], true)
+			|| new Date();
 
-	var setHash = function(viewObj) {
-		var hash = '#';
-		if (Date.now() < viewObj.start || Date.now() > viewObj.end) {
-			hash += viewObj.name + '/' +
-				$.fullCalendar.formatDate(viewObj.start, 'yyyy-MM-dd');
-		}
-		else if (viewObj.name != defaultView) {
-			hash += viewObj.name;
-		}
-		location.replace(hash);
-	};
+		(function (old) {
+			calOptions.viewDisplay = function(viewObj) {
+				if (old) {
+					old(viewObj);
+				}
+				var hash = '#';
+				if (Date.now() < viewObj.start || Date.now() > viewObj.end) {
+					hash += viewObj.name + '/' +
+						$.fullCalendar.formatDate(viewObj.start, 'yyyy-MM-dd');
+				}
+				else if (viewObj.name != defaultView) {
+					hash += viewObj.name;
+				}
+				location.replace(hash);
+			};
+		})(calOptions.viewDisplay);
 
-	$.extend(calOptions, {
-		defaultView: startView,
-		year: startDate.getFullYear(),
-		month: startDate.getMonth(),
-		date: startDate.getDate()
-	});
+		$.extend(calOptions, {
+			defaultView: startView,
+			year: startDate.getFullYear(),
+			month: startDate.getMonth(),
+			date: startDate.getDate()
+		});
+	})();
 	// }}}
 
 	// Event creation popup menu {{{
@@ -113,23 +115,28 @@ $(function(){
 	// }}}
 
 	// Fit agenda views to window height {{{
-	var resizeCalendar = function() {
-		if (cal.fullCalendar('getView').name.indexOf('agenda') != -1) {
-			cal.fullCalendar('option', 'height',
-				cal.prop('clientHeight'));
-		} else {
-			cal.fullCalendar('option', 'height', 0);
-			cal.fullCalendar('option', 'aspectRatio', 1.35);
-		}
-	};
-	$(window).resize(resizeCalendar);
+	(function () {
+		var resizeCalendar = function() {
+			if (cal.fullCalendar('getView').name.indexOf('agenda') != -1) {
+				cal.fullCalendar('option', 'height',
+					cal.prop('clientHeight'));
+			} else {
+				cal.fullCalendar('option', 'height', 0);
+				cal.fullCalendar('option', 'aspectRatio', 1.35);
+			}
+		};
+		$(window).resize(resizeCalendar);
+		startFunctions.push(resizeCalendar);
 
-	$.extend(calOptions, {
-		viewDisplay: function(viewObj) {
-			setHash(viewObj);
-			resizeCalendar();
-		}
-	});
+		(function (old) {
+			calOptions.viewDisplay = function(viewObj) {
+				if (old) {
+					old(viewObj);
+				}
+				resizeCalendar();
+			}
+		})(calOptions.viewDisplay);
+	})();
 	// }}}
 
 	// Event sources {{{
@@ -171,11 +178,21 @@ $(function(){
 						})
 						.prop('checked', this.defaultEnable !== false))));
 	});
+	startFunctions.push(function () {
+		$('#sources :checkbox').change();
+	});
+
+	$('#refresh')
+		.button({ icons: { primary: 'ui-icon-refresh' } })
+		.click(function() {
+			cal.fullCalendar('refetchEvents');
+		});
 	// }}}
 
 	cal.fullCalendar(calOptions);
-	$('#sources :checkbox').change();
-	resizeCalendar();
+	for (i = 0; i < startFunctions.length; i++) {
+		startFunctions[i]();
+	}
 });
 
 /* vim: set sw=2 ts=2 noet fdm=marker fmr={{{,}}} */
