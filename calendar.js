@@ -129,7 +129,7 @@ $(function(){
 	// }}}
 
 	// Event sources {{{
-	$(myEventSources).each(function(index) {
+	$(myEventSources).each(function() {
 		if (this.api) {
 			if (this.api.events) {
 				if (typeof this.api.events == 'object') {
@@ -157,8 +157,8 @@ $(function(){
 		$('#sources')
 			.append($('<li class="ui-widget"/>')
 				.css('background-color', this.color)
-				.append($('<label for="source' + index + '">' + this.name + '</label>')
-					.prepend($('<input type="checkbox" id="source' + index + '">')
+				.append($('<label>' + this.name + '</label>')
+					.prepend($('<input type="checkbox">')
 						.data('source', this)
 						.change(function() {
 							cal.fullCalendar(
