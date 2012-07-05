@@ -40,11 +40,11 @@ $(function(){
 
 	// URL hash (format: [view[/date]]) {{{
 	(function () {
-		var defaultView = 'month'
+		var defaultView = 'month';
 		var startHash = location.hash.slice(1).split('/');
 		var startView = startHash[0] || defaultView;
 		var startDate =
-			startHash[1] && $.fullCalendar.parseISO8601(startHash[1], true)
+			(startHash[1] && $.fullCalendar.parseISO8601(startHash[1], true))
 			|| new Date();
 
 		calOptions.viewDisplay.push(function(viewObj) {
@@ -114,7 +114,7 @@ $(function(){
 	// Fit agenda views to window height {{{
 	(function () {
 		var resizeCalendar = function() {
-			if (cal.fullCalendar('getView').name.indexOf('agenda') != -1) {
+			if (cal.fullCalendar('getView').name.indexOf('agenda') > -1) {
 				cal.fullCalendar('option', 'height',
 					cal.prop('clientHeight'));
 			} else {
