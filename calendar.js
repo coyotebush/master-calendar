@@ -73,6 +73,7 @@ $(function(){
 		.button({ text: false, icons: { primary: 'ui-icon-closethick' } })
 		.click(function() {
 			cal.fullCalendar('unselect');
+			return false;
 		});
 	$(document).keydown(function(e) {
 		if (e.which == 27) {
