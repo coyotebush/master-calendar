@@ -14,6 +14,7 @@ $(function(){
 		defaultEventMinutes: 120,
 		timeFormat: 'H:mm ',
 
+		viewDisplay: [],
 		loading: function(state) {
 			$('#loading').toggle(state);
 		},
@@ -46,22 +47,17 @@ $(function(){
 			startHash[1] && $.fullCalendar.parseISO8601(startHash[1], true)
 			|| new Date();
 
-		(function (old) {
-			calOptions.viewDisplay = function(viewObj) {
-				if (old) {
-					old(viewObj);
-				}
-				var hash = '#';
-				if (Date.now() < viewObj.start || Date.now() > viewObj.end) {
-					hash += viewObj.name + '/' +
-						$.fullCalendar.formatDate(viewObj.start, 'yyyy-MM-dd');
-				}
-				else if (viewObj.name != defaultView) {
-					hash += viewObj.name;
-				}
-				location.replace(hash);
-			};
-		})(calOptions.viewDisplay);
+		calOptions.viewDisplay.push(function(viewObj) {
+			var hash = '#';
+			if (Date.now() < viewObj.start || Date.now() > viewObj.end) {
+				hash += viewObj.name + '/' +
+					$.fullCalendar.formatDate(viewObj.start, 'yyyy-MM-dd');
+			}
+			else if (viewObj.name != defaultView) {
+				hash += viewObj.name;
+			}
+			location.replace(hash);
+		});
 
 		$.extend(calOptions, {
 			defaultView: startView,
@@ -127,15 +123,7 @@ $(function(){
 		};
 		$(window).resize(resizeCalendar);
 		startFunctions.push(resizeCalendar);
-
-		(function (old) {
-			calOptions.viewDisplay = function(viewObj) {
-				if (old) {
-					old(viewObj);
-				}
-				resizeCalendar();
-			}
-		})(calOptions.viewDisplay);
+		calOptions.viewDisplay.push(resizeCalendar);
 	})();
 	// }}}
 
@@ -188,6 +176,14 @@ $(function(){
 			cal.fullCalendar('refetchEvents');
 		});
 	// }}}
+
+	(function(handlers) {
+		calOptions.viewDisplay = function() {
+			for (i = 0; i < handlers.length; i++) {
+				handlers[i].apply(this, arguments);
+			}
+		};
+	})(calOptions.viewDisplay);
 
 	cal.fullCalendar(calOptions);
 	for (i = 0; i < startFunctions.length; i++) {
