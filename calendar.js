@@ -37,8 +37,7 @@ $(function () {
 						.append($.jqml(event.body)));
 			}
 			if (event.participation) {
-				$(element).find('.fc-event-time')
-					.addClass('highlight-text');
+				$(element).addClass('event-participation');
 			}
 		}
 	};
