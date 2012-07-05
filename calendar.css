@@ -74,6 +74,10 @@ body {
 	font-size: 0.7em;
 }
 
+#create-popup-close:active {
+	outline: none;
+}
+
 #create-menu {
 	margin: 0;
 	padding: 0;
