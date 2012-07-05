@@ -36,9 +36,8 @@ $(function () {
 					.append($('<div class="event-body"/>')
 						.append($.jqml(event.body)));
 			}
-			if (event.participation) {
-				$(element).addClass('event-participation');
-			}
+			$(element).addClass(event.participation ?
+				'event-participation' : 'event-no-participation');
 		}
 	};
 	// }}}
@@ -182,6 +181,12 @@ $(function () {
 		.button({ icons: { primary: 'ui-icon-refresh' } })
 		.click(function () {
 			cal.fullCalendar('refetchEvents');
+		});
+
+	$('#my-events :checkbox')
+		.prop('checked', false)
+		.change(function() {
+			cal.find('.event-no-participation').toggle(!$(this).is(':checked'));
 		});
 	// }}}
 
