@@ -20,8 +20,24 @@ Future goals:
 Sources
 ---
 Sources are specified in `calendar-sources.js`. A source provides event data
-for the calendar through a JSON API as per FullCalendar. The minimal
-specification for a source is as
+for the calendar through a JSON API as per FullCalendar.
+
+#### Properties
+A source must have a name and color specified. While an `events` property may
+provide event data through a predefined array of event objects or a function to
+generate events, most uses will probably involve a JSON feed. The rules are:
+
+- The properties `url` and optionally `startParam` and `endParam` may be
+  specified per FullCalendar documentation.
+- Or, these properties may be specified in an `api.events` object.
+- Or, just `url` may be specified as the value of `api.events`.
+
+To specify an event creation API, similarly, the URL may be specified as
+`api.create`, or `api.create` can contain `url`, `startParam` (default:
+`start`), and/or `endParam` (default: `end`).
+
+#### Examples
+The minimal specification for a source is as
 
     {
 	  name: 'Community Events',
