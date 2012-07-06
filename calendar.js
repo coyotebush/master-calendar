@@ -1,4 +1,9 @@
-$(function(){
+/*jslint browser: true, eqeq: true, vars: true */
+/*global $: false, myEventSources: false*/
+/* vim: set sw=2 ts=2 noet fdm=marker fmr={{{,}}} */
+
+$(function () {
+	'use strict';
 	var cal = $('#calendar');
 
 	// Initial options {{{
@@ -13,19 +18,19 @@ $(function(){
 		defaultEventMinutes: 120,
 		timeFormat: 'H:mm ',
 
-		viewDisplay: function(viewObj) {
+		viewDisplay: function (viewObj) {
 			cal.trigger('viewDisplay', viewObj);
 		},
-		loading: function(state) {
+		loading: function (state) {
 			$('#loading').toggle(state);
 		},
-		eventClick: function(event) {
+		eventClick: function (event) {
 			if (event.url) {
 				window.open(event.url);
 				return false;
 			}
 		},
-		eventRender: function(event, element) {
+		eventRender: function (event, element) {
 			if (event.body) {
 				$(element).children().first()
 					.append($('<div class="event-body"/>')
@@ -50,17 +55,18 @@ $(function(){
 			(startHash[1] && $.fullCalendar.parseISO8601(startHash[1], true))
 			|| new Date();
 
-		cal.on('viewDisplay', function(e, viewObj) {
+		/*jslint unparam: true*/
+		cal.on('viewDisplay', function (e, viewObj) {
 			var hash = '#';
 			if (Date.now() < viewObj.start || Date.now() > viewObj.end) {
 				hash += viewObj.name + '/' +
 					$.fullCalendar.formatDate(viewObj.start, 'yyyy-MM-dd');
-			}
-			else if (viewObj.name != defaultView) {
+			} else if (viewObj.name != defaultView) {
 				hash += viewObj.name;
 			}
 			location.replace(hash);
 		});
+		/*jslint unparam: false*/
 
 		$.extend(calOptions, {
 			defaultView: startView,
@@ -68,17 +74,17 @@ $(function(){
 			month: startDate.getMonth(),
 			date: startDate.getDate()
 		});
-	})();
+	}());
 	// }}}
 
 	// Event creation popup menu {{{
 	$('#create-popup-close')
 		.button({ text: false, icons: { primary: 'ui-icon-closethick' } })
-		.click(function() {
+		.click(function () {
 			cal.fullCalendar('unselect');
 			return false;
 		});
-	$(document).keydown(function(e) {
+	$(document).keydown(function (e) {
 		if (e.which == 27) {
 			cal.fullCalendar('unselect');
 		}
@@ -87,14 +93,14 @@ $(function(){
 	$.extend(calOptions, {
 		selectable: true,
 		unselectCancel: '#create-popup',
-		select: function(startDate, endDate, allDay, jsEvent, view) {
+		select: function (startDate, endDate, allDay, jsEvent) {
 			$('#create-menu a')
-				.attr('href', function() {
+				.attr('href', function () {
 					var api = $(this).data('api');
 					var url = api.url || api;
 					var params = {};
-					params[api.startParam  || 'start' ] = startDate.getTime();
-					params[api.endParam    || 'end'   ] = endDate.getTime();
+					params[api.startParam  || 'start']  = startDate.getTime();
+					params[api.endParam    || 'end']    = endDate.getTime();
 					params[api.allDayParam || 'allday'] = allDay;
 					url += url.indexOf('?') > -1 ? '&' : '?';
 					url += $.param(params);
@@ -108,7 +114,7 @@ $(function(){
 					offset: '-5'
 				});
 		},
-		unselect: function() {
+		unselect: function () {
 			$('#create-popup').hide();
 		}
 	});
@@ -116,7 +122,7 @@ $(function(){
 
 	// Fit agenda views to window height {{{
 	(function () {
-		var resizeCalendar = function() {
+		var resizeCalendar = function () {
 			if (cal.fullCalendar('getView').name.indexOf('agenda') > -1) {
 				cal.fullCalendar('option', 'height',
 					cal.prop('clientHeight'));
@@ -127,17 +133,16 @@ $(function(){
 		};
 		$(window).resize(resizeCalendar);
 		cal.on('viewDisplay calendarStart', resizeCalendar);
-	})();
+	}());
 	// }}}
 
 	// Event sources {{{
-	$(myEventSources).each(function() {
+	$(myEventSources).each(function () {
 		if (this.api) {
 			if (this.api.events) {
 				if (typeof this.api.events == 'object') {
 					$.extend(this, this.api.events);
-				}
-				else {
+				} else {
 					this.url = this.api.events;
 				}
 			}
@@ -147,7 +152,7 @@ $(function(){
 					.append($('<li/>')
 						.append($('<a>' + this.name + '</a>')
 							.data('api', this.api.create)
-							.click(function() {
+							.click(function () {
 								if (this.href) {
 									window.open(this.href);
 									return false;
@@ -162,20 +167,21 @@ $(function(){
 				.append($('<label>' + this.name + '</label>')
 					.prepend($('<input type="checkbox">')
 						.data('source', this)
-						.change(function() {
+						.change(function () {
 							cal.fullCalendar(
 								$(this).is(':checked') ? 'addEventSource' : 'removeEventSource',
-								$(this).data('source'));
+								$(this).data('source')
+							);
 						})
 						.prop('checked', this.defaultEnable !== false))));
 	});
-	cal.one('calendarStart', function() {
+	cal.one('calendarStart', function () {
 		$('#sources :checkbox').change();
 	});
 
 	$('#refresh')
 		.button({ icons: { primary: 'ui-icon-refresh' } })
-		.click(function() {
+		.click(function () {
 			cal.fullCalendar('refetchEvents');
 		});
 	// }}}
@@ -183,6 +189,4 @@ $(function(){
 	cal.fullCalendar(calOptions);
 	cal.trigger('calendarStart');
 });
-
-/* vim: set sw=2 ts=2 noet fdm=marker fmr={{{,}}} */
 
