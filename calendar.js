@@ -2,7 +2,6 @@ $(function(){
 	var cal = $('#calendar');
 
 	// Initial options {{{
-	var startFunctions = [];
 	var calOptions = {
 		header: {
 			left: 'today prev,next title',
@@ -127,8 +126,7 @@ $(function(){
 			}
 		};
 		$(window).resize(resizeCalendar);
-		startFunctions.push(resizeCalendar);
-		cal.on('viewDisplay', resizeCalendar);
+		cal.on('viewDisplay calendarStart', resizeCalendar);
 	})();
 	// }}}
 
@@ -171,7 +169,7 @@ $(function(){
 						})
 						.prop('checked', this.defaultEnable !== false))));
 	});
-	startFunctions.push(function () {
+	cal.one('calendarStart', function() {
 		$('#sources :checkbox').change();
 	});
 
@@ -183,9 +181,7 @@ $(function(){
 	// }}}
 
 	cal.fullCalendar(calOptions);
-	for (i = 0; i < startFunctions.length; i++) {
-		startFunctions[i]();
-	}
+	cal.trigger('calendarStart');
 });
 
 /* vim: set sw=2 ts=2 noet fdm=marker fmr={{{,}}} */
