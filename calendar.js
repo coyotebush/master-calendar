@@ -14,7 +14,9 @@ $(function(){
 		defaultEventMinutes: 120,
 		timeFormat: 'H:mm ',
 
-		viewDisplay: [],
+		viewDisplay: function(viewObj) {
+			cal.trigger('viewDisplay', viewObj);
+		},
 		loading: function(state) {
 			$('#loading').toggle(state);
 		},
@@ -47,7 +49,7 @@ $(function(){
 			(startHash[1] && $.fullCalendar.parseISO8601(startHash[1], true))
 			|| new Date();
 
-		calOptions.viewDisplay.push(function(viewObj) {
+		cal.on('viewDisplay', function(e, viewObj) {
 			var hash = '#';
 			if (Date.now() < viewObj.start || Date.now() > viewObj.end) {
 				hash += viewObj.name + '/' +
@@ -124,7 +126,7 @@ $(function(){
 		};
 		$(window).resize(resizeCalendar);
 		startFunctions.push(resizeCalendar);
-		calOptions.viewDisplay.push(resizeCalendar);
+		cal.on('viewDisplay', resizeCalendar);
 	})();
 	// }}}
 
@@ -177,14 +179,6 @@ $(function(){
 			cal.fullCalendar('refetchEvents');
 		});
 	// }}}
-
-	(function(handlers) {
-		calOptions.viewDisplay = function() {
-			for (i = 0; i < handlers.length; i++) {
-				handlers[i].apply(this, arguments);
-			}
-		};
-	})(calOptions.viewDisplay);
 
 	cal.fullCalendar(calOptions);
 	for (i = 0; i < startFunctions.length; i++) {
