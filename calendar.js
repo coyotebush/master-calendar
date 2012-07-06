@@ -44,7 +44,9 @@ $(function(){
 	(function () {
 		var defaultView = 'month';
 		var startHash = location.hash.slice(1).split('/');
-		var startView = startHash[0] || defaultView;
+		var startView =
+			($.fullCalendar.views[startHash[0]] && startHash[0])
+			|| defaultView;
 		var startDate =
 			(startHash[1] && $.fullCalendar.parseISO8601(startHash[1], true))
 			|| new Date();
