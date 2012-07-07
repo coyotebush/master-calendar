@@ -99,8 +99,8 @@ $(function () {
 					var api = $(this).data('api');
 					var url = api.url || api;
 					var params = {};
-					params[api.startParam  || 'start']  = startDate.getTime();
-					params[api.endParam    || 'end']    = endDate.getTime();
+					params[api.startParam  || 'start']  = startDate.getTime() / 1000;
+					params[api.endParam    || 'end']    = endDate.getTime() / 1000;
 					params[api.allDayParam || 'allday'] = allDay;
 					url += url.indexOf('?') > -1 ? '&' : '?';
 					url += $.param(params);
@@ -138,6 +138,7 @@ $(function () {
 
 	// Event sources {{{
 	$(myEventSources).each(function () {
+		// {{{ API
 		if (this.api) {
 			if (this.api.events) {
 				if (typeof this.api.events == 'object') {
@@ -160,7 +161,9 @@ $(function () {
 							})));
 			}
 		}
+		// }}}
 
+		// {{{ Checklist
 		$('#sources')
 			.append($('<li class="ui-widget"/>')
 				.css('background-color', this.color)
@@ -173,7 +176,9 @@ $(function () {
 								$(this).data('source')
 							);
 						})
-						.prop('checked', this.defaultEnable !== false))));
+						.prop('checked', this.defaultEnable !== false)))
+				.append($('<ul/>')));
+		// }}}
 	});
 	cal.one('calendarStart', function () {
 		$('#sources :checkbox').change();
@@ -184,6 +189,27 @@ $(function () {
 		.click(function () {
 			cal.fullCalendar('refetchEvents');
 		});
+
+	// {{{ Menu
+	/*jslint unparam: true*/
+	cal.on('viewDisplay', function (e, viewObj) {
+		$('#sources li').each(function (i, elem) {
+			var api = $(elem).find(':checkbox').data('source').api;
+			var params = {};
+			console.debug(viewObj);
+			console.debug(api);
+			if (api && api.menu) {
+				params[api.startParam  || 'start']  = viewObj.start.getTime() / 1000;
+				params[api.endParam    || 'end']    = viewObj.end.getTime() / 1000;
+				console.debug(params);
+				$.get(api.menu.url || api.menu, params, function (data) {
+					$(elem).find('ul').empty().append($.jqml(data));
+				});
+			}
+		});
+	});
+	/*jslint unparam: false*/
+	// }}}
 	// }}}
 
 	cal.fullCalendar(calOptions);
