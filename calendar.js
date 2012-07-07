@@ -166,8 +166,9 @@ $(function () {
 		// {{{ Checklist
 		$('#sources')
 			.append($('<li class="ui-widget"/>')
-				.css('background-color', this.color)
+				.css('border-color', this.color)
 				.append($('<label>' + this.name + '</label>')
+					.css('background-color', this.color)
 					.prepend($('<input type="checkbox">')
 						.data('source', this)
 						.change(function () {
@@ -177,7 +178,7 @@ $(function () {
 							);
 						})
 						.prop('checked', this.defaultEnable !== false)))
-				.append($('<ul/>')));
+				.append($('<div/>')));
 		// }}}
 	});
 	cal.one('calendarStart', function () {
@@ -203,7 +204,7 @@ $(function () {
 				params[api.endParam    || 'end']    = viewObj.end.getTime() / 1000;
 				console.debug(params);
 				$.get(api.menu.url || api.menu, params, function (data) {
-					$(elem).find('ul').empty().append($.jqml(data));
+					$(elem).find('div').empty().append($.jqml(data));
 				});
 			}
 		});
