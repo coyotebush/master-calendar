@@ -38,17 +38,25 @@ body {
 	color: #FFF;
 }
 
-#sources li {
+#sources > li {
 	border-radius: 3px;
 }
 
-#sources label {
+#sources > li > label {
 	display: block;
 	margin: 2px 0;
 	padding: 2px 0;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+#sources > li > ul > li {
+	font-size: 85%;
+}
+
+#sources > li > ul a {
+	color: #DDD;
 }
 
 #create-popup {
