@@ -202,20 +202,27 @@ $(function () {
 					params[api.startParam  || 'start'] = viewObj.start.getTime() / 1000;
 					params[api.endParam    || 'end']   = viewObj.end.getTime() / 1000;
 					$.get(api.menu.url || api.menu, params, function (data) {
-						$(elem).find('div')
-							.empty().append($.jqml(data))
-							.find('.hidden')
-								.hide()
-								.before($('<a class="hidden-toggle" href="#">(show)</a>')
-									.toggle(function () {
-										$(this).next().show();
-										$(this).text('(hide)');
-										return false;
-									}, function () {
-										$(this).next().hide();
-										$(this).text('(show)');
-										return false;
-									}));
+						var div = $(elem).find('div');
+						div.empty().append($.jqml(data))
+						div.find('a')
+							.click(function () {
+								if (this.href) {
+									window.open(this.href);
+									return false;
+								}
+							});
+						div.find('.hidden')
+							.hide()
+							.before($('<a class="hidden-toggle" href="#">(show)</a>')
+								.toggle(function () {
+									$(this).next().show();
+									$(this).text('(hide)');
+									return false;
+								}, function () {
+									$(this).next().hide();
+									$(this).text('(show)');
+									return false;
+								}));
 					});
 				}
 			});
