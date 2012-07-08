@@ -10,7 +10,12 @@ var myEventSources = [
 			endParam: 'ignore'
 		}
 	},
-	color: '#006600',
+	color: '#006600'
+},
+{
+	name: 'Notes',
+	url: '/commonmeals/api.php?notes',
+	color: '#336699'
 },
 {
 	name: 'Cal Poly CSC',
