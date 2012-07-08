@@ -215,11 +215,11 @@ $(function () {
 							.hide()
 							.before($('<a class="hidden-toggle" href="#">(show)</a>')
 								.toggle(function () {
-									$(this).next().show();
+									$(this).next().show('fast');
 									$(this).text('(hide)');
 									return false;
 								}, function () {
-									$(this).next().hide();
+									$(this).next().hide('fast');
 									$(this).text('(show)');
 									return false;
 								}));
