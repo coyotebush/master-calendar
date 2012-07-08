@@ -2,6 +2,11 @@ body {
 	font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
 }
 
+a, a:visited {
+	text-decoration: none;
+	color: #039;
+}
+
 #calendar {
 	position: absolute;
 	top: 0;
@@ -66,8 +71,9 @@ body {
 	padding: 2px 0px;
 }
 
-#sources > li > div a {
-	color: #039;
+#sources > li > div a.hidden-toggle {
+	display: block;
+	font-size: 85%;
 }
 
 #create-popup {
@@ -104,11 +110,6 @@ body {
 	padding: 0;
 	line-height: 1.6em;
 	list-style: none;
-}
-
-#create-menu a, #create-menu a:visited {
-	text-decoration: none;
-	color: #039;
 }
 
 .event-body {
