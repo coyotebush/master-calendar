@@ -36,8 +36,10 @@ $(function () {
 					.append($('<div class="event-body"/>')
 						.append($.jqml(event.body)));
 			}
-			$(element).addClass(event.participation ?
-				'event-participation' : 'event-no-participation');
+			if (event.participation) {
+				$(element).find('.fc-event-time')
+					.addClass('highlight-text');
+			}
 		}
 	};
 	// }}}
