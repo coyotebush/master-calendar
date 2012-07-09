@@ -96,6 +96,10 @@ body {
 	font-size: 85%;
 }
 
+.event-body table {
+	border-collapse: collapse;
+}
+
 pre {
 	white-space: pre-wrap;
 }
