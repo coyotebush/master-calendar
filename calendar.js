@@ -184,6 +184,7 @@ $(function () {
 		// }}}
 
 		// {{{ Menu
+		this.data = $.extend(this.data, { menu: 1 });
 		this.success = function (data) {
 			if (data.menu) {
 				menuDiv.empty().append($.jqml(data.menu))
