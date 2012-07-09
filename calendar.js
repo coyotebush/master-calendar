@@ -163,6 +163,10 @@ $(function () {
 		}
 		// }}}
 
+		this.success = function (data) {
+			if (data) return data.events || data;
+		}
+
 		// {{{ Checklist
 		$('#sources')
 			.append($('<li class="ui-widget"/>')
