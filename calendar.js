@@ -163,9 +163,7 @@ $(function () {
 		}
 		// }}}
 
-		this.success = function (data) {
-			if (data) return data.events || data;
-		}
+		var menuDiv = $('<div/>');
 
 		// {{{ Checklist
 		$('#sources')
@@ -182,7 +180,35 @@ $(function () {
 							);
 						})
 						.prop('checked', this.defaultEnable !== false)))
-				.append($('<div/>')));
+				.append($(menuDiv)));
+		// }}}
+
+		// {{{ Menu
+		this.success = function (data) {
+			if (data.menu) {
+				menuDiv.empty().append($.jqml(data.menu))
+				menuDiv.find('a')
+					.click(function () {
+						if (this.href) {
+							window.open(this.href);
+							return false;
+						}
+					});
+				menuDiv.find('.hidden')
+					.hide()
+					.before($('<a class="hidden-toggle" href="#">(show)</a>')
+						.toggle(function () {
+							$(this).next().show('fast');
+							$(this).text('(hide)');
+							return false;
+						}, function () {
+							$(this).next().hide('fast');
+							$(this).text('(show)');
+							return false;
+						}));
+			}
+			if (data) return data.events || data;
+		}
 		// }}}
 	});
 	cal.one('calendarStart', function () {
@@ -194,49 +220,6 @@ $(function () {
 		.click(function () {
 			cal.fullCalendar('refetchEvents');
 		});
-
-	// {{{ Menu
-	(function () {
-		/*jslint unparam: true*/
-		var fetchMenus = function (e, viewObj) {
-			$('#sources > li').each(function (i, elem) {
-				var api = $(elem).find(':checkbox').data('source').api;
-				var params = {};
-				if (api && api.menu) {
-					params[api.startParam  || 'start'] = viewObj.start.getTime() / 1000;
-					params[api.endParam    || 'end']   = viewObj.end.getTime() / 1000;
-					$.get(api.menu.url || api.menu, params, function (data) {
-						var div = $(elem).find('div');
-						div.empty().append($.jqml(data))
-						div.find('a')
-							.click(function () {
-								if (this.href) {
-									window.open(this.href);
-									return false;
-								}
-							});
-						div.find('.hidden')
-							.hide()
-							.before($('<a class="hidden-toggle" href="#">(show)</a>')
-								.toggle(function () {
-									$(this).next().show('fast');
-									$(this).text('(hide)');
-									return false;
-								}, function () {
-									$(this).next().hide('fast');
-									$(this).text('(show)');
-									return false;
-								}));
-					});
-				}
-			});
-		};
-		/*jslint unparam: false*/
-		cal.on('viewDisplay', fetchMenus);
-		$('#refresh').click(function (e) {
-			fetchMenus(e, cal.fullCalendar('getView'));
-		});
-	}());
 	// }}}
 	// }}}
 

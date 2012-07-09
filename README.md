@@ -45,14 +45,12 @@ The minimal specification for a source is as
 	  color: '#006600'
 	}
 
-Specification of a more complete API including menu options and event creation
-might be as
+Specification of a more complete API including event creation might be as
 
 	{
 	  name: 'Events',
 	  api: {
 	    events: '/events/api?events',
-	    menu:   '/events/api?info',
 	    create: {
 	      url:  '/events/api?new',
 	      startParam: 'time',
