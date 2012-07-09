@@ -186,7 +186,10 @@ $(function () {
 	$('#my-events :checkbox')
 		.prop('checked', false)
 		.change(function() {
-			cal.find('.event-no-participation').toggle(!$(this).is(':checked'));
+			var filter = $(this).is(':checked');
+			cal.fullCalendar('option', 'filterEvents', filter ? function (e) {
+				return !e.participation;
+			} : false);
 		});
 	// }}}
 
