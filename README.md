@@ -8,14 +8,13 @@ Current features:
 - user togglable list of event sources
 - creation of events in the sources
 - sources can customize event display
-- week/day agenda views that fit to window height
+- sources can provide general menu options
+- week/day agenda views fit to window height
 - view saved in URL hash for reload/back
 
 Future goals:
 
-- allow sources to provide general menu options
 - good mobile device support
-- continuously scrolling view
 
 Sources
 ---
@@ -45,14 +44,12 @@ The minimal specification for a source is as
 	  color: '#006600'
 	}
 
-Specification of a more complete API including menu options and event creation
-might be as
+Specification of a more complete API including event creation might be as
 
 	{
 	  name: 'Events',
 	  api: {
 	    events: '/events/api?events',
-	    menu:   '/events/api?info',
 	    create: {
 	      url:  '/events/api?new',
 	      startParam: 'time',

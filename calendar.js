@@ -99,8 +99,8 @@ $(function () {
 					var api = $(this).data('api');
 					var url = api.url || api;
 					var params = {};
-					params[api.startParam  || 'start']  = startDate.getTime();
-					params[api.endParam    || 'end']    = endDate.getTime();
+					params[api.startParam  || 'start']  = startDate.getTime() / 1000;
+					params[api.endParam    || 'end']    = endDate.getTime() / 1000;
 					params[api.allDayParam || 'allday'] = allDay;
 					url += url.indexOf('?') > -1 ? '&' : '?';
 					url += $.param(params);
@@ -138,6 +138,7 @@ $(function () {
 
 	// Event sources {{{
 	$(myEventSources).each(function () {
+		// {{{ API
 		if (this.api) {
 			if (this.api.events) {
 				if (typeof this.api.events == 'object') {
@@ -160,11 +161,16 @@ $(function () {
 							})));
 			}
 		}
+		// }}}
 
+		var menuDiv = $('<div/>');
+
+		// {{{ Checklist
 		$('#sources')
 			.append($('<li class="ui-widget"/>')
-				.css('background-color', this.color)
+				.css('border-color', this.color)
 				.append($('<label>' + this.name + '</label>')
+					.css('background-color', this.color)
 					.prepend($('<input type="checkbox">')
 						.data('source', this)
 						.change(function () {
@@ -173,7 +179,38 @@ $(function () {
 								$(this).data('source')
 							);
 						})
-						.prop('checked', this.defaultEnable !== false))));
+						.prop('checked', this.defaultEnable !== false)))
+				.append($(menuDiv)));
+		// }}}
+
+		// {{{ Menu
+		this.data = $.extend(this.data, { menu: 1 });
+		this.success = function (data) {
+			if (data.menu) {
+				menuDiv.empty().append($.jqml(data.menu))
+				menuDiv.find('a')
+					.click(function () {
+						if (this.href) {
+							window.open(this.href);
+							return false;
+						}
+					});
+				menuDiv.find('.hidden')
+					.hide()
+					.before($('<a class="hidden-toggle" href="#">(show)</a>')
+						.toggle(function () {
+							$(this).next().show('fast');
+							$(this).text('(hide)');
+							return false;
+						}, function () {
+							$(this).next().hide('fast');
+							$(this).text('(show)');
+							return false;
+						}));
+			}
+			if (data) return data.events || data;
+		}
+		// }}}
 	});
 	cal.one('calendarStart', function () {
 		$('#sources :checkbox').change();
@@ -184,6 +221,7 @@ $(function () {
 		.click(function () {
 			cal.fullCalendar('refetchEvents');
 		});
+	// }}}
 	// }}}
 
 	cal.fullCalendar(calOptions);

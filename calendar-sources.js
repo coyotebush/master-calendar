@@ -3,7 +3,6 @@ var myEventSources = [
 	name: 'Meals',
 	api: {
 		events: '/commonmeals/api.php?events',
-		menu:   '/commonmeals/api.php?info',
 		create: {
 			url: '/commonmeals/api.php?new',
 			startParam: 'time',
