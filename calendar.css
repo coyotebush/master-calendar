@@ -7,6 +7,7 @@ a, a:visited {
 	color: #039;
 }
 
+/* {{{ Calendar */
 #calendar {
 	position: absolute;
 	top: 0;
@@ -17,6 +18,24 @@ a, a:visited {
 	margin: 10px;
 }
 
+.event-body {
+	font-size: 85%;
+}
+
+.event-body table {
+	border-collapse: collapse;
+}
+
+.highlight-text {
+	color: #FF0;
+}
+
+.highlight-border {
+	border: 1px solid #FF0;
+}
+/* }}} */
+
+/* {{{ Sidebar */
 #options {
 	position: absolute;
 	left: 0;
@@ -62,6 +81,7 @@ a, a:visited {
 	text-overflow: ellipsis;
 }
 
+/* {{{ Source-provided menu content */
 #sources > li > div {
 	font-size: 85%;
 }
@@ -80,7 +100,10 @@ a, a:visited {
 	font-size: 85%;
 	outline: none;
 }
+/* }}} */
+/* }}} */
 
+/* {{{ Event creation menu */
 #create-popup {
 	display: none;
 	position: absolute;
@@ -116,24 +139,7 @@ a, a:visited {
 	line-height: 1.6em;
 	list-style: none;
 }
+/* }}} */
 
-.event-body {
-	font-size: 85%;
-}
-
-.event-body table {
-	border-collapse: collapse;
-}
-
-pre {
-	white-space: pre-wrap;
-}
-
-.highlight-text {
-	color: #FF0;
-}
-
-.highlight-border {
-	border: 1px solid #FF0;
-}
+/* vim: set sw=4 ts=4 noet fdm=marker fmr={{{,}}} */
 
