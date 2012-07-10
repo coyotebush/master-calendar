@@ -221,6 +221,15 @@ $(function () {
 		.click(function () {
 			cal.fullCalendar('refetchEvents');
 		});
+
+	$('#filter-my-events :checkbox')
+		.prop('checked', false)
+		.change(function() {
+			var filter = $(this).is(':checked');
+			cal.fullCalendar('option', 'filterEvents', filter ? function (e) {
+				return !e.participation;
+			} : false);
+		});
 	// }}}
 	// }}}
 

@@ -49,6 +49,10 @@ a, a:visited {
 	margin: 2px 0;
 }
 
+#filter-my-events {
+	background-color: #333;
+}
+
 #sources > li > label {
 	display: block;
 	padding: 2px 0;
