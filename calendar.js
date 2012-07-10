@@ -185,7 +185,7 @@ $(function () {
 			cal.fullCalendar('refetchEvents');
 		});
 
-	$('#my-events :checkbox')
+	$('#filter-my-events :checkbox')
 		.prop('checked', false)
 		.change(function() {
 			var filter = $(this).is(':checked');
