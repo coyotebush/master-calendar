@@ -231,7 +231,6 @@ $(function () {
 			} : false);
 		});
 	// }}}
-	// }}}
 
 	cal.fullCalendar(calOptions);
 	cal.trigger('calendarStart');
