@@ -6,7 +6,7 @@ var myEventSources = [
 		create: {
 			url: '/commonmeals/api.php?new',
 			startParam: 'time',
-			endParam: 'ignore'
+			endParam: false
 		}
 	},
 	color: '#006600'

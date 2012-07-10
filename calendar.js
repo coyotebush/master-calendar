@@ -99,9 +99,15 @@ $(function () {
 					var api = $(this).data('api');
 					var url = api.url || api;
 					var params = {};
-					params[api.startParam  || 'start']  = startDate.getTime() / 1000;
-					params[api.endParam    || 'end']    = endDate.getTime() / 1000;
-					params[api.allDayParam || 'allday'] = allDay;
+					if (api.startParam !== false) {
+						params[api.startParam  || 'start']  = startDate.getTime() / 1000;
+					}
+					if (api.endParam !== false) {
+						params[api.endParam    || 'end']    = endDate.getTime() / 1000;
+					}
+					if (api.allDayParam !== false) {
+						params[api.allDayParam || 'allday'] = allDay;
+					}
 					url += url.indexOf('?') > -1 ? '&' : '?';
 					url += $.param(params);
 					return url;
