@@ -8,14 +8,13 @@ Current features:
 - user togglable list of event sources
 - creation of events in the sources
 - sources can customize event display
-- week/day agenda views that fit to window height
+- sources can provide general menu options
+- week/day agenda views fit to window height
 - view saved in URL hash for reload/back
 
 Future goals:
 
-- allow sources to provide general menu options
 - good mobile device support
-- continuously scrolling view
 
 Sources
 ---
