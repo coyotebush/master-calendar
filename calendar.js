@@ -191,7 +191,7 @@ $(function () {
 		this.data = $.extend(this.data, { menu: 1 });
 		this.success = function (data) {
 			if (data.menu) {
-				menuDiv.empty().append($.jqml(data.menu))
+				menuDiv.empty().append($.jqml(data.menu));
 				menuDiv.find('a')
 					.click(function () {
 						if (this.href) {
@@ -212,8 +212,10 @@ $(function () {
 							return false;
 						}));
 			}
-			if (data) return data.events || data;
-		}
+			if (data) {
+				return data.events || data;
+			}
+		};
 		// }}}
 	});
 	cal.one('calendarStart', function () {
@@ -228,7 +230,7 @@ $(function () {
 
 	$('#filter-my-events :checkbox')
 		.prop('checked', false)
-		.change(function() {
+		.change(function () {
 			var filter = $(this).is(':checked');
 			cal.fullCalendar('option', 'filterEvents', filter ? function (e) {
 				return !e.participation;
