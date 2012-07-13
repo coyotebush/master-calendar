@@ -78,21 +78,18 @@ $(function () {
 	// }}}
 
 	// Event creation popup menu {{{
-	$('#create-popup-close')
-		.button({ text: false, icons: { primary: 'ui-icon-closethick' } })
-		.click(function () {
-			cal.fullCalendar('unselect');
-			return false;
-		});
-	$(document).keydown(function (e) {
-		if (e.which == 27) {
+	$('#create-popup').dialog({
+		autoOpen: false,
+		resizable: false,
+		width: 220,
+		close: function () {
 			cal.fullCalendar('unselect');
 		}
 	});
 
 	$.extend(calOptions, {
 		selectable: true,
-		unselectCancel: '#create-popup',
+		unselectCancel: '.ui-dialog',
 		select: function (startDate, endDate, allDay, jsEvent) {
 			$('#create-menu a')
 				.attr('href', function () {
@@ -113,7 +110,8 @@ $(function () {
 					return url;
 				});
 			$('#create-popup')
-				.show()
+				.dialog('open')
+				.dialog('widget')
 				.position({
 					of: jsEvent,
 					my: 'left top',
@@ -121,7 +119,7 @@ $(function () {
 				});
 		},
 		unselect: function () {
-			$('#create-popup').hide();
+			$('#create-popup').dialog('close');
 		}
 	});
 	// }}}
