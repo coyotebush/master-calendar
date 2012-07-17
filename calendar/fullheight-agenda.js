@@ -1,5 +1,9 @@
 // Fit agenda views to window height
+/*jslint browser: true */
+/*global $: false, registerCalendarModule: false */
+/* vim: set sw=2 ts=2 noet */
 registerCalendarModule(function (cal) {
+	'use strict';
 	var resizeCalendar = function () {
 		if (cal.fullCalendar('getView').name.indexOf('agenda') > -1) {
 			cal.fullCalendar('option', 'height',
@@ -12,3 +16,4 @@ registerCalendarModule(function (cal) {
 	$(window).resize(resizeCalendar);
 	cal.on('viewDisplay calendarStart', resizeCalendar);
 });
+

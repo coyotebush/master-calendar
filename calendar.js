@@ -1,3 +1,6 @@
+/*jslint browser: true */
+/*global $: false */
+/* vim: set sw=2 ts=2 noet */
 var registerCalendarModule;
 
 (function() {

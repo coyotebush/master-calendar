@@ -1,5 +1,9 @@
 // Event sources 
+/*jslint browser: true, eqeq: true */
+/*global $: false, registerCalendarModule: false, myEventSources: false */
+/* vim: set sw=2 ts=2 noet */
 registerCalendarModule(function (cal) {
+	'use strict';
 	$(myEventSources).each(function () {
 		// {{{ API
 		if (this.api) {

@@ -1,5 +1,9 @@
 // Event creation popup menu
+/*jslint vars: true */
+/*global $: false, registerCalendarModule: false */
+/* vim: set sw=2 ts=2 noet */
 registerCalendarModule(function (cal) {
+	'use strict';
 	$('#create-popup').dialog({
 		autoOpen: false,
 		resizable: false,
@@ -45,6 +49,4 @@ registerCalendarModule(function (cal) {
 		}
 	};
 });
-
-/* vim: set sw=2 ts=2 noet fdm=marker fmr={{{,}}} */
 
