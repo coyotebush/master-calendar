@@ -6,26 +6,11 @@ registerCalendarModule(function (cal) {
 	'use strict';
 	$(myEventSources).each(function () {
 		// {{{ API
-		if (this.api) {
-			if (this.api.events) {
-				if (typeof this.api.events == 'object') {
-					$.extend(this, this.api.events);
-				} else {
-					this.url = this.api.events;
-				}
-			}
-
-			if (this.api.create) {
-				$('#create-menu')
-					.append($('<li/>')
-						.append($('<a>' + this.name + '</a>')
-							.data('api', this.api.create)
-							.click(function () {
-								if (this.href) {
-									window.open(this.href);
-									return false;
-								}
-							})));
+		if (this.api && this.api.events) {
+			if (typeof this.api.events == 'object') {
+				$.extend(this, this.api.events);
+			} else {
+				this.url = this.api.events;
 			}
 		}
 		// }}}

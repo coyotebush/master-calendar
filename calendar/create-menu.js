@@ -1,9 +1,25 @@
 // Event creation popup menu
-/*jslint vars: true */
-/*global $: false, registerCalendarModule: false */
+/*jslint browser: true, vars: true */
+/*global $: false, registerCalendarModule: false, myEventSources: false */
 /* vim: set sw=2 ts=2 noet */
 registerCalendarModule(function (cal) {
 	'use strict';
+
+	$(myEventSources).each(function () {
+		if (this.api && this.api.create) {
+			$('#create-menu')
+				.append($('<li/>')
+					.append($('<a>' + this.name + '</a>')
+						.data('api', this.api.create)
+						.click(function () {
+							if (this.href) {
+								window.open(this.href);
+								return false;
+							}
+						})));
+		}
+	});
+
 	$('#create-popup').dialog({
 		autoOpen: false,
 		resizable: false,
