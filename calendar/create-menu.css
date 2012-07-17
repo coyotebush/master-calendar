@@ -1,0 +1,18 @@
+.ui-dialog {
+	box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+#create-menu {
+	margin: 0;
+	padding: 0;
+	line-height: 1.6em;
+	list-style: none;
+}
+
+#create-menu a, #create-menu a:visited {
+	text-decoration: none;
+	color: #039;
+}
+
+/* vim: set sw=4 ts=4 noet */
+

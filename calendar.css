@@ -7,7 +7,14 @@ a, a:visited {
 	color: #039;
 }
 
-/* {{{ Calendar */
+#options {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 130px;
+	padding: 10px 0 10px 10px;
+}
+
 #calendar {
 	position: absolute;
 	top: 0;
@@ -33,93 +40,6 @@ a, a:visited {
 .highlight-border {
 	border: 1px solid #FF0;
 }
-/* }}} */
-
-/* {{{ Sidebar */
-#options {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 130px;
-	padding: 10px 0 10px 10px;
-}
-
-#refresh {
-	font-size: 100%;
-}
-
-#refresh .ui-button-text {
-	padding-top: 0;
-	padding-bottom: 0;
-	padding-right: 0.6em;
-	line-height: 1.9em;
-}
-
-#sources {
-	margin: 10px 0;
-	padding: 0;
-	list-style-type: none;
-}
-
-#sources > li {
-	border-width: 1px;
-	border-style: solid;
-	border-radius: 3px;
-	margin: 2px 0;
-}
-
-#filter-my-events {
-	background-color: #333;
-}
-
-#sources > li > label {
-	display: block;
-	padding: 2px 0;
-	color: #FFF;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-/* {{{ Source-provided menu content */
-#sources > li > div {
-	font-size: 85%;
-}
-
-#sources > li > div ul {
-	list-style-type: disc;
-	padding: 0 5px 0 25px;
-}
-
-#sources > li > div li {
-	padding: 2px 0px;
-}
-
-#sources > li > div a.hidden-toggle {
-	display: block;
-	font-size: 85%;
-	outline: none;
-}
-/* }}} */
-/* }}} */
-
-/* {{{ Event creation menu */
-.ui-dialog {
-	box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-#create-menu {
-	margin: 0;
-	padding: 0;
-	line-height: 1.6em;
-	list-style: none;
-}
-
-#create-menu a, #create-menu a:visited {
-	text-decoration: none;
-	color: #039;
-}
-/* }}} */
 
 /* vim: set sw=4 ts=4 noet fdm=marker fmr={{{,}}} */
 

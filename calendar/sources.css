@@ -1,0 +1,58 @@
+
+#refresh {
+	font-size: 100%;
+}
+
+#refresh .ui-button-text {
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-right: 0.6em;
+	line-height: 1.9em;
+}
+
+#sources {
+	margin: 10px 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+#sources > li {
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 3px;
+	margin: 2px 0;
+}
+
+#filter-my-events {
+	background-color: #333;
+}
+
+#sources > li > label {
+	display: block;
+	padding: 2px 0;
+	color: #FFF;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* {{{ Source-provided menu content */
+#sources > li > div {
+	font-size: 85%;
+}
+
+#sources > li > div ul {
+	list-style-type: disc;
+	padding: 0 5px 0 25px;
+}
+
+#sources > li > div li {
+	padding: 2px 0px;
+}
+
+#sources > li > div a.hidden-toggle {
+	display: block;
+	font-size: 85%;
+	outline: none;
+}
+/* }}} */
