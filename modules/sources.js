@@ -15,11 +15,9 @@ MasterCalendar.registerModule(function (cal, sources) {
 		}
 		// }}}
 
-		var menuDiv = $('<div/>');
-
 		// {{{ Checklist
 		$('#sources')
-			.append($('<li class="ui-widget"/>')
+			.append(this.toggler = $('<li class="ui-widget"/>')
 				.css('border-color', this.color)
 				.append($('<label>' + this.name + '</label>')
 					.css('background-color', this.color)
@@ -31,41 +29,10 @@ MasterCalendar.registerModule(function (cal, sources) {
 								$(this).data('source')
 							);
 						})
-						.prop('checked', this.defaultEnable !== false)))
-				.append($(menuDiv)));
-		// }}}
-
-		// {{{ Menu
-		this.data = $.extend(this.data, { menu: 1 });
-		this.success = function (data) {
-			if (data.menu) {
-				menuDiv.empty().append($.jqml(data.menu));
-				menuDiv.find('a')
-					.click(function () {
-						if (this.href) {
-							window.open(this.href);
-							return false;
-						}
-					});
-				menuDiv.find('.hidden')
-					.hide()
-					.before($('<a class="hidden-toggle" href="#">(show)</a>')
-						.toggle(function () {
-							$(this).next().show('fast');
-							$(this).text('(hide)');
-							return false;
-						}, function () {
-							$(this).next().hide('fast');
-							$(this).text('(show)');
-							return false;
-						}));
-			}
-			if (data) {
-				return data.events || data;
-			}
-		};
+						.prop('checked', this.defaultEnable !== false))));
 		// }}}
 	});
+
 	cal.one('calendarStart', function () {
 		$('#sources :checkbox').change();
 	});
