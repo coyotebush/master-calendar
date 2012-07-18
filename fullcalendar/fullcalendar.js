@@ -11,7 +11,7 @@
  * Dual licensed under the MIT and GPL licenses, located in
  * MIT-LICENSE.txt and GPL-LICENSE.txt respectively.
  *
- * Date: Sun Jul 8 16:43:02 2012 -0700
+ * Date: Mon Feb 6 22:40:40 2012 -0800
  *
  */
  
@@ -423,8 +423,10 @@ function Calendar(element, options, eventSources) {
 			calcSize();
 			setSize();
 			unselect();
+			currentView.clearEvents();
+			currentView.renderEvents(events);
+			currentView.sizeDirty = false;
 		}
-		_rerenderEvents();
 	}
 	
 	
@@ -519,19 +521,13 @@ function Calendar(element, options, eventSources) {
 	// attempts to rerenderEvents
 	function rerenderEvents(modifiedEventID) {
 		markEventsDirty();
-		_rerenderEvents(modifiedEventID);
-	}
-
-	function _rerenderEvents(modifiedEventID) {
-		var filt = options.filterEvents;
-		var _events = $.isFunction(filt) ? $.grep(events, filt, true) : events;
-
 		if (elementVisible()) {
 			currentView.clearEvents();
-			currentView.renderEvents(_events, modifiedEventID);
+			currentView.renderEvents(events, modifiedEventID);
 			currentView.eventsDirty = false;
 		}
 	}
+	
 	
 	function markEventsDirty() {
 		$.each(viewInstances, function(i, inst) {
@@ -636,10 +632,6 @@ function Calendar(element, options, eventSources) {
 		if (name == 'height' || name == 'contentHeight' || name == 'aspectRatio') {
 			options[name] = value;
 			updateSize();
-		}
-		if (name == 'filterEvents') {
-			options[name] = value;
-			rerenderEvents();
 		}
 	}
 	
