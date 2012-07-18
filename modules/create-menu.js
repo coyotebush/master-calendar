@@ -1,11 +1,11 @@
 // Event creation popup menu
 /*jslint browser: true, vars: true */
-/*global $: false, registerCalendarModule: false, myEventSources: false */
+/*global $: false, registerCalendarModule: false */
 /* vim: set sw=2 ts=2 noet */
-registerCalendarModule(function (cal) {
+registerCalendarModule(function (cal, sources) {
 	'use strict';
 
-	$(myEventSources).each(function () {
+	$(sources).each(function () {
 		if (this.api && this.api.create) {
 			$('#create-menu')
 				.append($('<li/>')

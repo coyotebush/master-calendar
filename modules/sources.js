@@ -1,10 +1,10 @@
 // Event sources 
 /*jslint browser: true, eqeq: true */
-/*global $: false, registerCalendarModule: false, myEventSources: false */
+/*global $: false, registerCalendarModule: false */
 /* vim: set sw=2 ts=2 noet */
-registerCalendarModule(function (cal) {
+registerCalendarModule(function (cal, sources) {
 	'use strict';
-	$(myEventSources).each(function () {
+	$(sources).each(function () {
 		// {{{ API
 		if (this.api && this.api.events) {
 			if (typeof this.api.events == 'object') {

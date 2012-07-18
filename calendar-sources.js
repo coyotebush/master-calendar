@@ -1,4 +1,4 @@
-var myEventSources = [
+addCalendarSources([
 {
 	name: 'Meals',
 	api: {
@@ -22,4 +22,5 @@ var myEventSources = [
 	color: '#550055',
 	currentTimezone: 'America/Los_Angeles'
 }
-];
+]);
+
