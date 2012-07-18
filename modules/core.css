@@ -25,21 +25,5 @@ a, a:visited {
 	margin: 10px;
 }
 
-.event-body {
-	font-size: 85%;
-}
-
-.event-body table {
-	border-collapse: collapse;
-}
-
-.highlight-text {
-	color: #FF0;
-}
-
-.highlight-border {
-	border: 1px solid #FF0;
-}
-
 /* vim: set sw=4 ts=4 noet fdm=marker fmr={{{,}}} */
 
