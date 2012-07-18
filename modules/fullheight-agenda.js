@@ -1,8 +1,8 @@
 // Fit agenda views to window height
 /*jslint browser: true */
-/*global $: false, registerCalendarModule: false */
+/*global $: false, MasterCalendar: false */
 /* vim: set sw=2 ts=2 noet */
-registerCalendarModule(function (cal) {
+MasterCalendar.registerModule(function (cal) {
 	'use strict';
 	var resizeCalendar = function () {
 		if (cal.fullCalendar('getView').name.indexOf('agenda') > -1) {

@@ -1,8 +1,8 @@
 // Event sources 
 /*jslint browser: true, eqeq: true */
-/*global $: false, registerCalendarModule: false */
+/*global $: false, MasterCalendar: false */
 /* vim: set sw=2 ts=2 noet */
-registerCalendarModule(function (cal, sources) {
+MasterCalendar.registerModule(function (cal, sources) {
 	'use strict';
 	$(sources).each(function () {
 		// {{{ API

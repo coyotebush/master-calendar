@@ -1,8 +1,8 @@
-/*jslint browser: true */
-/*global $: false, registerCalendarModule: false */
-/* vim: set sw=2 ts=2 noet */
 // Initial options
-registerCalendarModule(function (cal) {
+/*jslint browser: true */
+/*global $: false, MasterCalendar: false */
+/* vim: set sw=2 ts=2 noet */
+MasterCalendar.registerModule(function (cal) {
 	'use strict';
 	return {
 		header: {

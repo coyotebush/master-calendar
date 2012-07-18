@@ -1,4 +1,9 @@
-addCalendarSources([
+// Configure event sources here
+// (see the README for details)
+/*jslint white: true */
+/*global MasterCalendar: false */
+/* vim: set sw=2 ts=2 noet */
+MasterCalendar.addSources([
 {
 	name: 'Meals',
 	api: {

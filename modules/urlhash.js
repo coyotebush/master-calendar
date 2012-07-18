@@ -1,8 +1,8 @@
 // URL hash (format: [view[/date]]) 
 /*jslint browser: true, eqeq: true, vars: true */
-/*global $: false, registerCalendarModule: false */
+/*global $: false, MasterCalendar: false */
 /* vim: set sw=2 ts=2 noet */
-registerCalendarModule(function (cal) {
+MasterCalendar.registerModule(function (cal) {
 	'use strict';
 	var defaultView = 'month';
 	var startHash = location.hash.slice(1).split('/');
