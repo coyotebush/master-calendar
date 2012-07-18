@@ -18,9 +18,6 @@ MasterCalendar.registerModule(function (cal) {
 		viewDisplay: function (viewObj) {
 			cal.trigger('viewDisplay', viewObj);
 		},
-		loading: function (state) {
-			$('#loading').toggle(state);
-		},
 		eventClick: function (event) {
 			if (event.url) {
 				window.open(event.url);

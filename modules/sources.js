@@ -84,5 +84,11 @@ MasterCalendar.registerModule(function (cal, sources) {
 				return !e.participation;
 			} : false);
 		});
+
+	return {
+		loading: function (state) {
+			$('#loading').toggle(state);
+		}
+	};
 });
 
