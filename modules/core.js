@@ -17,23 +17,6 @@ MasterCalendar.registerModule(function (cal) {
 
 		viewDisplay: function (viewObj) {
 			cal.trigger('viewDisplay', viewObj);
-		},
-		eventClick: function (event) {
-			if (event.url) {
-				window.open(event.url);
-				return false;
-			}
-		},
-		eventRender: function (event, element) {
-			if (event.body) {
-				$(element).children().first()
-					.append($('<div class="event-body"/>')
-						.append($.jqml(event.body)));
-			}
-			if (event.participation) {
-				$(element).find('.fc-event-time')
-					.addClass('highlight-text');
-			}
 		}
 	};
 });
