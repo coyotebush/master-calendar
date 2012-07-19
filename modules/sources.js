@@ -17,7 +17,7 @@ MasterCalendar.registerModule(function (cal, sources) {
 
 		// {{{ Checklist
 		$('#sources')
-			.append(this.toggler = $('<li class="ui-widget"/>')
+			.append(this.toggler = $('<li/>')
 				.css('border-color', this.color)
 				.append($('<label>' + this.name + '</label>')
 					.css('background-color', this.color)
