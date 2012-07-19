@@ -23,19 +23,22 @@ MasterCalendar.registerModule(function (cal, sources) {
 					.css('background-color', this.color)
 					.prepend($('<input type="checkbox">')
 						.data('source', this)
-						.change(function () {
-							cal.fullCalendar(
-								$(this).is(':checked') ? 'addEventSource' : 'removeEventSource',
-								$(this).data('source')
-							);
-						})
 						.prop('checked', this.defaultEnable !== false))));
 		// }}}
+	});
+
+	// {{{ Checklist functionality
+	$('#sources').on('change', ':checkbox', function () {
+		cal.fullCalendar(
+			$(this).is(':checked') ? 'addEventSource' : 'removeEventSource',
+			$(this).data('source')
+		);
 	});
 
 	cal.one('calendarStart', function () {
 		$('#sources :checkbox').change();
 	});
+	// }}}
 
 	$('#refresh')
 		.button({ icons: { primary: 'ui-icon-refresh' } })

@@ -8,32 +8,31 @@ MasterCalendar.registerModule(function (cal, sources) {
 		var menuDiv = $('<div/>');
 		this.toggler.append(menuDiv);
 
+		menuDiv.on('click', 'a.hidden-toggle', function () {
+			if ($(this).next().toggle('fast').is(':hidden')) {
+				$(this).text('(show)');
+			} else {
+				$(this).text('(hide)');
+			}
+			return false;
+		});
+
+		menuDiv.on('click', 'a', function () {
+			if (this.href) {
+				window.open(this.href);
+				return false;
+			}
+		});
+
 		this.data = $.extend(this.data, { menu: 1 });
 		this.success = function (data) {
 			if (data.menu) {
-				menuDiv.empty().append($.jqml(data.menu));
-				menuDiv.find('a')
-					.click(function () {
-						if (this.href) {
-							window.open(this.href);
-							return false;
-						}
-					});
-				menuDiv.find('.hidden')
-					.hide()
-					.before($('<a class="hidden-toggle" href="#">(show)</a>')
-						.toggle(function () {
-							$(this).next().show('fast');
-							$(this).text('(hide)');
-							return false;
-						}, function () {
-							$(this).next().hide('fast');
-							$(this).text('(show)');
-							return false;
-						}));
+				menuDiv
+					.empty().append($.jqml(data.menu))
+					.find('.hidden').hide().before($('<a class="hidden-toggle" href="#">(show)</a>'));
 			}
-			if (data) {
-				return data.events || data;
+			if (data.events) {
+				return data.events;
 			}
 		};
 	});
