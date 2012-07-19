@@ -8,13 +8,21 @@ MasterCalendar.registerModule(function (cal, sources) {
 		var menuDiv = $('<div/>');
 		this.toggler.append(menuDiv);
 
-		menuDiv.on('click', 'a.hidden-toggle', function () {
-			if ($(this).next().toggle('fast').is(':hidden')) {
-				$(this).text('(show)');
-			} else {
-				$(this).text('(hide)');
-			}
-			return false;
+		menuDiv.on('click', 'button.hidden-toggle', function (event) {
+			var button = $(this);
+			$(this).next().stop(true, true).slideToggle('fast', function () {
+				if ($(this).is(':hidden')) {
+					button.button('option', {
+						icons: { primary: 'ui-icon-plusthick' },
+						label: 'show'
+					});
+				} else {
+					button.button('option', {
+						icons: { primary: 'ui-icon-minusthick' },
+						label: 'hide'
+					});
+				}
+			});
 		});
 
 		menuDiv.on('click', 'a', function () {
@@ -29,7 +37,9 @@ MasterCalendar.registerModule(function (cal, sources) {
 			if (data.menu) {
 				menuDiv
 					.empty().append($.jqml(data.menu))
-					.find('.hidden').hide().before($('<a class="hidden-toggle" href="#">(show)</a>'));
+					.find('.hidden').hide()
+					.before($('<button class="hidden-toggle">show</button>')
+						.button({ icons: { primary: 'ui-icon-plusthick' }}));
 			}
 			if (data.events) {
 				return data.events;

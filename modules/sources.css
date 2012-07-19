@@ -36,23 +36,3 @@
 	text-overflow: ellipsis;
 }
 
-/* {{{ Source-provided menu content */
-#sources > li > div {
-	font-size: 85%;
-}
-
-#sources > li > div ul {
-	list-style-type: disc;
-	padding: 0 5px 0 25px;
-}
-
-#sources > li > div li {
-	padding: 2px 0px;
-}
-
-#sources > li > div a.hidden-toggle {
-	display: block;
-	font-size: 85%;
-	outline: none;
-}
-/* }}} */
