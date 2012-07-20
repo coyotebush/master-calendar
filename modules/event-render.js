@@ -22,7 +22,7 @@ MasterCalendar.registerModule(function (cal) {
 				return false;
 			}
 			if (event.body) {
-				$(element).children().first()
+				$(element).children('.fc-event-inner')
 					.append($('<div class="event-body"/>')
 						.append($.jqml(event.body)));
 			}
