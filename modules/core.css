@@ -7,6 +7,10 @@ a, a:visited {
 	color: #039;
 }
 
+.ui-widget {
+	font-size: 100%;
+}
+
 #options {
 	position: absolute;
 	left: 0;

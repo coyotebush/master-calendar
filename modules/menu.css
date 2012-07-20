@@ -13,7 +13,6 @@
 
 #sources > li > div .hidden-toggle {
 	display: block;
-	font-size: 100%;
 }
 
 #sources > li > div .hidden-toggle .ui-button-text {
