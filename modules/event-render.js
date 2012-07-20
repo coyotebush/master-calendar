@@ -17,8 +17,7 @@ MasterCalendar.registerModule(function (cal) {
 	return {
 		eventRender: function (event, element) {
 			if (event.participation) {
-				$(element).find('.fc-event-time')
-					.addClass('highlight-text');
+				$(element).addClass('event-participation');
 			} else if (filterParticipation) {
 				return false;
 			}

@@ -6,6 +6,11 @@
 	border-collapse: collapse;
 }
 
+.event-participation .fc-event-time {
+	color: #FF0;
+	font-weight: bold;
+}
+
 .highlight-text {
 	color: #FF0;
 }
