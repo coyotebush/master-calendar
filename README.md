@@ -14,6 +14,7 @@ Current features:
 
 Future goals:
 
+- let sources provide event filtering controls
 - good mobile device support
 
 Sources
