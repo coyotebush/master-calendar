@@ -46,9 +46,12 @@ MasterCalendar.registerModule(function (cal, sources) {
 			cal.fullCalendar('refetchEvents');
 		});
 
+	$('#loading').progressbar({ value: 100 });
+
 	return {
-		loading: function (state) {
-			$('#loading').toggle(state);
+		loading: function (pending, total) {
+			console.debug(arguments);
+			$('#loading').progressbar('value', 100 * (1 - pending / (total - 1)));
 		}
 	};
 });
