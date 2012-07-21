@@ -1,11 +1,11 @@
+#refresh {
+	overflow: hidden;
+}
 
 #refresh button {
-	display: block;
 	float: left;
-	width: 25%;
 	height: 2em;
-	margin: 0 -1px;
-	vertical-align: top;
+	margin-right: 0;
 }
 
 #refresh .ui-button-text {
@@ -16,15 +16,9 @@
 }
 
 #refresh > div {
-	float: right;
-	width: 75%;
 	height: 1.9em;
-	margin: 0 -1px;
+	overflow: hidden;
 	border-color: #D3D3D3; /* from .ui-state-default */
-}
-
-#refresh > br {
-	clear: both;
 }
 
 #sources {

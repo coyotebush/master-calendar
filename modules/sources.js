@@ -41,7 +41,7 @@ MasterCalendar.registerModule(function (cal, sources) {
 	// }}}
 
 	$('#refresh > button')
-		.button({ icons: { primary: 'ui-icon-refresh' } })
+		.button({ text: false, icons: { primary: 'ui-icon-refresh' } })
 		.removeClass('ui-corner-all').addClass('ui-corner-left')
 		.click(function () {
 			cal.fullCalendar('refetchEvents');
