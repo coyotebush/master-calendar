@@ -50,10 +50,12 @@ MasterCalendar.registerModule(function (cal, sources) {
 
 	return {
 		loading: function (pending, total) {
-			console.debug(arguments);
+			var percentComplete = 100 * (1 - pending / (total - 1));
 			$('#loading .ui-progressbar-value')
 				.stop(true, true)
-				.animate({width: 100 * (1 - pending / (total - 1)) + '%'});
+				.animate({ width: percentComplete + '%' }, function () {
+					$('#loading').progressbar('value', percentComplete);
+				});
 		}
 	};
 });
