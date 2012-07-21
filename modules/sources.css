@@ -6,6 +6,10 @@
 	float: left;
 	height: 2em;
 	margin-right: 0;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	-ms-box-sizing: content-box;
 }
 
 #refresh .ui-button-text {
@@ -15,9 +19,9 @@
 	line-height: 1.9em;
 }
 
-#refresh > div {
-	height: 1.9em;
-	overflow: hidden;
+#refresh .ui-progressbar {
+	height: 2em;
+	/* .ui-progressbar { overflow: hidden; } */
 	border-color: #D3D3D3; /* from .ui-state-default */
 }
 
