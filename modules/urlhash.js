@@ -16,7 +16,8 @@ MasterCalendar.registerModule(function (cal) {
 	/*jslint unparam: true*/
 	cal.on('viewDisplay', function (e, viewObj) {
 		var hash = '#';
-		if (Date.now() < viewObj.start || Date.now() > viewObj.end) {
+		var now = new Date();
+		if (now < viewObj.start || now > viewObj.end) {
 			hash += viewObj.name + '/' +
 				$.fullCalendar.formatDate(viewObj.start, 'yyyy-MM-dd');
 		} else if (viewObj.name != defaultView) {
