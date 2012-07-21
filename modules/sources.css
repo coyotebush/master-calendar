@@ -1,6 +1,11 @@
 
-#refresh {
+#refresh button {
 	display: block;
+	float: left;
+	width: 25%;
+	height: 2em;
+	margin: 0 -1px;
+	vertical-align: top;
 }
 
 #refresh .ui-button-text {
@@ -8,6 +13,18 @@
 	padding-bottom: 0;
 	padding-right: 0.6em;
 	line-height: 1.9em;
+}
+
+#refresh > div {
+	float: right;
+	width: 75%;
+	height: 1.9em;
+	margin: 0 -1px;
+	border-color: #D3D3D3; /* from .ui-state-default */
+}
+
+#refresh > br {
+	clear: both;
 }
 
 #sources {

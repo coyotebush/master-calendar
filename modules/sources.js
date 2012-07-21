@@ -40,21 +40,25 @@ MasterCalendar.registerModule(function (cal, sources) {
 	});
 	// }}}
 
-	$('#refresh')
+	$('#refresh > button')
 		.button({ icons: { primary: 'ui-icon-refresh' } })
+		.removeClass('ui-corner-all').addClass('ui-corner-left')
 		.click(function () {
 			cal.fullCalendar('refetchEvents');
 		});
 
-	$('#loading').progressbar({ value: 100 });
+	$('#refresh > div')
+		.progressbar({ value: 100 })
+		.removeClass('ui-corner-all').addClass('ui-corner-right')
+		.children('.ui-progressbar-value').removeClass('ui-corner-left');
 
 	return {
 		loading: function (pending, total) {
 			var percentComplete = 100 * (1 - pending / (total - 1));
-			$('#loading .ui-progressbar-value')
+			$('#refresh .ui-progressbar-value')
 				.stop(true, true)
 				.animate({ width: percentComplete + '%' }, function () {
-					$('#loading').progressbar('value', percentComplete);
+					$('#refresh > div').progressbar('value', percentComplete);
 				});
 		}
 	};
