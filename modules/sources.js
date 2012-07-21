@@ -17,9 +17,9 @@ MasterCalendar.registerModule(function (cal, sources) {
 
 		// {{{ Checklist
 		$('#sources')
-			.append(this.toggler = $('<li/>')
+			.append(this.toggler = $('<li class="cal-source"/>')
 				.css('border-color', this.color)
-				.append($('<label>' + this.name + '</label>')
+				.append($('<label class="cal-source-label">' + this.name + '</label>')
 					.css('background-color', this.color)
 					.prepend($('<input type="checkbox">')
 						.data('source', this)

@@ -5,7 +5,7 @@
 MasterCalendar.registerModule(function (cal, sources) {
 	'use strict';
 	$(sources).each(function () {
-		var menuDiv = $('<div/>');
+		var menuDiv = $('<div class="cal-source-menu"/>');
 		this.toggler.append(menuDiv);
 
 		menuDiv.on('click', 'button.hidden-toggle', function (event) {
@@ -36,6 +36,7 @@ MasterCalendar.registerModule(function (cal, sources) {
 		this.success = function (data) {
 			if (data.menu) {
 				menuDiv
+					.show()
 					.empty().append($.jqml(data.menu))
 					.find('.hidden').hide()
 					.before($('<button class="hidden-toggle">show</button>')

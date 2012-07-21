@@ -1,26 +1,24 @@
-#sources > li > div {
+.cal-source-menu {
+	display: none;
+	padding: 0.2em;
 	font-size: 85%;
 	overflow: auto;
 }
 
-#sources > li > div > * {
-	padding: 0.2em;
-}
-
-#sources > li > div ul {
+.cal-source-menu ul {
 	list-style-type: disc;
 	padding-left: 1.8em;
 }
 
-#sources > li > div li {
+.cal-source-menu li {
 	padding: 0.2em 0;
 }
 
-#sources > li > div .hidden-toggle {
+.cal-source-menu .hidden-toggle {
 	display: block;
 }
 
-#sources > li > div .hidden-toggle .ui-button-text {
+.cal-source-menu .hidden-toggle .ui-button-text {
 	padding-top: 0;
 	padding-bottom: 0;
 }

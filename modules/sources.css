@@ -17,7 +17,7 @@
 	list-style-type: none;
 }
 
-#sources > li {
+#sources li.cal-source {
 	border-width: 1px;
 	border-style: solid;
 	border-radius: 3px;
@@ -28,7 +28,7 @@
 	background-color: #333;
 }
 
-#sources > li > label {
+#sources .cal-source-label {
 	display: block;
 	padding: 2px 0;
 	color: #FFF;
