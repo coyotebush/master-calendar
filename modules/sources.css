@@ -22,6 +22,7 @@
 	border-style: solid;
 	border-radius: 3px;
 	margin: 0.2em 0;
+	overflow: hidden;
 }
 
 #filter-my-events {
@@ -30,7 +31,7 @@
 
 #sources .cal-source-label {
 	display: block;
-	padding: 2px 0;
+	padding: 0.2em 0;
 	color: #FFF;
 	white-space: nowrap;
 	overflow: hidden;
