@@ -1,7 +1,16 @@
-
 #refresh {
-	display: block;
 	margin-bottom: 1em;
+	overflow: hidden;
+}
+
+#refresh button {
+	float: left;
+	height: 1.9em;
+	margin-right: 0;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	-ms-box-sizing: content-box;
 }
 
 #refresh .ui-button-text {
@@ -9,6 +18,12 @@
 	padding-bottom: 0;
 	padding-right: 0.6em;
 	line-height: 1.9em;
+}
+
+#refresh .ui-progressbar {
+	height: 1.9em;
+	/* .ui-progressbar { overflow: hidden; } */
+	border-color: #D3D3D3; /* from .ui-state-default */
 }
 
 #sources {

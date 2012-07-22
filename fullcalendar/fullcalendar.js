@@ -11,7 +11,7 @@
  * Dual licensed under the MIT and GPL licenses, located in
  * MIT-LICENSE.txt and GPL-LICENSE.txt respectively.
  *
- * Date: Mon Feb 6 22:40:40 2012 -0800
+ * Date: Fri Jul 20 15:50:45 2012 -0700
  *
  */
  
@@ -878,7 +878,6 @@ function EventManager(options, _sources) {
 	var rangeStart, rangeEnd;
 	var currentFetchID = 0;
 	var pendingSourceCnt = 0;
-	var loadingLevel = 0;
 	var cache = [];
 	
 	
@@ -948,10 +947,10 @@ function EventManager(options, _sources) {
 		var events = source.events;
 		if (events) {
 			if ($.isFunction(events)) {
-				pushLoading();
+				loading();
 				events(cloneDate(rangeStart), cloneDate(rangeEnd), function(events) {
 					callback(events);
-					popLoading();
+					loading();
 				});
 			}
 			else if ($.isArray(events)) {
@@ -975,7 +974,7 @@ function EventManager(options, _sources) {
 				if (endParam) {
 					data[endParam] = Math.round(+rangeEnd / 1000);
 				}
-				pushLoading();
+				loading();
 				$.ajax($.extend({}, ajaxDefaults, source, {
 					data: data,
 					success: function(events) {
@@ -992,7 +991,7 @@ function EventManager(options, _sources) {
 					},
 					complete: function() {
 						applyAll(complete, this, arguments);
-						popLoading();
+						loading();
 					}
 				}));
 			}else{
@@ -1145,17 +1144,8 @@ function EventManager(options, _sources) {
 	-----------------------------------------------------------------------------*/
 	
 	
-	function pushLoading() {
-		if (!loadingLevel++) {
-			trigger('loading', null, true);
-		}
-	}
-	
-	
-	function popLoading() {
-		if (!--loadingLevel) {
-			trigger('loading', null, false);
-		}
+	function loading() {
+		trigger('loading', null, pendingSourceCnt || false, sources.length);
 	}
 	
 	
