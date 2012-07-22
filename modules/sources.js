@@ -40,14 +40,14 @@ MasterCalendar.registerModule(function (cal, sources) {
 	});
 	// }}}
 
-	$('#refresh > button')
+	$('#refresh .ui-button')
 		.button({ text: false, icons: { primary: 'ui-icon-refresh' } })
 		.removeClass('ui-corner-all').addClass('ui-corner-left')
 		.click(function () {
 			cal.fullCalendar('refetchEvents');
 		});
 
-	$('#refresh > div')
+	$('#refresh .ui-progressbar')
 		.progressbar({ value: 100 })
 		.removeClass('ui-corner-all').addClass('ui-corner-right')
 		.children('.ui-progressbar-value').removeClass('ui-corner-left');

@@ -3,14 +3,10 @@
 	overflow: hidden;
 }
 
-#refresh button {
+#refresh .ui-button {
 	float: left;
 	height: 1.9em;
 	margin-right: 0;
-	box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-ms-box-sizing: content-box;
 }
 
 #refresh .ui-button-text {
