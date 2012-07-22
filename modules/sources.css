@@ -4,7 +4,7 @@
 
 #refresh button {
 	float: left;
-	height: 2em;
+	height: 1.9em;
 	margin-right: 0;
 	box-sizing: content-box;
 	-moz-box-sizing: content-box;
@@ -20,7 +20,7 @@
 }
 
 #refresh .ui-progressbar {
-	height: 2em;
+	height: 1.9em;
 	/* .ui-progressbar { overflow: hidden; } */
 	border-color: #D3D3D3; /* from .ui-state-default */
 }
