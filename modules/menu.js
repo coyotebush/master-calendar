@@ -8,7 +8,7 @@ MasterCalendar.registerModule(function (cal, sources) {
 		var menuDiv = $('<div class="cal-source-menu"/>');
 		this.toggler.append(menuDiv);
 
-		menuDiv.on('click', 'button.hidden-toggle', function (event) {
+		menuDiv.on('click', '.hidden-toggle', function (event) {
 			var button = $(this);
 			$(this).next().stop(true, true).slideToggle('fast', function () {
 				if ($(this).is(':hidden')) {
@@ -39,7 +39,7 @@ MasterCalendar.registerModule(function (cal, sources) {
 					.show()
 					.empty().append($.jqml(data.menu))
 					.find('.hidden').hide()
-					.before($('<button class="hidden-toggle">show</button>')
+					.before($('<div class="hidden-toggle">show</div>')
 						.button({ icons: { primary: 'ui-icon-plusthick' }}));
 			}
 			if (data.events) {
