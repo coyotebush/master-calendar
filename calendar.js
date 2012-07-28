@@ -9,6 +9,7 @@ js('fullcalendar/fullcalendar.js');
 js('fullcalendar/gcal.js');
 js('MasterCalendar.js');
 js('modules/core.js');
+js('modules/mobile.js');
 js('modules/event-render.js');
 js('modules/sources.js');
 js('modules/menu.js');
