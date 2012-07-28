@@ -1,3 +1,7 @@
+.fc-event-vert .fc-event-time {
+	font-size: 1em;
+}
+
 .event-body {
 	font-size: 85%;
 }
