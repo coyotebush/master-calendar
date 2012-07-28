@@ -1,17 +1,18 @@
 /**
  * @preserve
- * FullCalendar v1.5.3
- * http://arshaw.com/fullcalendar/
+ * FullCalendar v1.5.3-rcube-0.7.1
+ * https://github.com/roundcube/fullcalendar
  *
  * Use fullcalendar.css for basic styling.
  * For event drag & drop, requires jQuery UI draggable.
  * For event resizing, requires jQuery UI resizable.
  *
  * Copyright (c) 2011 Adam Shaw
+ * Copyright (c) 2011, Kolab Systems AG
  * Dual licensed under the MIT and GPL licenses, located in
  * MIT-LICENSE.txt and GPL-LICENSE.txt respectively.
  *
- * Date: Fri Jul 20 15:50:45 2012 -0700
+ * Date: Fri Jul 27 20:53:44 2012 -0700
  *
  */
  
@@ -29,6 +30,7 @@ var defaults = {
 		right: 'today prev,next'
 	},
 	weekends: true,
+	currentTimeIndicator: false,
 	
 	// editing
 	//editable: false,
@@ -47,12 +49,16 @@ var defaults = {
 	titleFormat: {
 		month: 'MMMM yyyy',
 		week: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}",
-		day: 'dddd, MMM d, yyyy'
+		day: 'dddd, MMM d, yyyy',
+		list: 'MMM d, yyyy',
+		table: 'MMM d, yyyy'
 	},
 	columnFormat: {
 		month: 'ddd',
 		week: 'ddd M/d',
-		day: 'dddd M/d'
+		day: 'dddd M/d',
+		list: 'dddd, MMM d, yyyy',
+		table: 'MMM d, yyyy'
 	},
 	timeFormat: { // for event elements
 		'': 'h(:mm)t' // default
@@ -73,8 +79,28 @@ var defaults = {
 		today: 'today',
 		month: 'month',
 		week: 'week',
-		day: 'day'
+		day: 'day',
+		list: 'list',
+		table: 'table'
 	},
+	listTexts: {
+		until: 'until',
+		past: 'Past events',
+		today: 'Today',
+		tomorrow: 'Tomorrow',
+		thisWeek: 'This week',
+		nextWeek: 'Next week',
+		thisMonth: 'This month',
+		nextMonth: 'Next month',
+		future: 'Future events',
+		week: 'W'
+	},
+	
+	// list/table options
+	listSections: 'month',  // false|'day'|'week'|'month'|'smart'
+	listRange: 30,  // number of days to be displayed
+	listPage: 7,  // number of days to jump when paging
+	tableCols: ['handle', 'date', 'time', 'title'],
 	
 	// jquery-ui theming
 	theme: false,
@@ -111,7 +137,7 @@ var rtlDefaults = {
 
 
 
-var fc = $.fullCalendar = { version: "1.5.3" };
+var fc = $.fullCalendar = { version: "1.5.3-rcube-0.7.1" };
 var fcViews = fc.views = {};
 
 
@@ -424,6 +450,7 @@ function Calendar(element, options, eventSources) {
 			setSize();
 			unselect();
 			currentView.clearEvents();
+			currentView.trigger('viewRender', currentView);
 			currentView.renderEvents(events);
 			currentView.sizeDirty = false;
 		}
@@ -500,8 +527,8 @@ function Calendar(element, options, eventSources) {
 	}
 	
 	
-	function refetchEvents() {
-		fetchEvents(currentView.visStart, currentView.visEnd); // will call reportEvents
+	function refetchEvents(source) {
+		fetchEvents(currentView.visStart, currentView.visEnd, source); // will call reportEvents
 	}
 	
 	
@@ -523,6 +550,7 @@ function Calendar(element, options, eventSources) {
 		markEventsDirty();
 		if (elementVisible()) {
 			currentView.clearEvents();
+			currentView.trigger('viewRender', currentView);
 			currentView.renderEvents(events, modifiedEventID);
 			currentView.eventsDirty = false;
 		}
@@ -632,6 +660,11 @@ function Calendar(element, options, eventSources) {
 		if (name == 'height' || name == 'contentHeight' || name == 'aspectRatio') {
 			options[name] = value;
 			updateSize();
+		} else if (name.indexOf('list') == 0 || name == 'tableCols') {
+			options[name] = value;
+			currentView.start = null; // force re-render
+		} else if (name == 'maxHeight') {
+			options[name] = value;
 		}
 	}
 	
@@ -896,17 +929,20 @@ function EventManager(options, _sources) {
 	}
 	
 	
-	function fetchEvents(start, end) {
+	function fetchEvents(start, end, src) {
 		rangeStart = start;
 		rangeEnd = end;
-		cache = [];
+		// partially clear cache if refreshing one source only (issue #1061)
+		cache = typeof src != 'undefined' ? $.grep(cache, function(e) { return !isSourcesEqual(e.source, src); }) : [];
 		var fetchID = ++currentFetchID;
 		var len = sources.length;
-		pendingSourceCnt = len;
+		pendingSourceCnt = typeof src == 'undefined' ? len : 1;
 		for (var i=0; i<len; i++) {
-			fetchEventSource(sources[i], fetchID);
+			if (typeof src == 'undefined' || isSourcesEqual(sources[i], src))
+				fetchEventSource(sources[i], fetchID);
 		}
 	}
+
 	
 	
 	function fetchEventSource(source, fetchID) {
@@ -1091,8 +1127,9 @@ function EventManager(options, _sources) {
 				stickySource.events.push(event);
 				event.source = stickySource;
 			}
-			cache.push(event);
 		}
+		// always push event to cache (issue #1112:)
+		cache.push(event);
 		reportEvents(cache);
 	}
 	
@@ -1571,9 +1608,22 @@ var dateFormatters = {
 			return 'th';
 		}
 		return ['st', 'nd', 'rd'][date%10-1] || 'th';
-	}
+	}	,
+	W	: function(d)	{ return iso8601Week(d); }
 };
 
+
+// Determine the week of the year based on the ISO 8601 definition.
+// copied from jquery UI Datepicker
+var iso8601Week = function(date) {
+	var checkDate = cloneDate(date);
+	// Find Thursday of this week starting on Monday
+	checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7));
+	var time = checkDate.getTime();
+	checkDate.setMonth(0); // Compare with Jan 1
+	checkDate.setDate(1);
+	return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
+};
 
 
 fc.applyAll = applyAll;
@@ -3526,10 +3576,10 @@ function AgendaView(element, calendar, viewName) {
 	function slotSelectionMousedown(ev) {
 		if (ev.which == 1 && opt('selectable')) { // ev.which==1 means left mouse button
 			unselect(ev);
-			var dates;
+			var dates, helperOption = opt('selectHelper');
 			hoverListener.start(function(cell, origCell) {
 				clearSelection();
-				if (cell && cell.col == origCell.col && !cellIsAllDay(cell)) {
+				if (cell && (cell.col == origCell.col || !helperOption) && !cellIsAllDay(cell)) {
 					var d1 = cellDate(origCell);
 					var d2 = cellDate(cell);
 					dates = [
@@ -3641,6 +3691,7 @@ function AgendaEventRenderer() {
 	var calendar = t.calendar;
 	var formatDate = calendar.formatDate;
 	var formatDates = calendar.formatDates;
+	var timeLineInterval;
 	
 	
 	
@@ -3665,6 +3716,12 @@ function AgendaEventRenderer() {
 			setHeight(); // no params means set to viewHeight
 		}
 		renderSlotSegs(compileSlotSegs(slotEvents), modifiedEventId);
+		
+		if (opt('currentTimeIndicator')) {
+			window.clearInterval(timeLineInterval);
+			timeLineInterval = window.setInterval(setTimeIndicator, 30000);
+			setTimeIndicator();
+		}
 	}
 	
 	
@@ -3754,7 +3811,8 @@ function AgendaEventRenderer() {
 			height,
 			slotSegmentContainer = getSlotSegmentContainer(),
 			rtl, dis, dit,
-			colCnt = getColCnt();
+			colCnt = getColCnt(),
+			overlapping = colCnt > 1;
 			
 		if (rtl = opt('isRTL')) {
 			dis = -1;
@@ -3781,8 +3839,11 @@ function AgendaEventRenderer() {
 				outerWidth = availWidth / (levelI + forward + 1);
 			}else{
 				if (forward) {
-					// moderately wide, aligned left still
-					outerWidth = ((availWidth / (forward + 1)) - (12/2)) * 2; // 12 is the predicted width of resizer =
+					if (overlapping) {	// moderately wide, aligned left still
+						outerWidth = ((availWidth / (forward + 1)) - (12/2)) * 2; // 12 is the predicted width of resizer =
+					}else{
+						outerWidth = outerWidth = availWidth / (forward + 1);
+					}
 				}else{
 					// can be entire width, aligned left
 					outerWidth = availWidth;
@@ -3793,7 +3854,7 @@ function AgendaEventRenderer() {
 				* dis + (rtl ? availWidth - outerWidth : 0);   // rtl
 			seg.top = top;
 			seg.left = left;
-			seg.outerWidth = outerWidth;
+			seg.outerWidth = outerWidth - (overlapping ? 0 : 1);
 			seg.outerHeight = bottom - top;
 			html += slotSegHtml(event, seg);
 		}
@@ -3942,6 +4003,37 @@ function AgendaEventRenderer() {
 		eventElementHandlers(event, eventElement);
 	}
 	
+	
+	// draw a horizontal line indicating the current time (#143)
+	function setTimeIndicator()
+	{
+		var container = getBodyContent();
+		var timeline = container.children('.fc-timeline');
+		if (timeline.length == 0) { // if timeline isn't there, add it
+			timeline = $('<hr>').addClass('fc-timeline').appendTo(container);
+		}
+
+		var cur_time = new Date();
+		if (t.visStart < cur_time && t.visEnd > cur_time) {
+			timeline.show();
+		}
+		else {
+			timeline.hide();
+			return;
+		}
+
+		var secs = (cur_time.getHours() * 60 * 60) + (cur_time.getMinutes() * 60) + cur_time.getSeconds();
+		var percents = secs / 86400; // 24 * 60 * 60 = 86400, # of seconds in a day
+
+		timeline.css('top', Math.floor(container.height() * percents - 1) + 'px');
+
+		if (t.name == 'agendaWeek') { // week view, don't want the timeline to go the whole way across
+			var daycol = $('.fc-today', t.element);
+			var left = daycol.position().left + 1;
+			var width = daycol.width();
+			timeline.css({ left: left + 'px', width: width + 'px' });
+		}
+	}
 	
 	
 	/* Dragging
@@ -4252,7 +4344,7 @@ function View(element, calendar, viewName) {
 	
 	function opt(name, viewNameOverride) {
 		var v = options[name];
-		if (typeof v == 'object') {
+		if (typeof v == 'object' && !v.length) {
 			return smartProperty(v, viewNameOverride || viewName);
 		}
 		return v;
@@ -4518,6 +4610,9 @@ function DayEventRenderer() {
 		var seg;
 		var top;
 		var k;
+		var overflows;
+		var overflowLinks;
+		var maxHeight = opt('maxHeight');
 		segmentContainer[0].innerHTML = daySegHTML(segs); // faster than .html()
 		daySegElementResolve(segs, segmentContainer.children());
 		daySegElementReport(segs);
@@ -4529,23 +4624,66 @@ function DayEventRenderer() {
 		// set row heights, calculate event tops (in relation to row top)
 		for (rowI=0; rowI<rowCnt; rowI++) {
 			levelI = 0;
+			overflows = [];
+			overflowLinks = {};
 			colHeights = [];
 			for (j=0; j<colCnt; j++) {
+				overflows[j] = 0;
 				colHeights[j] = 0;
 			}
 			while (i<segCnt && (seg = segs[i]).row == rowI) {
 				// loop through segs in a row
 				top = arrayMax(colHeights.slice(seg.startCol, seg.endCol));
-				seg.top = top;
-				top += seg.outerHeight;
+				if (maxHeight && top + seg.outerHeight > maxHeight) {
+					seg.overflow = true;
+				}
+				else {
+					seg.top = top;
+					top += seg.outerHeight;
+				}
 				for (k=seg.startCol; k<seg.endCol; k++) {
-					colHeights[k] = top;
+					if (overflows[k])
+						seg.overflow = true;
+					if (seg.overflow) {
+						if (seg.isStart && !overflowLinks[k])
+							overflowLinks[k] = { seg:seg, top:top, date:cloneDate(seg.start, true), count:0 };
+						if (overflowLinks[k])
+							overflowLinks[k].count++;
+						overflows[k]++;
+					}
+					else
+						colHeights[k] = top;
 				}
 				i++;
 			}
 			rowDivs[rowI].height(arrayMax(colHeights));
+			renderOverflowLinks(overflowLinks, rowDivs[rowI]);
 		}
 		daySegSetTops(segs, getRowTops(rowDivs));
+	}
+	
+	
+	function renderOverflowLinks(overflowLinks, rowDiv) {
+		var container = getDaySegmentContainer();
+		var colCnt = getColCnt();
+		var element, triggerRes, link;
+		for (var j=0; j<colCnt; j++) {
+			if ((link = overflowLinks[j])) {
+				if (link.count > 1) {
+					element = $('<a>').addClass('fc-more-link').html('+'+link.count).appendTo(container);
+					element[0].style.position = 'absolute';
+					element[0].style.left = link.seg.left + 'px';
+					element[0].style.top = (link.top + rowDiv[0].offsetTop) + 'px';
+					triggerRes = trigger('overflowRender', link, { count:link.count, date:link.date }, element);
+					if (triggerRes === false)
+						element.remove();
+				}
+				else {
+					link.seg.top = link.top;
+					link.seg.overflow = false;
+				}
+			}
+		}
 	}
 	
 	
@@ -4796,6 +4934,8 @@ function DayEventRenderer() {
 				}
 				seg.outerHeight = element[0].offsetHeight + val;
 			}
+			else  // always set a value (issue #1108 )
+				seg.outerHeight = 0;
 		}
 	}
 	
@@ -4832,11 +4972,13 @@ function DayEventRenderer() {
 		for (i=0; i<segCnt; i++) {
 			seg = segs[i];
 			element = seg.element;
-			if (element) {
+			if (element && !seg.overflow) {
 				element[0].style.top = rowTops[seg.row] + (seg.top||0) + 'px';
 				event = seg.event;
 				trigger('eventAfterRender', event, event, element);
 			}
+			else if (element)
+				element.hide();
 		}
 	}
 	
@@ -5209,6 +5351,562 @@ function HorizontalPositionCache(getElement) {
 		rights = {};
 	};
 	
+}
+
+/* Additional view: list (by bruederli@kolabsys.com)
+---------------------------------------------------------------------------------*/
+
+function ListEventRenderer() {
+	var t = this;
+	
+	// exports
+	t.renderEvents = renderEvents;
+	t.renderEventTime = renderEventTime;
+	t.compileDaySegs = compileSegs; // for DayEventRenderer
+	t.clearEvents = clearEvents;
+	t.lazySegBind = lazySegBind;
+	t.sortCmp = sortCmp;
+	
+	// imports
+	DayEventRenderer.call(t);
+	var opt = t.opt;
+	var trigger = t.trigger;
+	var eventEnd = t.eventEnd;
+	var reportEvents = t.reportEvents;
+	var reportEventClear = t.reportEventClear;
+	var reportEventElement = t.reportEventElement;
+	var eventElementHandlers = t.eventElementHandlers;
+	var showEvents = t.showEvents;
+	var hideEvents = t.hideEvents;
+	var getListContainer = t.getDaySegmentContainer;
+	var calendar = t.calendar;
+	var formatDate = calendar.formatDate;
+	var formatDates = calendar.formatDates;
+	
+	
+	/* Rendering
+	--------------------------------------------------------------------*/
+	
+	function clearEvents() {
+		reportEventClear();
+		getListContainer().empty();
+	}
+	
+	function renderEvents(events, modifiedEventId) {
+		events.sort(sortCmp);
+		reportEvents(events);
+		renderSegs(compileSegs(events), modifiedEventId);
+	}
+	
+	function compileSegs(events) {
+		var segs = [];
+		var colFormat = opt('titleFormat', 'day');
+		var firstDay = opt('firstDay');
+		var segmode = opt('listSections');
+		var event, i, dd, wd, md, seg, segHash, curSegHash, segDate, curSeg = -1;
+		var today = clearTime(new Date());
+		var weekstart = addDays(cloneDate(today), -((today.getDay() - firstDay + 7) % 7));
+		
+		for (i=0; i < events.length; i++) {
+			event = events[i];
+			
+			// skip events out of range
+			if ((event.end || event.start) < t.start || event.start > t.visEnd)
+				continue;
+			
+			// define sections of this event
+			// create smart sections such as today, tomorrow, this week, next week, next month, ect.
+			segDate = cloneDate(event.start < t.start && event.end > t.start ? t.start : event.start, true);
+			dd = dayDiff(segDate, today);
+			wd = Math.floor(dayDiff(segDate, weekstart) / 7);
+			md = segDate.getMonth() + ((segDate.getYear() - today.getYear()) * 12) - today.getMonth();
+			
+			// build section title
+			if (segmode == 'smart') {
+				if (dd < 0) {
+					segHash = opt('listTexts', 'past');
+				} else if (dd == 0) {
+					segHash = opt('listTexts', 'today');
+				} else if (dd == 1) {
+					segHash = opt('listTexts', 'tomorrow');
+				} else if (wd == 0) {
+					segHash = opt('listTexts', 'thisWeek');
+				} else if (wd == 1) {
+					segHash = opt('listTexts', 'nextWeek');
+				} else if (md == 0) {
+					segHash = opt('listTexts', 'thisMonth');
+				} else if (md == 1) {
+					segHash = opt('listTexts', 'nextMonth');
+				} else if (md > 1) {
+					segHash = opt('listTexts', 'future');
+				}
+			} else if (segmode == 'month') {
+				segHash = formatDate(segDate, 'MMMM yyyy');
+			} else if (segmode == 'week') {
+				segHash = opt('listTexts', 'week') + formatDate(segDate, ' W');
+			} else if (segmode == 'day') {
+				segHash = formatDate(segDate, colFormat);
+			} else {
+				segHash = '';
+			}
+			
+			// start new segment
+			if (segHash != curSegHash) {
+				segs[++curSeg] = { events: [], start: segDate, title: segHash, daydiff: dd, weekdiff: wd, monthdiff: md };
+				curSegHash = segHash;
+			}
+			
+			segs[curSeg].events.push(event);
+		}
+		
+		return segs;
+	}
+
+	function sortCmp(a, b) {
+		var sd = a.start.getTime() - b.start.getTime();
+		return sd || (a.end ? a.end.getTime() : 0) - (b.end ? b.end.getTime() : 0);
+	}
+	
+	function renderSegs(segs, modifiedEventId) {
+		var tm = opt('theme') ? 'ui' : 'fc';
+		var headerClass = tm + "-widget-header";
+		var contentClass = tm + "-widget-content";
+		var i, j, seg, event, times, s, skinCss, skinCssAttr, classes, segContainer, eventElement, eventElements, triggerRes;
+
+		for (j=0; j < segs.length; j++) {
+			seg = segs[j];
+			
+			if (seg.title) {
+				$('<div class="fc-list-header ' + headerClass + '">' + htmlEscape(seg.title) + '</div>').appendTo(getListContainer());
+			}
+			segContainer = $('<div>').addClass('fc-list-section ' + contentClass).appendTo(getListContainer());
+			s = '';
+			
+			for (i=0; i < seg.events.length; i++) {
+				event = seg.events[i];
+				times = renderEventTime(event, seg);
+				skinCss = getSkinCss(event, opt);
+				skinCssAttr = (skinCss ? " style='" + skinCss + "'" : '');
+				classes = ['fc-event', 'fc-event-skin', 'fc-event-vert', 'fc-corner-top', 'fc-corner-bottom'].concat(event.className);
+				if (event.source && event.source.className) {
+					classes = classes.concat(event.source.className);
+				}
+				
+				s += 
+					"<div class='" + classes.join(' ') + "'" + skinCssAttr + ">" +
+					"<div class='fc-event-inner fc-event-skin'" + skinCssAttr + ">" +
+					"<div class='fc-event-head fc-event-skin'" + skinCssAttr + ">" +
+					"<div class='fc-event-time'>" +
+					(times[0] ? '<span class="fc-col-date">' + times[0] + '</span> ' : '') +
+					(times[1] ? '<span class="fc-col-time">' + times[1] + '</span>' : '') +
+					"</div>" +
+					"</div>" +
+					"<div class='fc-event-content'>" +
+					"<div class='fc-event-title'>" +
+					htmlEscape(event.title) +
+					"</div>" +
+					"</div>" +
+					"<div class='fc-event-bg'></div>" +
+					"</div>" + // close inner
+					"</div>";  // close outer
+			}
+			
+			segContainer[0].innerHTML = s;
+			eventElements = segContainer.children();
+
+			// retrieve elements, run through eventRender callback, bind event handlers
+			for (i=0; i < seg.events.length; i++) {
+				event = seg.events[i];
+				eventElement = $(eventElements[i]); // faster than eq()
+				triggerRes = trigger('eventRender', event, event, eventElement);
+				if (triggerRes === false) {
+					eventElement.remove();
+				} else {
+					if (triggerRes && triggerRes !== true) {
+						eventElement.remove();
+						eventElement = $(triggerRes).appendTo(segContainer);
+					}
+					if (event._id === modifiedEventId) {
+						eventElementHandlers(event, eventElement, seg);
+					} else {
+						eventElement[0]._fci = i; // for lazySegBind
+					}
+					reportEventElement(event, eventElement);
+				}
+			}
+		
+			lazySegBind(segContainer, seg, eventElementHandlers);
+		}
+		
+		markFirstLast(getListContainer());
+	}
+	
+	// event time/date range to display
+	function renderEventTime(event, seg) {
+		var timeFormat = opt('timeFormat');
+		var dateFormat = opt('columnFormat');
+		var segmode = opt('listSections');
+		var duration = event.end ? event.end.getTime() - event.start.getTime() : 0;
+		var datestr = '', timestr = '';
+		
+		if (segmode == 'smart') {
+			if (event.start < seg.start) {
+				datestr = opt('listTexts', 'until') + ' ' + formatDate(event.end, (event.allDay || event.end.getDate() != seg.start.getDate()) ? dateFormat : timeFormat);
+			} else if (duration > DAY_MS) {
+				datestr = formatDates(event.start, event.end, dateFormat + '{ - ' + dateFormat + '}');
+			} else if (seg.daydiff == 0) {
+				datestr = opt('listTexts', 'today');
+			}	else if (seg.daydiff == 1) {
+				datestr = opt('listTexts', 'tomorrow');
+			} else if (seg.weekdiff == 0 || seg.weekdiff == 1) {
+				datestr = formatDate(event.start, 'dddd');
+			} else if (seg.daydiff > 1 || seg.daydiff < 0) {
+				datestr = formatDate(event.start, dateFormat);
+			}
+		} else if (segmode != 'day') {
+			datestr = formatDates(event.start, event.end, dateFormat + (duration > DAY_MS ? '{ - ' + dateFormat + '}' : ''));
+		}
+		
+		if (!datestr && event.allDay) {
+			timestr = opt('allDayText');
+		} else if ((duration < DAY_MS || !datestr) && !event.allDay) {
+			timestr = formatDates(event.start, event.end, timeFormat);
+		}
+		
+		return [datestr, timestr];
+	}
+	
+	function lazySegBind(container, seg, bindHandlers) {
+		container.unbind('mouseover').mouseover(function(ev) {
+			var parent = ev.target, e = parent, i, event;
+			while (parent != this) {
+				e = parent;
+				parent = parent.parentNode;
+			}
+			if ((i = e._fci) !== undefined) {
+				e._fci = undefined;
+				event = seg.events[i];
+				bindHandlers(event, container.children().eq(i), seg);
+				$(ev.target).trigger(ev);
+			}
+			ev.stopPropagation();
+		});
+	}
+	
+}
+
+
+fcViews.list = ListView;
+
+
+function ListView(element, calendar) {
+	var t = this;
+
+	// exports
+	t.render = render;
+	t.select = dummy;
+	t.unselect = dummy;
+	t.getDaySegmentContainer = function(){ return body; };
+
+	// imports
+	View.call(t, element, calendar, 'list');
+	ListEventRenderer.call(t);
+	var opt = t.opt;
+	var trigger = t.trigger;
+  var clearEvents = t.clearEvents;
+	var reportEventClear = t.reportEventClear;
+	var formatDates = calendar.formatDates;
+	var formatDate = calendar.formatDate;
+
+	// overrides
+	t.setWidth = setWidth;
+	t.setHeight = setHeight;
+	
+	// locals
+	var body;
+	var firstDay;
+	var nwe;
+	var tm;
+	var colFormat;
+	
+	
+	function render(date, delta) {
+		if (delta) {
+			addDays(date, opt('listPage') * delta);
+		}
+		t.start = t.visStart = cloneDate(date, true);
+		t.end = addDays(cloneDate(t.start), opt('listPage'));
+		t.visEnd = addDays(cloneDate(t.start), opt('listRange'));
+		addMinutes(t.visEnd, -1);  // set end to 23:59
+		t.title = formatDates(date, t.visEnd, opt('titleFormat'));
+		
+		updateOptions();
+
+		if (!body) {
+			buildSkeleton();
+		} else {
+			clearEvents();
+		}
+	}
+	
+	
+	function updateOptions() {
+		firstDay = opt('firstDay');
+		nwe = opt('weekends') ? 0 : 1;
+		tm = opt('theme') ? 'ui' : 'fc';
+		colFormat = opt('columnFormat', 'day');
+	}
+	
+	
+	function buildSkeleton() {
+		body = $('<div>').addClass('fc-list-content').appendTo(element);
+	}
+	
+	function setHeight(height, dateChanged) {
+	  if (!opt('listNoHeight'))
+		  body.css('height', (height-1)+'px').css('overflow', 'auto');
+	}
+
+	function setWidth(width) {
+		// nothing to be done here
+	}
+	
+	function dummy() {
+		// Stub.
+	}
+
+}
+
+/* Additional view: table (by bruederli@kolabsys.com)
+---------------------------------------------------------------------------------*/
+
+function TableEventRenderer() {
+	var t = this;
+	
+	// imports
+	ListEventRenderer.call(t);
+	var opt = t.opt;
+	var sortCmp = t.sortCmp;
+	var trigger = t.trigger;
+	var compileSegs = t.compileDaySegs;
+	var reportEvents = t.reportEvents;
+	var reportEventClear = t.reportEventClear;
+	var reportEventElement = t.reportEventElement;
+	var eventElementHandlers = t.eventElementHandlers;
+	var renderEventTime = t.renderEventTime;
+	var showEvents = t.showEvents;
+	var hideEvents = t.hideEvents;
+	var getListContainer = t.getDaySegmentContainer;
+	var lazySegBind = t.lazySegBind;
+	var calendar = t.calendar;
+	var formatDate = calendar.formatDate;
+	var formatDates = calendar.formatDates;
+
+	// exports
+	t.renderEvents = renderEvents;
+	t.clearEvents = clearEvents;
+
+
+	/* Rendering
+	--------------------------------------------------------------------*/
+	
+	function clearEvents() {
+		reportEventClear();
+		getListContainer().children('tbody').remove();
+	}
+	
+	function renderEvents(events, modifiedEventId) {
+		events.sort(sortCmp);
+		reportEvents(events);
+		renderSegs(compileSegs(events), modifiedEventId);
+		getListContainer().removeClass('fc-list-smart fc-list-day fc-list-month fc-list-week').addClass('fc-list-' + opt('listSections'));
+	}
+
+	function renderSegs(segs, modifiedEventId) {
+		var tm = opt('theme') ? 'ui' : 'fc';
+		var table = getListContainer();
+		var headerClass = tm + "-widget-header";
+		var contentClass = tm + "-widget-content";
+		var tableCols = opt('tableCols');
+		var timecol = $.inArray('time', tableCols) >= 0;
+		var i, j, seg, event, times, s, skinCss, skinCssAttr, skinClasses, rowClasses, segContainer, eventElements, eventElement, triggerRes;
+
+		for (j=0; j < segs.length; j++) {
+			seg = segs[j];
+			
+			if (seg.title) {
+				$('<tbody class="fc-list-header"><tr><td class="fc-list-header ' + headerClass + '" colspan="' + tableCols.length + '">' + htmlEscape(seg.title) + '</td></tr></tbody>').appendTo(table);
+			}
+			segContainer = $('<tbody>').addClass('fc-list-section ' + contentClass).appendTo(table);
+			s = '';
+			
+			for (i=0; i < seg.events.length; i++) {
+				event = seg.events[i];
+				times = renderEventTime(event, seg);
+				skinCss = getSkinCss(event, opt);
+				skinCssAttr = (skinCss ? " style='" + skinCss + "'" : '');
+				skinClasses = ['fc-event-skin', 'fc-corner-left', 'fc-corner-right', 'fc-corner-top', 'fc-corner-bottom'].concat(event.className);
+				if (event.source && event.source.className) {
+					skinClasses = skinClasses.concat(event.source.className);
+				}
+				rowClasses = ['fc-event', 'fc-event-row', 'fc-'+dayIDs[event.start.getDay()]];
+				if (seg.daydiff == 0) {
+					rowClasses.push('fc-today');
+				}
+				
+				s +=  "<tr class='" + rowClasses.join(' ') + "'>";
+				for (var col, c=0; c < tableCols.length; c++) {
+					col = tableCols[c];
+					if (col == 'handle') {
+						s += "<td class='fc-event-handle'>" +
+							"<div class='" + skinClasses.join(' ') + "'" + skinCssAttr + ">" +
+							"<span class='fc-event-inner'></span>" +
+							"</div></td>";
+					} else if (col == 'date') {
+						s += "<td class='fc-event-date' colspan='" + (times[1] || !timecol ? 1 : 2) + "'>" + htmlEscape(times[0]) + "</td>";
+					} else if (col == 'time') {
+						if (times[1]) {
+							s += "<td class='fc-event-time'>" + htmlEscape(times[1]) + "</td>";
+						}
+					} else {
+						s += "<td class='fc-event-" + col + "'>" + (event[col] ? htmlEscape(event[col]) : '&nbsp;') + "</td>";
+					}
+				}
+				s += "</tr>";
+				
+				// IE doesn't like innerHTML on tbody elements so we insert every row individually
+				if (document.all) {
+					$(s).appendTo(segContainer);
+					s = '';
+				}
+			}
+
+			if (!document.all)
+				segContainer[0].innerHTML = s;
+
+			eventElements = segContainer.children();
+
+			// retrieve elements, run through eventRender callback, bind event handlers
+			for (i=0; i < seg.events.length; i++) {
+				event = seg.events[i];
+				eventElement = $(eventElements[i]); // faster than eq()
+				triggerRes = trigger('eventRender', event, event, eventElement);
+				if (triggerRes === false) {
+					eventElement.remove();
+				} else {
+					if (triggerRes && triggerRes !== true) {
+						eventElement.remove();
+						eventElement = $(triggerRes).appendTo(segContainer);
+					}
+					if (event._id === modifiedEventId) {
+						eventElementHandlers(event, eventElement, seg);
+					} else {
+						eventElement[0]._fci = i; // for lazySegBind
+					}
+					reportEventElement(event, eventElement);
+				}
+			}
+		
+			lazySegBind(segContainer, seg, eventElementHandlers);
+			markFirstLast(segContainer);
+		}
+		
+		//markFirstLast(table);
+	}
+
+}
+
+
+fcViews.table = TableView;
+
+
+function TableView(element, calendar) {
+	var t = this;
+
+	// exports
+	t.render = render;
+	t.select = dummy;
+	t.unselect = dummy;
+	t.getDaySegmentContainer = function(){ return table; };
+
+	// imports
+	View.call(t, element, calendar, 'table');
+	TableEventRenderer.call(t);
+	var opt = t.opt;
+	var trigger = t.trigger;
+  var clearEvents = t.clearEvents;
+	var reportEventClear = t.reportEventClear;
+	var formatDates = calendar.formatDates;
+	var formatDate = calendar.formatDate;
+
+	// overrides
+	t.setWidth = setWidth;
+	t.setHeight = setHeight;
+	
+	// locals
+	var div;
+	var table;
+	var firstDay;
+	var nwe;
+	var tm;
+	var colFormat;
+	
+	
+	function render(date, delta) {
+		if (delta) {
+			addDays(date, opt('listPage') * delta);
+		}
+		t.start = t.visStart = cloneDate(date, true);
+		t.end = addDays(cloneDate(t.start), opt('listPage'));
+		t.visEnd = addDays(cloneDate(t.start), opt('listRange'));
+		addMinutes(t.visEnd, -1);  // set end to 23:59
+		t.title = (t.visEnd.getTime() - t.visStart.getTime() < DAY_MS) ? formatDate(date, opt('titleFormat')) : formatDates(date, t.visEnd, opt('titleFormat'));
+		
+		updateOptions();
+
+		if (!table) {
+			buildSkeleton();
+		} else {
+			clearEvents();
+		}
+	}
+	
+	
+	function updateOptions() {
+		firstDay = opt('firstDay');
+		nwe = opt('weekends') ? 0 : 1;
+		tm = opt('theme') ? 'ui' : 'fc';
+		colFormat = opt('columnFormat');
+	}
+	
+	
+	function buildSkeleton() {
+		var tableCols = opt('tableCols');
+		var s =
+			"<table class='fc-border-separate' style='width:100%' cellspacing='0'>" +
+			"<colgroup>";
+		for (var c=0; c < tableCols.length; c++) {
+			s += "<col class='fc-event-" + tableCols[c] + "' />";
+		}
+		s += "</colgroup>" +
+			"</table>";
+		div = $('<div>').addClass('fc-list-content').appendTo(element);
+		table = $(s).appendTo(div);
+	}
+	
+	function setHeight(height, dateChanged) {
+	  if (!opt('listNoHeight'))
+		  div.css('height', (height-1)+'px').css('overflow', 'auto');
+	}
+
+	function setWidth(width) {
+		// nothing to be done here
+	}
+	
+	function dummy() {
+		// Stub.
+	}
+
 }
 
 })(jQuery);
