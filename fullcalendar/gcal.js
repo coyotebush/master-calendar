@@ -1,11 +1,11 @@
 /*
- * FullCalendar v1.5.3 Google Calendar Plugin
+ * FullCalendar v1.5.3-rcube-0.7.1 Google Calendar Plugin
  *
  * Copyright (c) 2011 Adam Shaw
  * Dual licensed under the MIT and GPL licenses, located in
  * MIT-LICENSE.txt and GPL-LICENSE.txt respectively.
  *
- * Date: Fri Jul 20 15:50:45 2012 -0700
+ * Date: Fri Jul 27 20:53:44 2012 -0700
  *
  */
  

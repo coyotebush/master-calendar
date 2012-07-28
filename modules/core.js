@@ -8,8 +8,10 @@ MasterCalendar.registerModule(function (cal) {
 		header: {
 			left: 'today prev,next title',
 			center: '',
-			right: 'month,agendaWeek'
+			right: 'month,agendaWeek,list'
 		},
+		listNoHeight: true,
+		listSections: 'month',
 		theme: true,
 		allDayDefault: false,
 		defaultEventMinutes: 120,
