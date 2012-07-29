@@ -15,18 +15,30 @@ a, a:visited {
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 130px;
-	margin: 10px;
+	width: 8.3em;
+	margin: 0.7em;
 }
 
 #calendar {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	left: 140px;
+	left: 9em;
 	right: 0;
 	height: auto;
-	margin: 10px;
+	margin: 0.7em;
+}
+
+.fc-header-title h2, .fc-header .fc-button {
+	margin-bottom: 0.7em;
+}
+
+.fc-header-space {
+	padding-left: 0.7em;
+}
+
+.fc-content {
+	padding-bottom: 0.7em;
 }
 
 /* vim: set sw=4 ts=4 noet fdm=marker fmr={{{,}}} */

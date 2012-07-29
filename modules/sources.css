@@ -1,5 +1,4 @@
 #refresh {
-	margin-bottom: 1em;
 	overflow: hidden;
 }
 
@@ -23,7 +22,7 @@
 }
 
 #sources {
-	margin: 1em 0;
+	margin: 0.7em 0;
 	padding: 0;
 	list-style-type: none;
 }
