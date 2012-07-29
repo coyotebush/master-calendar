@@ -2,7 +2,7 @@
 /*jslint browser: true, eqeq: true, vars: true */
 /*global $: false, MasterCalendar: false */
 /* vim: set sw=2 ts=2 noet */
-MasterCalendar.registerModule(function (cal) {
+MasterCalendar.modules.urlhash = function (cal) {
 	'use strict';
 	var startHash = location.hash.slice(1).split('/');
 	var startView = ($.fullCalendar.views[startHash[0]] && startHash[0]);
@@ -30,4 +30,5 @@ MasterCalendar.registerModule(function (cal) {
 	/*jslint unparam: false*/
 
 	return opts;
-});
+};
+

@@ -2,7 +2,7 @@
 /*jslint browser: true */
 /*global $: false, MasterCalendar: false */
 /* vim: set sw=2 ts=2 noet */
-MasterCalendar.registerModule(function (cal) {
+MasterCalendar.modules.fullHeightAgenda = function (cal) {
 	'use strict';
 	var resizeCalendar = function () {
 		if (cal.fullCalendar('getView').name.indexOf('agenda') > -1) {
@@ -15,5 +15,5 @@ MasterCalendar.registerModule(function (cal) {
 	};
 	$(window).resize(resizeCalendar);
 	cal.on('viewDisplay calendarStart', resizeCalendar);
-});
+};
 

@@ -1,8 +1,9 @@
 /*jslint browser: true */
 /*global MasterCalendar: true, jQuery: false */
 /* vim: set sw=2 ts=2 noet */
-(function (MasterCalendar, $, undefined) {
+(function (MasterCalendar, $) {
 	'use strict';
+	MasterCalendar.modules = {};
 	MasterCalendar.init = function () {
 		var cal = $('#calendar'), options = {}, m;
 		for (m in MasterCalendar.modules) {

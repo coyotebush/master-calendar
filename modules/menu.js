@@ -2,7 +2,7 @@
 /*jslint browser: true */
 /*global $: false, MasterCalendar: false */
 /* vim: set sw=2 ts=2 noet */
-MasterCalendar.registerModule(function (cal, sources) {
+MasterCalendar.modules.menu = function (cal, sources) {
 	'use strict';
 	$(sources).each(function () {
 		var menuDiv = $('<div class="cal-source-menu"/>');
@@ -47,5 +47,5 @@ MasterCalendar.registerModule(function (cal, sources) {
 			}
 		};
 	});
-});
+};
 

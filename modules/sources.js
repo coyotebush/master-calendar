@@ -2,7 +2,7 @@
 /*jslint browser: true, eqeq: true */
 /*global $: false, MasterCalendar: false */
 /* vim: set sw=2 ts=2 noet */
-MasterCalendar.registerModule(function (cal, sources) {
+MasterCalendar.modules.mobile = function (cal, sources) {
 	'use strict';
 	$(sources).each(function () {
 		// {{{ API
@@ -62,5 +62,5 @@ MasterCalendar.registerModule(function (cal, sources) {
 				});
 		}
 	};
-});
+};
 

@@ -2,7 +2,7 @@
 /*jslint browser: true, vars: true */
 /*global $: false, MasterCalendar: false */
 /* vim: set sw=2 ts=2 noet */
-MasterCalendar.registerModule(function (cal, sources) {
+MasterCalendar.modules.createMenu = function (cal, sources) {
 	'use strict';
 
 	$(sources).each(function () {
@@ -64,5 +64,5 @@ MasterCalendar.registerModule(function (cal, sources) {
 			$('#create-popup').dialog('close');
 		}
 	};
-});
+};
 

@@ -2,7 +2,7 @@
 /*jslint browser: true */
 /*global $: false, MasterCalendar: false */
 /* vim: set sw=2 ts=2 noet */
-MasterCalendar.registerModule(function (cal) {
+MasterCalendar.modules.eventRender = function (cal) {
 	'use strict';
 
 	var filterParticipation = false;
@@ -34,5 +34,5 @@ MasterCalendar.registerModule(function (cal) {
 			}
 		}
 	};
-});
+};
 
