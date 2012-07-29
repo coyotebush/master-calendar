@@ -1,28 +1,22 @@
-/*global $: false */
+/*jslint browser: true */
+/*global MasterCalendar: true, jQuery: false */
 /* vim: set sw=2 ts=2 noet */
-var MasterCalendar = (function () {
+(function (MasterCalendar, $, undefined) {
 	'use strict';
-	var modules = [], sources = [];
-
-	return {
-		registerModule: function (f) {
-			modules.push(f);
-		},
-
-		addSources: function (ss) {
-			sources = sources.concat(ss);
-		},
-
-		init: function () {
-			var cal = $('#calendar'), options = {};
-			$(modules).each(function () {
-				try { $.extend(options, this(cal, sources)); } catch (e) {}
-			});
-			cal.fullCalendar(options);
-			cal.trigger('calendarStart');
+	MasterCalendar.init = function () {
+		var cal = $('#calendar'), options = {}, m;
+		for (m in MasterCalendar.modules) {
+			if (MasterCalendar.modules.hasOwnProperty(m)
+					&& $.isFunction(MasterCalendar.modules[m])) {
+				try {
+					$.extend(options, MasterCalendar.modules[m](cal, MasterCalendar.sources));
+				} catch (e) {}
+			}
 		}
+		cal.fullCalendar(options);
+		cal.trigger('calendarStart');
 	};
-}());
+}(window.MasterCalendar = window.MasterCalendar || {}, jQuery));
 
-$(MasterCalendar.init);
+jQuery(MasterCalendar.init);
 

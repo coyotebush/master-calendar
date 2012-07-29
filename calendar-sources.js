@@ -1,9 +1,8 @@
 // Configure event sources here
 // (see the README for details)
-/*jslint white: true */
-/*global MasterCalendar: false */
 /* vim: set sw=2 ts=2 noet */
-MasterCalendar.addSources([
+(function (MasterCalendar, $, undefined) {
+MasterCalendar.sources = [
 {
 	name: 'Meals',
 	api: {
@@ -27,5 +26,6 @@ MasterCalendar.addSources([
 	color: '#550055',
 	currentTimezone: 'America/Los_Angeles'
 }
-]);
+];
+}(window.MasterCalendar = window.MasterCalendar || {}, jQuery));
 
