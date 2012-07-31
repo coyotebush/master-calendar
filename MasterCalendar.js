@@ -1,23 +1,23 @@
 /*jslint browser: true */
-/*global MasterCalendar: true, jQuery: false */
+/*global $: false */
 /* vim: set sw=2 ts=2 noet */
-(function (MasterCalendar, $) {
-	'use strict';
-	MasterCalendar.modules = {};
-	MasterCalendar.init = function () {
+var MasterCalendar = {
+	modules: {},
+	init: function () {
+		'use strict';
 		var cal = $('#calendar'), options = {}, m;
 		for (m in MasterCalendar.modules) {
 			if (MasterCalendar.modules.hasOwnProperty(m)
 					&& $.isFunction(MasterCalendar.modules[m])) {
 				try {
 					$.extend(options, MasterCalendar.modules[m](cal, MasterCalendar.sources));
-				} catch (e) {}
+				} catch (e) { }
 			}
 		}
 		cal.fullCalendar(options);
 		cal.trigger('calendarStart');
-	};
-}(window.MasterCalendar = window.MasterCalendar || {}, jQuery));
+	}
+};
 
-jQuery(MasterCalendar.init);
+$(MasterCalendar.init);
 
