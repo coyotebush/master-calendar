@@ -54,11 +54,12 @@ The API is expected to return:
 - If `menu` was set, optionally an object where `menu` contains [JsonML][]
   and `events` contains the array of events.
 
-        {
-          menu: ['p', 'Hello'],
-          events: [...]
-        }
-
+```javascript
+    {
+      menu: ['p', 'Hello'],
+      events: [...]
+    }
+```
 
 [JsonML]: http://www.jsonml.org/
 [JSON feed]: http://arshaw.com/fullcalendar/docs/event_data/events_json_feed/
@@ -77,14 +78,16 @@ including the following parameters, if they are not specified as `false`:
 #### Examples
 The minimal specification for a source is as
 
+```javascript
     {
       name: 'Community Events',
       url: '/events/api',
       color: '#006600'
     }
+```
 
 Specification of a more complete API including event creation might be as
-
+```javascript
     {
       name: 'Events',
       api: {
@@ -97,6 +100,7 @@ Specification of a more complete API including event creation might be as
       },
       color: '#006600',
     }
+```
 
 <!-- vim: set sw=2 sts=2 et: -->
 
