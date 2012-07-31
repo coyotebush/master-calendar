@@ -1,7 +1,6 @@
 // Configure event sources here
 // (see the README for details)
 /* vim: set sw=2 ts=2 noet */
-(function (MasterCalendar, $, undefined) {
 MasterCalendar.sources = [
 {
 	name: 'Meals',
@@ -27,5 +26,4 @@ MasterCalendar.sources = [
 	currentTimezone: 'America/Los_Angeles'
 }
 ];
-}(window.MasterCalendar = window.MasterCalendar || {}, jQuery));
 
