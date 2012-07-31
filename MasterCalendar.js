@@ -11,7 +11,11 @@ var MasterCalendar = {
 					&& $.isFunction(MasterCalendar.modules[m])) {
 				try {
 					$.extend(options, MasterCalendar.modules[m](cal, MasterCalendar.sources));
-				} catch (e) { }
+				} catch (e) {
+					if (window.console) {
+						console.error(e);
+					}
+				}
 			}
 		}
 		cal.fullCalendar(options);
