@@ -8,4 +8,5 @@ MasterCalendar.modules.mobile = function (cal) {
 		return { defaultView: 'list' };
 	}
 };
+MasterCalendar.modules.mobile.depends = 'core';
 

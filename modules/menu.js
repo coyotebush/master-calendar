@@ -48,4 +48,5 @@ MasterCalendar.modules.menu = function (cal, sources) {
 		};
 	});
 };
+MasterCalendar.modules.menu.depends = 'sources';
 
