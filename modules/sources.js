@@ -2,7 +2,7 @@
 /*jslint browser: true, eqeq: true */
 /*global $: false, MasterCalendar: false */
 /* vim: set sw=2 ts=2 noet */
-MasterCalendar.modules.mobile = function (cal, sources) {
+MasterCalendar.modules.sources = function (cal, sources) {
 	'use strict';
 	$(sources).each(function () {
 		// {{{ API
