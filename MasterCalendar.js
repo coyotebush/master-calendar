@@ -11,7 +11,7 @@ var MasterCalendar = {
 			run = false;
 			for (m in MasterCalendar.modules) {
 				if (MasterCalendar.modules.hasOwnProperty(m)
-						&& $.isFunction(MasterCalendar.modules[m])
+						&& typeof MasterCalendar.modules[m] === 'function'
 						&& !MasterCalendar.modules[m].run
 						&& (!MasterCalendar.modules[m].depends
 							|| MasterCalendar.modules[MasterCalendar.modules[m].depends].run)) {
