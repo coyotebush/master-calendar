@@ -1,5 +1,11 @@
 @import "jquery/smoothness/jquery-ui-1.8.21.custom.css";
-@import "fullcalendar/fullcalendar.css";
+
+@import "fullcalendar/src/main.css";
+@import "fullcalendar/src/common/common.css";
+@import "fullcalendar/src/basic/basic.css";
+@import "fullcalendar/src/agenda/agenda.css";
+@import "fullcalendar/src/list/list.css";
+
 @import "modules/core.css";
 @import "modules/mobile.css";
 @import "modules/event-render.css";
