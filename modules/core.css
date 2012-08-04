@@ -29,7 +29,11 @@ a, a:visited {
 	margin: 0.7em;
 }
 
-.fc-header-title h2, .fc-header .fc-button {
+.fc-header-title h2 {
+	margin-bottom: 0;
+}
+
+.fc-header .fc-button {
 	margin-bottom: 0.7em;
 }
 
