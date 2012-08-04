@@ -1,9 +1,13 @@
+.fc-event {
+	font-size: 1em;
+}
+
 .fc-event-vert .fc-event-time {
 	font-size: 1em;
 }
 
 .event-body {
-	font-size: 85%;
+	/*font-size: 85%;*/
 }
 
 .event-body table {

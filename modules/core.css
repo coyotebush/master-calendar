@@ -1,6 +1,7 @@
 body {
 	margin: 0;
 	font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
+	font-size: 87.5%;
 }
 
 a, a:visited {
@@ -16,7 +17,7 @@ a, a:visited {
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 8.3em;
+	width: 10.3em;
 	margin: 0.7em;
 }
 
@@ -24,7 +25,7 @@ a, a:visited {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	left: 9em;
+	left: 11em;
 	right: 0;
 	height: auto;
 	margin: 0.7em;
