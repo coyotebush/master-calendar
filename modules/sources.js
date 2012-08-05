@@ -19,7 +19,7 @@ MasterCalendar.modules.sources = function (cal, sources) {
 		$('#sources')
 			.append(this.toggler = $('<li class="cal-source"/>')
 				.css('border-color', this.color)
-				.append($('<label class="cal-source-label">' + this.name + '</label>')
+				.append($('<label class="cal-source-label"><span>' + this.name + '</span></label>')
 					.css('background-color', this.color)
 					.prepend($('<input type="checkbox">')
 						.data('source', this)
