@@ -5,12 +5,12 @@
 MasterCalendar.modules.fullHeightAgenda = function (cal) {
 	'use strict';
 	var resizeCalendar = function () {
-		if (cal.fullCalendar('getView').name.indexOf('agenda') > -1) {
+		if (cal.fullCalendar('getView').name.indexOf('agenda') > -1
+				&& cal.css('position') === 'absolute') {
 			cal.fullCalendar('option', 'height',
 				cal.prop('clientHeight'));
 		} else {
 			cal.fullCalendar('option', 'height', 0);
-			cal.fullCalendar('option', 'aspectRatio', 1.35);
 		}
 	};
 	$(window).resize(resizeCalendar);
