@@ -39,26 +39,34 @@ To specify an event creation API, similarly, the URL may be specified as
 
 #### API Details
 ##### Events
-The events API will be used as a [JSON feed][] for FullCalendar; the following
-additional parameter may be provided:
+The events API will be used as a [JSON feed][] for FullCalendar. The API is
+expected to return an array of [Event Objects][], with the following additional
+optional properties:
 
-- `menu`: if set, the source may provide menu content alongside events.
-
-The API is expected to return:
-
-- If `menu` was not set, an array of [Event Objects][], with the following
-  additional optional properties:
   - `body`: [JsonML][] content to be rendered as part of the event
   - `participation`: boolean indicating the calendar user's "participation" in
     an event
-- If `menu` was set, optionally an object where `menu` contains [JsonML][]
-  and `events` contains the array of events.
+
+###### Menu content "events"
+Zero or more Event Objects with `"id": "menu"` may be included. Instead of being
+rendered within the calendar display, these will be used to display accompanying
+content (again, [JsonML][] from the `body` property) within the source's entry
+in the list of sources. The `start` and `end` properties should indicate the
+range of viewing windows for which this content should be rendered; for best
+results, the menu "events" returned by the API should cover the entire requested
+range without overlapping. The `title` property will be ignored.
 
 ```javascript
-    {
-      menu: ['p', 'Hello'],
-      events: [...]
-    }
+[
+  ...
+  {
+    "id": "menu",
+    "title": "menu",
+    "start": "2012-01-01T00:00:00Z",
+    "end": "2012-02-01T00:00:00Z",
+    "body": ["p", ["a", {"href": "#"}, "Manage my account"]]
+  }
+]
 ```
 
 [JsonML]: http://www.jsonml.org/
@@ -79,27 +87,27 @@ including the following parameters, if they are not specified as `false`:
 The minimal specification for a source is as
 
 ```javascript
-    {
-      name: 'Community Events',
-      url: '/events/api',
-      color: '#006600'
-    }
+{
+  name: 'Community Events',
+  url: '/events/api',
+  color: '#006600'
+}
 ```
 
 Specification of a more complete API including event creation might be as
 ```javascript
-    {
-      name: 'Events',
-      api: {
-        events: '/events/api?events',
-        create: {
-          url:  '/events/api?new',
-          startParam: 'time',
-          endParam: 'ignore'
-        }
-      },
-      color: '#006600',
+{
+  name: 'Events',
+  api: {
+    events: '/events/api?events',
+    create: {
+      url:  '/events/api?new',
+      startParam: 'time',
+      endParam: 'ignore'
     }
+  },
+  color: '#006600',
+}
 ```
 
 <!-- vim: set sw=2 sts=2 et: -->
