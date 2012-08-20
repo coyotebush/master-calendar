@@ -50,6 +50,10 @@ MasterCalendar.modules.menu = function (cal, sources) {
 					.button({ icons: { primary: 'ui-icon-plusthick' }}));
 		};
 	});
+
+	cal.on('viewDisplay', function () {
+		$('#sources > li > div').hide();
+	});
 };
 MasterCalendar.modules.menu.depends = 'sources';
 
