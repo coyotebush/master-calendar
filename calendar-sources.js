@@ -16,7 +16,14 @@ MasterCalendar.sources = [
 },
 {
 	name: 'Notes',
-	url: '/commonmeals/api.php?notes',
+	api: {
+		events: '/commonmeals/api.php?notes',
+		create: {
+			url: '/commonmeals/api.php?notes&new',
+			startParam: 'time',
+			endParam: false
+		}
+	},
 	color: '#336699'
 },
 {
