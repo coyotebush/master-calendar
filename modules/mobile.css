@@ -13,7 +13,7 @@ body {
 	}
 
 	.fc-header td {
-		display: block;
+		display: inline-block;
 		width: auto;
 		text-align: left;
 		white-space: normal;
