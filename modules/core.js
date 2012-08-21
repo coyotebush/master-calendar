@@ -11,7 +11,7 @@ MasterCalendar.modules.core = function (cal) {
 			right: 'month,agendaWeek,list'
 		},
 		listNoHeight: true,
-		listSections: 'month',
+		listSections: 'smart',
 		theme: true,
 		allDayDefault: false,
 		defaultEventMinutes: 120,
