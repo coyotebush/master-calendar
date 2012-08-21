@@ -18,6 +18,11 @@ body {
 		text-align: left;
 		white-space: normal;
 	}
+
+	.fc-header-title {
+		margin-right: 0.7em;
+	}
+
 	.fc-header-title-hidden {
 		display: none;
 	}
