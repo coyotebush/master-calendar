@@ -35,17 +35,24 @@ MasterCalendar.modules.menu = function (cal, sources) {
 		this.data = $.extend(this.data, { menu: 1 });
 		this.success = function (data) {
 			if (data.menu) {
-				menuDiv
-					.show()
-					.empty().append($.jqml(data.menu))
-					.find('.hidden').hide()
-					.before($('<div class="hidden-toggle">show</div>')
-						.button({ icons: { primary: 'ui-icon-plusthick' }}));
+				this.menuRender(data.menu);
 			}
 			if (data.events) {
 				return data.events;
 			}
 		};
+		this.menuRender = function (data) {
+			menuDiv
+				.show()
+				.empty().append($.jqml(data))
+				.find('.hidden').hide()
+				.before($('<div class="hidden-toggle">show</div>')
+					.button({ icons: { primary: 'ui-icon-plusthick' }}));
+		};
+	});
+
+	cal.on('viewDisplay', function () {
+		$('#sources > li > div').hide();
 	});
 };
 MasterCalendar.modules.menu.depends = 'sources';

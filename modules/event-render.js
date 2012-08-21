@@ -15,7 +15,15 @@ MasterCalendar.modules.eventRender = function (cal) {
 		});
 
 	return {
-		eventRender: function (event, element) {
+		eventRender: function (event, element, view) {
+			var midTime = (view.start.getTime() + view.end.getTime()) / 2;
+			if (event.id === 'menu') {
+				if ((!event.start || event.start < midTime)
+						&& (!event.end   || midTime < event.end)) {
+					event.source.menuRender(event.body);
+				}
+				return false;
+			}
 			if (event.participation) {
 				$(element).addClass('event-participation');
 			} else if (filterParticipation) {
