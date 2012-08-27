@@ -15,7 +15,7 @@ MasterCalendar.modules.core = function (cal) {
 		theme: true,
 		allDayDefault: false,
 		defaultEventMinutes: 120,
-		timeFormat: 'H:mm ',
+		timeFormat: 'h:mmtt ',
 		weekMode: 'variable',
 
 		viewDisplay: function (viewObj) {
