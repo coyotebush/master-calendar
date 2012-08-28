@@ -6,11 +6,11 @@ MasterCalendar.modules.createMenu = function (cal, sources) {
 	'use strict';
 
 	$(sources).each(function () {
-		if (this.api && this.api.create) {
+		if (this.create) {
 			$('#create-menu')
 				.append($('<li/>')
 					.append($('<a>' + this.name + '</a>')
-						.data('api', this.api.create)
+						.data('api', this.create)
 						.click(function () {
 							if (this.href) {
 								window.open(this.href);

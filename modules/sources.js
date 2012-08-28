@@ -5,16 +5,6 @@
 MasterCalendar.modules.sources = function (cal, sources) {
 	'use strict';
 	$(sources).each(function () {
-		// {{{ API
-		if (this.api && this.api.events) {
-			if (typeof this.api.events == 'object') {
-				$.extend(this, this.api.events);
-			} else {
-				this.url = this.api.events;
-			}
-		}
-		// }}}
-
 		// {{{ Checklist
 		$('#sources')
 			.append(this.toggler = $('<li class="cal-source"/>')

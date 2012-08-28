@@ -26,15 +26,9 @@ event data for the calendar through a JSON API.
 A source must have a `name` and `color` specified. While an `events` property
 may provide event data through a predefined array of event objects or a
 function to generate events, most uses will probably involve a [JSON feed][].
-The rules are:
 
-- The properties `url` and optionally `startParam` and `endParam` may be
-  specified on the source itself.
-- Or, these properties may be specified on an `api.events` object.
-- Or, just `url` may be specified as the value of `api.events`.
-
-To specify an event creation API, similarly, the URL may be specified as
-`api.create`, or `api.create` can contain `url` and any of `startParam`,
+To specify an event creation API, the URL may be specified as
+`create`, or `create` can contain `url` and any of `startParam`,
 `endParam`, or `allDayParam`.
 
 #### API Details
@@ -98,13 +92,11 @@ Specification of a more complete API including event creation might be as
 ```javascript
 {
   name: 'Events',
-  api: {
-    events: '/events/api?events',
-    create: {
-      url:  '/events/api?new',
-      startParam: 'time',
-      endParam: 'ignore'
-    }
+  url: '/events/api?events',
+  create: {
+    url:  '/events/api?new',
+    startParam: 'time',
+    endParam: 'ignore'
   },
   color: '#006600',
 }

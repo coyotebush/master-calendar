@@ -4,25 +4,21 @@
 MasterCalendar.sources = [
 {
 	name: 'Meals',
-	api: {
-		events: '/commonmeals/api.php?events',
-		create: {
-			url: '/commonmeals/api.php?new',
-			startParam: 'time',
-			endParam: false
-		}
+	url: '/commonmeals/api.php?events',
+	create: {
+		url: '/commonmeals/api.php?new',
+		startParam: 'time',
+		endParam: false
 	},
 	color: '#006600'
 },
 {
 	name: 'Notes',
-	api: {
-		events: '/commonmeals/api.php?notes',
-		create: {
-			url: '/commonmeals/api.php?notes&new',
-			startParam: 'time',
-			endParam: false
-		}
+	url: '/commonmeals/api.php?notes',
+	create: {
+		url: '/commonmeals/api.php?notes&new',
+		startParam: 'time',
+		endParam: false
 	},
 	color: '#336699'
 },
