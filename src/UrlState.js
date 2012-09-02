@@ -13,16 +13,7 @@ UrlState.prototype.read = function () {
 	var startHash = this.location.hash.slice(1).split('/');
 	var startView = ($.fullCalendar.views[startHash[0]] && startHash[0]);
 	var startDate = (startHash[1] && $.fullCalendar.parseISO8601(startHash[1], true));
-	var opts = { defaultView: startView };
-
-	if (startDate) {
-		$.extend(opts, {
-			year: startDate.getFullYear(),
-			month: startDate.getMonth(),
-			date: startDate.getDate()
-		});
-	}
-	return opts;
+	return { defaultView: startView, date: startDate };
 };
 
 UrlState.prototype.update = function (e, viewObj) {
