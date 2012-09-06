@@ -4,9 +4,9 @@
 MasterCalendar.sources = [
 {
 	name: 'Meals',
-	url: '/commonmeals/api.php?events',
+	url: '../commonmeals/www/api.php?events',
 	create: {
-		url: '/commonmeals/api.php?new',
+		url: '../commonmeals/www/api.php?new',
 		startParam: 'time',
 		endParam: false
 	},
@@ -14,9 +14,9 @@ MasterCalendar.sources = [
 },
 {
 	name: 'Notes',
-	url: '/commonmeals/api.php?notes',
+	url: '../commonmeals/www/api.php?notes',
 	create: {
-		url: '/commonmeals/api.php?notes&new',
+		url: '../commonmeals/www/api.php?notes&new',
 		startParam: 'time',
 		endParam: false
 	},
