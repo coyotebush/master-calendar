@@ -20,6 +20,10 @@ MasterCalendar.modules.core = function (cal) {
 
 		viewDisplay: function (viewObj) {
 			cal.trigger('viewDisplay', viewObj);
+		},
+
+		windowResize: function (viewObj) {
+			cal.trigger('windowResize', viewObj);
 		}
 	};
 };
