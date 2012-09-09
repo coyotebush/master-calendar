@@ -26,9 +26,11 @@ var MasterCalendar = {
 			refresh = new RefreshView({ cal: cal, el: $('#refresh') }),
 			createMenu = new CreateMenuView({ cal: cal, el: $('#create-menu') }),
 			urlState = new UrlState({ location: window.location, cal: cal }),
+			startView = {},
 			eventSources = [];
 
 		refresh.render();
+		startView = urlState.read();
 		$('#sources').append(filtererView.render().el);
 
 		$(MasterCalendar.sources).each(function () {
@@ -41,7 +43,7 @@ var MasterCalendar = {
 
 		createMenu.collection = eventSources;
 
-		cal.fullCalendar($.extend({
+		cal.fullCalendar({
 			header: {
 				left: 'today prev,next title',
 				center: '',
@@ -54,7 +56,8 @@ var MasterCalendar = {
 			defaultEventMinutes: 120,
 			timeFormat: 'h:mmtt ',
 			weekMode: 'variable',
-			defaultView: mobile.isActive() ? 'list' : 'month',
+			defaultView: startView.defaultView || (mobile.isActive() ? 'list' : 'month'),
+			date: startView.date,
 
 			viewDisplay: function (viewObj) {
 				mobile.update(viewObj);
@@ -90,7 +93,7 @@ var MasterCalendar = {
 			unselectCancel: '.ui-dialog',
 			select: $.proxy(createMenu.renderOpen, createMenu),
 			unselect: $.proxy(createMenu.close, createMenu)
-		}, urlState.read()));
+		});
 	}
 };
 
