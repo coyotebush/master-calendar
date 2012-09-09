@@ -39,6 +39,5 @@ js('modules/mobile.js');
 js('modules/event-render.js');
 js('modules/sources.js');
 js('modules/menu.js');
-js('modules/create-menu.js');
 js('modules/fullheight-agenda.js');
 js('modules/urlhash.js');
