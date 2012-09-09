@@ -8,7 +8,7 @@
  * property change events and logic methods
  */
 var EventSource = function (params) {
-	$.extend(this, params);
+	$.extend(this, { enabled: true }, params);
 };
 
 EventSource.prototype.set = function (param, value) {
@@ -114,7 +114,7 @@ MasterCalendar.modules.sources = function (cal, sources) {
 
 
 	return {
-		eventSources: $(eventSources).filter(function () { return this.enabled !== false; }),
+		eventSources: $(eventSources).filter(function () { return this.enabled; }),
 		loading: $.proxy(refresh.update, refresh)
 	};
 };
