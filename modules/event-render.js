@@ -20,7 +20,7 @@ MasterCalendar.modules.eventRender = function (cal) {
 			if (event.id === 'menu') {
 				if ((!event.start || event.start < midTime)
 						&& (!event.end   || midTime < event.end)) {
-					event.source.menuRender(event.body);
+					//event.source.menuRender(event.body);
 				}
 				return false;
 			}

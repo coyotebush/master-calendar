@@ -30,36 +30,42 @@ RefreshView.prototype.update = function (pending, total) {
 		});
 };
 
+var SourceView = function (options) {
+	this.model = options.model;
+	this.el = $('<li class="cal-source">');
+	this.el.on('change', '.cal-source-label :checkbox', $.proxy(this.toggle, this));
+};
+
+SourceView.prototype.render = function () {
+	this.el.html('<label class="cal-source-label">'
+			+ '<input type="checkbox"'
+			+ (this.model.enable !== false ? ' checked="checked"/>' : '>')
+			+ '<span>' + this.model.name + '</span>'
+			+ '</label>'
+			+ (this.model.menu ? '<div class="cal-source-menu"/>' : '')
+		);
+	this.el.css('border-color', this.model.color);
+	this.el.find('.cal-source-label').css('background-color', this.model.color);
+	if (this.model.menu) {
+		this.el.find('.cal-source-menu').append($.jqml(this.model.menu));
+	}
+	return this;
+};
+
+SourceView.prototype.toggle = function (event) {
+	this.model.setEnabled(event.target.checked);
+};
+
 MasterCalendar.modules.sources = function (cal, sources) {
 	$(sources).each(function () {
-		// {{{ Checklist
-		$('#sources')
-			.append(this.toggler = $('<li class="cal-source"/>')
-				.css('border-color', this.color)
-				.append($('<label class="cal-source-label"><span>' + this.name + '</span></label>')
-					.css('background-color', this.color)
-					.prepend($('<input type="checkbox">')
-						.data('source', this)
-						.prop('checked', this.defaultEnable !== false))));
-		// }}}
+		var view = new SourceView({ model: this, cal: cal });
+		$('#sources').append(view.render().el);
 	});
-
-	// {{{ Checklist functionality
-	$('#sources').on('change', ':checkbox', function () {
-		cal.fullCalendar(
-			$(this).is(':checked') ? 'addEventSource' : 'removeEventSource',
-			$(this).data('source')
-		);
-	});
-
-	cal.one('calendarStart', function () {
-		$('#sources :checkbox').change();
-	});
-	// }}}
 
 	var refresh = new RefreshView({ cal: cal, el: $('#refresh') });
 
 	return {
+		eventSources: $(sources).filter(function () { return this.enabled !== false; }),
 		loading: $.proxy(refresh.update, refresh)
 	};
 };
