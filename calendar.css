@@ -6,9 +6,8 @@
 @import "fullcalendar/src/agenda/agenda.css";
 @import "fullcalendar/src/list/list.css";
 
-@import "modules/core.css";
-@import "modules/mobile.css";
-@import "modules/event-render.css";
-@import "modules/sources.css";
-@import "modules/menu.css";
-@import "modules/create-menu.css";
+@import "src/CalendarMobile.css";
+@import "src/CreateMenuView.css";
+@import "src/EventSourceView.css";
+@import "src/MasterCalendar.css";
+@import "src/renderUtils.css";

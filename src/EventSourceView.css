@@ -35,10 +35,6 @@
 	overflow: hidden;
 }
 
-#filter-my-events {
-	background-color: #333;
-}
-
 #sources .cal-source-label {
 	display: block;
 	padding: 0.2em 0;
@@ -50,5 +46,20 @@
 
 #sources .cal-source-label * {
 	vertical-align: middle;
+}
+
+.cal-source-menu {
+	padding: 0.2em;
+	overflow: auto;
+}
+
+.cal-source-menu ul {
+	margin: 0;
+	padding-left: 1.8em;
+	list-style-type: disc;
+}
+
+.cal-source-menu li {
+	padding: 0.2em 0;
 }
 
