@@ -42,6 +42,7 @@ js('src/EventSourceView.js');
 js('src/EventSourceWatcher.js');
 js('src/RefreshView.js');
 js('src/UrlState.js');
+js('src/renderUtils.js');
 js('MasterCalendar.js');
 js('modules/core.js');
 js('modules/mobile.js');
