@@ -33,6 +33,14 @@ js('fullcalendar/src/list/ListView.js');
 js('fullcalendar/src/list/TableView.js');
 js('fullcalendar/src/gcal/gcal.js');
 
+js('src/CalendarMobile.js');
+js('src/CalendarResizer.js');
+js('src/CreateMenuView.js');
+js('src/EventSource.js');
+js('src/EventSourceView.js');
+js('src/EventSourceWatcher.js');
+js('src/RefreshView.js');
+js('src/UrlState.js');
 js('MasterCalendar.js');
 js('modules/core.js');
 js('modules/mobile.js');
