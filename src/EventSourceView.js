@@ -8,6 +8,7 @@ var EventSourceView = function (options) {
 	this.model = options.model;
 	this.el = $('<li class="cal-source">');
 	this.el.on('change', '.cal-source-label :checkbox', $.proxy(this.toggle, this));
+	$(this.model).on('change:menu', $.proxy(this.render, this));
 };
 
 EventSourceView.prototype.render = function () {
