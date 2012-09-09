@@ -1,6 +1,6 @@
-[submodule "fullcalendar"]
-	path = fullcalendar
-	url = git://github.com/coyotebush/fullcalendar
+[submodule "lib/fullcalendar"]
+	path = lib/fullcalendar
+	url = git://github.com/coyotebush/fullcalendar.git
 [submodule "jquery/jqml"]
 	path = jquery/jqml
 	url = git://github.com/trevnorris/jqml.git
