@@ -6,7 +6,7 @@ var CalendarResizer = function (options) {
 	this.cal = options.cal;
 };
 
-CalendarResizer.prototype.resize = function (e, viewObj) {
+CalendarResizer.prototype.resize = function (viewObj) {
 	if (viewObj.name.indexOf('agenda') > -1
 			&& this.cal.css('position') === 'absolute') {
 		this.cal.fullCalendar('option', 'height',

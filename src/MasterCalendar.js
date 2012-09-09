@@ -39,6 +39,8 @@ var MasterCalendar = {
 			$('#sources').append(view.render().el);
 		});
 
+		createMenu.collection = eventSources;
+
 		cal.fullCalendar($.extend({
 			header: {
 				left: 'today prev,next title',

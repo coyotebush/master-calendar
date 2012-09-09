@@ -10,7 +10,7 @@ CalendarMobile.prototype.isActive = function () {
 	return this.cal.css('position') === 'static';
 };
 
-CalendarMobile.prototype.update = function (e, viewObj) {
+CalendarMobile.prototype.update = function (viewObj) {
 	this.cal.find('.fc-header-title')
 		.toggleClass('fc-header-title-hidden', viewObj.name === 'list');
 };
