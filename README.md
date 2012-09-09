@@ -1,5 +1,3 @@
-MasterCalendar
-===
 A web application that displays data from several sources, built with jQuery
 and [FullCalendar][].
 
@@ -17,7 +15,17 @@ Future goals:
 - let sources provide event filtering controls
 - good mobile device support
 
-Sources
+Development
+---
+Open `public/index.html` and edit the code in `src/`.
+
+Deployment
+---
+Run `build.sh` to combine and minify (using YUI Compressor) the JS and CSS
+files, then copy the contents of the `build` directory to an appropriate
+location.
+
+Configuring event sources
 ---
 Sources are specified in the array in `calendar-sources.js`. A source provides
 event data for the calendar through a JSON API.
