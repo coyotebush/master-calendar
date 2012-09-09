@@ -8,6 +8,8 @@ MasterCalendar.modules.sources = function (cal, sources) {
 	var eventSources = [],
 		refresh = new RefreshView({ cal: cal, el: $('#refresh') });
 
+	refresh.render();
+
 	$(sources).each(function () {
 		var eventSource = new EventSource(this),
 			view = new EventSourceView({ model: eventSource }),
