@@ -3,6 +3,38 @@
 /*global $: false, MasterCalendar: false */
 /* vim: set sw=2 ts=2 noet */
 'use strict';
+
+/* A FullCalendar Event Source object with
+ * property change events and logic methods
+ */
+var EventSource = function (params) {
+	$.extend(this, params);
+};
+
+EventSource.prototype.set = function (param, value) {
+	this[param] = value;
+	$(this).trigger('change:' + param);
+};
+
+EventSource.prototype.createUrl = function (startDate, endDate, allDay) {
+	var api, url, params = {};
+	if (this.create) {
+		url = this.create.url || this.create;
+		if (this.create.startParam !== false) {
+			params[this.create.startParam  || 'start']  = startDate.getTime() / 1000;
+		}
+		if (this.create.endParam !== false) {
+			params[this.create.endParam    || 'end']    = endDate.getTime() / 1000;
+		}
+		if (this.create.allDayParam !== false) {
+			params[this.create.allDayParam || 'allday'] = allDay;
+		}
+		url += url.indexOf('?') > -1 ? '&' : '?';
+		url += $.param(params);
+		return url;
+	}
+};
+
 var RefreshView = function (options) {
 	this.el = options.el;
 	this.cal = options.cal;
@@ -30,13 +62,13 @@ RefreshView.prototype.update = function (pending, total) {
 		});
 };
 
-var SourceView = function (options) {
+var EventSourceView = function (options) {
 	this.model = options.model;
 	this.el = $('<li class="cal-source">');
 	this.el.on('change', '.cal-source-label :checkbox', $.proxy(this.toggle, this));
 };
 
-SourceView.prototype.render = function () {
+EventSourceView.prototype.render = function () {
 	this.el.html('<label class="cal-source-label">'
 			+ '<input type="checkbox"'
 			+ (this.model.enable !== false ? ' checked="checked"/>' : '>')
@@ -52,20 +84,37 @@ SourceView.prototype.render = function () {
 	return this;
 };
 
-SourceView.prototype.toggle = function (event) {
-	this.model.setEnabled(event.target.checked);
+EventSourceView.prototype.toggle = function (event) {
+	this.model.set('enabled', event.target.checked);
+};
+
+var EventSourceWatcher = function (options) {
+	this.model = options.model;
+	this.cal = options.cal;
+	$(this.model).on('change:enabled', $.proxy(this.updateCal, this));
+};
+
+EventSourceWatcher.prototype.updateCal = function () {
+	this.cal.fullCalendar(
+		this.model.enabled ? 'addEventSource' : 'removeEventSource',
+		this.model
+	);
 };
 
 MasterCalendar.modules.sources = function (cal, sources) {
+	var eventSources = [],
+		refresh = new RefreshView({ cal: cal, el: $('#refresh') });
 	$(sources).each(function () {
-		var view = new SourceView({ model: this, cal: cal });
+		var eventSource = new EventSource(this),
+			view = new EventSourceView({ model: eventSource }),
+			watcher = new EventSourceWatcher({ model: eventSource, cal: cal});
+		eventSources.push(eventSource);
 		$('#sources').append(view.render().el);
 	});
 
-	var refresh = new RefreshView({ cal: cal, el: $('#refresh') });
 
 	return {
-		eventSources: $(sources).filter(function () { return this.enabled !== false; }),
+		eventSources: $(eventSources).filter(function () { return this.enabled !== false; }),
 		loading: $.proxy(refresh.update, refresh)
 	};
 };

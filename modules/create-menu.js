@@ -4,26 +4,6 @@
 /* vim: set sw=2 ts=2 noet */
 'use strict';
 
-// TODO: make a method of Source objects
-function sourceCreateUrl(source, startDate, endDate, allDay) {
-	var api, url, params = {};
-	if (source.create) {
-		url = source.create.url || source.create;
-		if (source.create.startParam !== false) {
-			params[source.create.startParam  || 'start']  = startDate.getTime() / 1000;
-		}
-		if (source.create.endParam !== false) {
-			params[source.create.endParam    || 'end']    = endDate.getTime() / 1000;
-		}
-		if (source.create.allDayParam !== false) {
-			params[source.create.allDayParam || 'allday'] = allDay;
-		}
-		url += url.indexOf('?') > -1 ? '&' : '?';
-		url += $.param(params);
-		return url;
-	}
-}
-
 var CreateMenuView = function (options) {
 	this.el = options.el;
 	this.collection = options.collection;
@@ -50,7 +30,7 @@ var CreateMenuView = function (options) {
 CreateMenuView.prototype.render = function (startDate, endDate, allDay) {
 	var html = '', url;
 	$(this.collection).each(function () {
-		url = sourceCreateUrl(this, startDate, endDate, allDay);
+		url = this.createUrl(startDate, endDate, allDay);
 		if (url) {
 			html += '<li><a href="' + url + '">' + this.name + '</a></li>';
 		}
