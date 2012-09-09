@@ -5,14 +5,9 @@
 MasterCalendar.modules.eventRender = function (cal) {
 	'use strict';
 
-	var filterParticipation = false;
-
-	$('#filter-my-events :checkbox')
-		.prop('checked', false)
-		.change(function () {
-			filterParticipation = $(this).is(':checked');
-			cal.fullCalendar('rerenderEvents');
-		});
+	var filterer = new EventFilterer({ cal: cal }),
+			filtererView = new EventSourceView({ model: filterer });
+	$('#sources').append(filtererView.render().el);
 
 	return {
 		eventRender: function (event, element, view) {
@@ -26,7 +21,7 @@ MasterCalendar.modules.eventRender = function (cal) {
 			}
 			if (event.participation) {
 				$(element).addClass('event-participation');
-			} else if (filterParticipation) {
+			} else if (filterer.filterEvent(event) === false) {
 				return false;
 			}
 			if (event.body) {

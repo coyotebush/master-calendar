@@ -14,7 +14,7 @@ var EventSourceView = function (options) {
 EventSourceView.prototype.render = function () {
 	this.el.html('<label class="cal-source-label">'
 			+ '<input type="checkbox"'
-			+ (this.model.enable !== false ? ' checked="checked"/>' : '>')
+			+ (this.model.enabled !== false ? ' checked="checked"/>' : '>')
 			+ '<span>' + this.model.name + '</span>'
 			+ '</label>'
 			+ (this.model.menu ? '<div class="cal-source-menu"/>' : '')

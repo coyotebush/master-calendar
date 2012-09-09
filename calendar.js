@@ -36,6 +36,7 @@ js('fullcalendar/src/gcal/gcal.js');
 js('src/CalendarMobile.js');
 js('src/CalendarResizer.js');
 js('src/CreateMenuView.js');
+js('src/EventFilterer.js');
 js('src/EventSource.js');
 js('src/EventSourceView.js');
 js('src/EventSourceWatcher.js');
